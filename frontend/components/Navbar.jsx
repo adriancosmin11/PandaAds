@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image'; // Importăm Image
+import Image from 'next/image';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,16 +13,16 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-20">
           
-          {/* LOGO - Folosim Image și logo.jpeg */}
+          {/* LOGO */}
           <div className="flex-shrink-0 flex items-center cursor-pointer">
-            <Link href="/" className="relative h-12 w-40"> {/* Container cu dimensiuni fixe pentru Image */}
+            <Link href="/" className="relative h-12 w-40">
               <Image 
                 src="/assets/logo.jpeg" 
                 alt="PandaAds Logo" 
-                fill // Umple containerul părinte
-                className="object-contain object-left" // Se asigură că logo-ul nu se deformează
+                fill 
+                className="object-contain object-left" 
                 sizes="(max-width: 768px) 100vw, 200px"
-                priority // Logo-ul se încarcă instant
+                priority 
               />
             </Link>
           </div>
@@ -35,11 +35,13 @@ const Navbar = () => {
             <Link href="#preturi" className="hover:text-emerald-600 transition-colors">Prețuri</Link>
           </div>
 
-          {/* CTA Button */}
+          {/* CTA Button - DESKTOP (Link către /audit) */}
           <div className="hidden md:block">
-            <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-emerald-200 hover:-translate-y-0.5">
-              Audit Gratuit
-            </button>
+            <Link href="/audit">
+              <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-emerald-200 hover:-translate-y-0.5">
+                Audit Gratuit
+              </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -59,10 +61,14 @@ const Navbar = () => {
             <Link href="#servicii" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-md">Servicii</Link>
             <Link href="#studii" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-md">Studii de caz</Link>
             <Link href="#preturi" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-md">Prețuri</Link>
+            
+            {/* CTA Button - MOBILE (Link către /audit) */}
             <div className="pt-4">
-              <button className="w-full bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold">
-                Cere Audit Gratuit
-              </button>
+              <Link href="/audit" onClick={() => setIsOpen(false)}>
+                <button className="w-full bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold">
+                  Cere Audit Gratuit
+                </button>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react'; // Scoatem Twitter/Linkedin daca nu ai
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Footer = () => {
   return (
@@ -13,9 +14,7 @@ const Footer = () => {
           {/* Coloana 1: Logo & Social Media */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-4">
-               <span className="text-2xl font-bold tracking-tight text-white">
-                 PANDA<span className="text-emerald-500">ADS</span>
-               </span>
+               <Image src="/assets/logo-footer.png" alt="PandaAds Logo" width={100} height={100} />
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               Partenerul tău de încredere pentru creștere organică și performanță plătită.
