@@ -1,0 +1,41 @@
+# --- DEPENDENȚE (Pentru Frontend și Backend) ---
+node_modules/
+*/node_modules/
+package-lock.json
+# Notă: De obicei package-lock.json SE COMITE, dar dacă ai conflicte dese îl poți ignora. 
+# Recomandarea standard este să ÎL PĂSTREZI (șterge linia de mai sus dacă vrei să-l salvezi).
+
+# --- NEXT.JS (Frontend) ---
+.next/
+out/
+build/
+dist/
+.vercel/
+
+# --- LOGS & TESTING ---
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage/
+
+# --- ENVIRONMENT VARIABLES (CRITIC PENTRU SECURITATE) ---
+# Nu urca niciodată cheile secrete pe GitHub!
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# --- OS & EDITORS (Fișiere generate de sistem) ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# --- VERSEL / DEPLOYMENT ---
+.vercel
