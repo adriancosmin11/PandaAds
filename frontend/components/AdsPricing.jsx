@@ -1,10 +1,10 @@
 import React from 'react';
 import { Check, ShieldAlert, FileText, Settings, Star } from 'lucide-react';
-import Image from 'next/image'; // Import Image
+import Image from 'next/image';
+import Link from 'next/link'; // Importăm Link pentru navigare
 
 const AdsPricing = () => {
   const plans = [
-    // ... (datele planurilor rămân neschimbate) ...
     {
       name: 'SILVER',
       price: '300 – 500 €',
@@ -60,21 +60,19 @@ const AdsPricing = () => {
   ];
 
   return (
-    // Adăugat 'relative overflow-hidden' și fundal alb
-    <section className="relative py-24 bg-white overflow-hidden">
+    <section className="relative py-24 bg-white overflow-hidden" id="preturi">
 
-      {/* --- SECTION BACKGROUND (WAVES THIN) --- */}
+      {/* --- BACKGROUND WAVES (THIN) --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <Image 
           src="/assets/background-waves.png" 
           alt="Background Pattern" 
           fill
-          className="object-cover opacity-100"
+          className="object-cover opacity-10"
         />
          <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white"></div>
       </div>
 
-      {/* Content Wrapper cu z-10 */}
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         
         <div className="text-center mb-16">
@@ -82,10 +80,9 @@ const AdsPricing = () => {
           <p className="text-xl text-gray-600">Pachete Lunare — Magazine Online & Business-uri</p>
         </div>
 
-        {/* Grid Pachete (restul codului e la fel, doar ne asigurăm că are z-10 relativ la fundal) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start relative z-10">
           {plans.map((plan, idx) => (
-            <div key={idx} className={`relative bg-white rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-2
+            <div key={idx} className={`relative bg-white rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full
               ${plan.isPopular ? 'md:-mt-8 z-20 shadow-2xl scale-105 border-2 border-yellow-400' : 'border border-gray-100'}`}>
               
               {plan.isPopular && (
@@ -105,8 +102,8 @@ const AdsPricing = () => {
                 <p className="text-sm font-bold uppercase text-gray-800/80 tracking-wide mt-2">{plan.subtitle}</p>
               </div>
 
-              <div className="p-8">
-                <ul className="space-y-4 mb-8">
+              <div className="p-8 flex flex-col flex-grow">
+                <ul className="space-y-4 mb-8 flex-grow">
                   {plan.features.map((feat, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-gray-600 font-medium">
                       <div className={`mt-0.5 p-0.5 rounded-full flex-shrink-0 
@@ -117,9 +114,15 @@ const AdsPricing = () => {
                     </li>
                   ))}
                 </ul>
-                <button className={`w-full py-4 rounded-xl font-bold text-white shadow-lg transition-transform active:scale-95 ${plan.button}`}>
+                
+                {/* --- AICI ESTE UPDATE-UL CĂTRE PAGINA DE CONTACT --- */}
+                <Link 
+                  href={`/contact?service=ads&plan=${plan.name}`}
+                  className={`block text-center w-full py-4 rounded-xl font-bold text-white shadow-lg transition-transform active:scale-95 ${plan.button}`}
+                >
                   Alege Pachetul
-                </button>
+                </Link>
+
               </div>
             </div>
           ))}

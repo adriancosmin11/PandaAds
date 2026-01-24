@@ -1,10 +1,10 @@
 import React from 'react';
 import { Check, Globe, ShoppingCart, Layout, Store, ArrowRight } from 'lucide-react';
-import Image from 'next/image'; // Import Image
+import Image from 'next/image';
+import Link from 'next/link'; // Importăm Link
 
 const WebPricing = () => {
   const plans = [
-    // ... (datele planurilor rămân neschimbate) ...
     {
       price: '499 €',
       title: 'Site de Prezentare',
@@ -48,22 +48,19 @@ const WebPricing = () => {
   ];
 
   return (
-    // Adăugat 'relative overflow-hidden'
     <section className="relative py-24 bg-white overflow-hidden">
 
-      {/* --- SECTION BACKGROUND (WAVES FAT) --- */}
+      {/* --- BACKGROUND WAVES (FAT) --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <Image 
           src="/assets/background-waves-fat.png" 
           alt="Background Pattern" 
           fill
-          className="object-cover opacity-100"
+          className="object-cover opacity-15"
         />
-         {/* Gradient mai puternic jos pentru tranziția spre footer-ul negru */}
          <div className="absolute inset-0 bg-gradient-to-b from-white via-white/50 to-gray-50"></div>
       </div>
       
-      {/* Content Wrapper cu z-10 */}
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         
         <div className="text-center mb-16">
@@ -73,7 +70,6 @@ const WebPricing = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {plans.map((plan, idx) => (
-            // Adăugat backdrop-blur la carduri pentru a se separa de fundal
             <div key={idx} className="group flex flex-col bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 overflow-hidden">
               
               <div className={`${plan.bgLight} p-8 text-center relative`}>
@@ -99,18 +95,25 @@ const WebPricing = () => {
                    ))}
                 </ul>
 
-                <button className={`w-full py-3 rounded-xl font-bold text-white shadow-md transition-colors ${plan.bgHeader} brightness-100 hover:brightness-110`}>
+                {/* --- UPDATE CĂTRE PAGINA DE CONTACT (WEB) --- */}
+                <Link 
+                  href={`/contact?service=web&plan=${encodeURIComponent(plan.title)}&price=${plan.price}`}
+                  className={`block text-center w-full py-3 rounded-xl font-bold text-white shadow-md transition-colors ${plan.bgHeader} brightness-100 hover:brightness-110`}
+                >
                   Alege Pachet
-                </button>
+                </Link>
               </div>
             </div>
           ))}
         </div>
         
         <div className="mt-16 text-center relative z-10">
-            <button className="bg-gray-900 hover:bg-black text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl flex items-center gap-2 mx-auto transition-all hover:scale-105">
+            <Link 
+                href="/contact"
+                className="bg-gray-900 hover:bg-black text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl inline-flex items-center gap-2 mx-auto transition-all hover:scale-105"
+            >
                 Cere o ofertă personalizată <ArrowRight size={20}/>
-            </button>
+            </Link>
             <p className="mt-4 text-sm text-gray-500">
                 *Prețurile sunt orientative și pot varia în funcție de complexitate. Hosting-ul și domeniul nu sunt incluse.
             </p>
