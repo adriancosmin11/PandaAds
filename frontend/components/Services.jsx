@@ -91,7 +91,7 @@ const ServiceCard = ({ icon, title, desc }) => (
             src="/assets/hero-bg.png" 
             alt="Background Pattern"
             fill
-            className="object-cover object-top-right opacity-15 group-hover:opacity-25 transition-opacity duration-300"
+            className="object-cover object-top-right opacity-100 group-hover:opacity-25 transition-opacity duration-300"
             sizes="(max-width: 768px) 100vw, 33vw"
         />
         <div className="absolute inset-0 bg-gradient-to-tr from-white via-transparent to-transparent"></div>
