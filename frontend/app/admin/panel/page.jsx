@@ -2,6 +2,8 @@ import React from 'react';
 import { PrismaClient } from '@prisma/client'; // Importăm Prisma
 import { Users, DollarSign, TrendingUp, Mail } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 // Aceasta devine o componentă ASYNC (Server Component)
 export default async function DashboardPage() {
   const prisma = new PrismaClient();

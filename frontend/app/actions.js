@@ -1,19 +1,17 @@
-'use server'; // <--- FOARTE IMPORTANT: Trebuie să fie prima linie!
+'use server';
 
 import { PrismaClient } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
 const prisma = new PrismaClient();
 
-// --- 1. Acțiune pentru Formularul de Contact ---
+// --- 1. Formular CONTACT ---
 export async function submitContactForm(data) {
   try {
-    // Validare simplă
     if (!data.client.email && !data.client.telefon) {
       return { success: false, message: 'Te rugăm să completezi emailul sau telefonul.' };
     }
 
-    // Salvăm în baza de date
     await prisma.lead.create({
       data: {
         nume: data.client.nume,
@@ -28,9 +26,7 @@ export async function submitContactForm(data) {
       }
     });
 
-    // Actualizăm admin panel-ul
     revalidatePath('/admin/panel');
-
     return { success: true, message: 'Cererea a fost înregistrată!' };
 
   } catch (error) {
@@ -39,10 +35,9 @@ export async function submitContactForm(data) {
   }
 }
 
-// --- 2. Acțiune pentru Formularul de Audit ---
+// --- 2. Formular AUDIT ---
 export async function submitAuditForm(data) {
   try {
-    // Convertim array-ul de platforme în string (pentru a-l salva în DB)
     const platformeString = Array.isArray(data.platforme) 
       ? data.platforme.join(', ') 
       : data.platforme;
@@ -64,6 +59,43 @@ export async function submitAuditForm(data) {
 
   } catch (error) {
     console.error('Eroare Audit:', error);
+    return { success: false, message: 'Eroare la salvare.' };
+  }
+}
+
+// --- 3. GET Content (Pentru Editor) ---
+export async function getSiteContent(sectionKey) {
+  try {
+    const data = await prisma.siteContent.findUnique({
+      where: { sectionKey: sectionKey }
+    });
+    
+    // Returnăm conținutul JSON sau null
+    return data ? data.content : null;
+  } catch (error) {
+    console.error('Eroare la citire content:', error);
+    return null;
+  }
+}
+
+// --- 4. UPDATE Content (Pentru Editor) ---
+export async function updateSiteContent(sectionKey, newContent) {
+  try {
+    await prisma.siteContent.upsert({
+      where: { sectionKey: sectionKey },
+      update: { content: newContent },
+      create: {
+        sectionKey: sectionKey,
+        content: newContent
+      }
+    });
+
+    // Revalidăm pagina principală pentru a vedea modificările instant
+    revalidatePath('/'); 
+    
+    return { success: true, message: 'Conținut actualizat cu succes!' };
+  } catch (error) {
+    console.error('Eroare la actualizare content:', error);
     return { success: false, message: 'Eroare la salvare.' };
   }
 }

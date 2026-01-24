@@ -2,45 +2,55 @@ import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import Services from '../components/Services';
 import CaseStudy from '../components/CaseStudy';
-import AdsPricing from '../components/AdsPricing.jsx';
+import AdsPricing from '../components/AdsPricing'; // Verifică să fie calea corectă, fără .jsx explicit uneori
 import WebPricing from '../components/WebPricing';
 import Footer from '../components/Footer';
+import { PrismaClient } from '@prisma/client';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'PandaAds | Agenție TikTok & Meta Ads',
   description: 'Creștem afacerea ta prin reclame plătite și strategii de conversie.',
 };
 
-export default function Home() {
+export default async function Home() {
+  const prisma = new PrismaClient();
+
+  // Citim datele pentru Hero, Servicii și Prețuri simultan
+  const [heroRecord, servicesRecord, adsRecord] = await Promise.all([
+    prisma.siteContent.findUnique({ where: { sectionKey: 'hero_section' } }),
+    prisma.siteContent.findUnique({ where: { sectionKey: 'services_section' } }),
+    prisma.siteContent.findUnique({ where: { sectionKey: 'ads_pricing' } }),
+  ]);
+
+  // Fallback la obiect gol dacă nu există date
+  const heroData = heroRecord?.content || {};
+  const servicesData = servicesRecord?.content || {};
+  const adsData = adsRecord?.content || {};
+
   return (
     <main className="min-h-screen bg-white font-sans text-gray-800 scroll-smooth">
-      {/* 1. Bara de navigare */}
       <Navbar />
       
-      {/* 2. Hero Section (Mascota + Titlu) */}
-      <HeroSection />
+      <HeroSection data={heroData} />
       
-      {/* 3. Servicii (Cele 3 carduri) */}
       <div id="servicii">
-        <Services />
+        <Services data={servicesData} />
       </div>
       
-      {/* 4. Studii de caz (Grafic + Testimonial) */}
       <div id="studii">
         <CaseStudy />
       </div>
       
-      {/* 5. Prețuri Ads (Scuturile Metalice) */}
       <div id="preturi">
-        <AdsPricing />
+        <AdsPricing data={adsData} />
       </div>
 
-      {/* 6. Prețuri Web (Coloanele Colorate) */}
       <div id="web-design">
         <WebPricing />
       </div>
 
-      {/* 7. Footer */}
       <Footer />
     </main>
   );
