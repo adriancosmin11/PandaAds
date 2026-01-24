@@ -80,7 +80,7 @@ const HeroSection = ({ data }) => {
         </div>
 
         {/* --- RIGHT: PANDA & FLOATING ICONS (Rămân neschimbate vizual) --- */}
-        <div className="relative h-[500px] lg:h-[650px] flex items-center justify-center perspective-1000">
+        <div className="relative h-[500px] lg:h-[650px] flex items-center justify-center perspective-1000 hidden md:flex">
             {/* Glow Effect */}
             <div className="absolute w-[400px] h-[400px] bg-gradient-to-tr from-emerald-200 to-teal-100 rounded-full blur-3xl opacity-60 animate-pulse"></div>
 
