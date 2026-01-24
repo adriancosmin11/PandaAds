@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, BookOpen } from 'lucide-react'; // Importăm BookOpen
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -27,7 +27,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Menu */}
+          {/* Desktop Menu - Păstrat text-lg conform cerinței */}
           <div className="hidden md:flex items-center space-x-8 text-lg font-medium text-gray-600">
             <Link href="/" className="hover:text-emerald-600 transition-colors">Acasă</Link>
             <Link href="#servicii" className="hover:text-emerald-600 transition-colors">Servicii</Link>
@@ -35,8 +35,17 @@ const Navbar = () => {
             <Link href="#preturi" className="hover:text-emerald-600 transition-colors">Prețuri</Link>
           </div>
 
-          {/* CTA Button - DESKTOP (Link către /audit) */}
-          <div className="hidden md:block">
+          {/* --- CTA BUTTONS AREA (DESKTOP) --- */}
+          <div className="hidden md:flex items-center gap-3">
+            
+            {/* Buton EBOOK (Secundar) */}
+            <Link href="/ebook">
+                <button className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 px-5 py-2.5 rounded-full font-bold text-sm transition-all flex items-center gap-2">
+                   <BookOpen size={16}/> Ebook
+                </button>
+            </Link>
+
+            {/* Buton AUDIT (Principal) */}
             <Link href="/audit">
               <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-emerald-200 hover:-translate-y-0.5">
                 Audit Gratuit
@@ -62,10 +71,17 @@ const Navbar = () => {
             <Link href="#studii" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-md">Studii de caz</Link>
             <Link href="#preturi" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-md">Prețuri</Link>
             
-            {/* CTA Button - MOBILE (Link către /audit) */}
-            <div className="pt-4">
+            <div className="pt-4 space-y-3">
+              {/* Mobile Ebook */}
+              <Link href="/ebook" onClick={() => setIsOpen(false)}>
+                <button className="w-full bg-blue-50 text-blue-700 border border-blue-200 px-4 py-3 rounded-xl font-bold flex items-center justify-center gap-2">
+                   <BookOpen size={18}/> Descarcă Ebook
+                </button>
+              </Link>
+
+              {/* Mobile Audit */}
               <Link href="/audit" onClick={() => setIsOpen(false)}>
-                <button className="w-full bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold">
+                <button className="w-full bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg shadow-emerald-200">
                   Cere Audit Gratuit
                 </button>
               </Link>
