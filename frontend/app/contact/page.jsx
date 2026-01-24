@@ -4,7 +4,8 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import { CheckCircle, ArrowRight, Package, Globe, Megaphone, MessageSquare } from 'lucide-react';
+import { CheckCircle, ArrowRight, Globe, Megaphone, MessageSquare, Loader2 } from 'lucide-react';
+import { submitContactForm } from '../actions'; // <--- IMPORTĂM FUNCȚIA DE BACKEND
 
 // Datele pachetelor
 const ADS_PACKAGES = [
@@ -22,6 +23,7 @@ const WEB_PACKAGES = [
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
+  const [isSubmitting, setIsSubmitting] = useState(false); // State pentru loading
   
   const [formData, setFormData] = useState({
     nume: '',
@@ -50,18 +52,36 @@ function CheckoutContent() {
     }
   }, [searchParams]);
 
-  const handleSubmit = (e) => {
+  // --- LOGICA DE TRIMITERE CĂTRE BAZA DE DATE ---
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true); // Pornim loading
     
-    // Trimitem datele (chiar daca pachetele sunt 'Niciunul')
+    // Pregătim datele pentru server action
     const finalData = {
       client: formData,
       pachetAds: selectedAds || 'Niciunul (Discuție Generală)',
       pachetWeb: selectedWeb || 'Niciunul (Discuție Generală)'
     };
 
-    console.log('Date trimise:', finalData);
-    alert('Mesajul tău a fost trimis! Te vom contacta în curând.');
+    try {
+      // Apelăm funcția din actions.js
+      const result = await submitContactForm(finalData);
+
+      if (result.success) {
+        alert('✅ Mesajul tău a fost trimis cu succes! Te vom contacta în curând.');
+        // Resetăm formularul
+        setFormData({ nume: '', prenume: '', email: '', telefon: '', firma: '', mesaj: '' });
+        setSelectedAds('');
+        setSelectedWeb('');
+      } else {
+        alert('❌ Eroare: ' + result.message);
+      }
+    } catch (error) {
+      alert('A apărut o eroare neașteptată. Te rugăm să încerci din nou.');
+    } finally {
+      setIsSubmitting(false); // Oprim loading indiferent de rezultat
+    }
   };
 
   const handleChange = (e) => {
@@ -91,27 +111,27 @@ function CheckoutContent() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Nume</label>
-                  <input required name="nume" onChange={handleChange} type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="Popescu" />
+                  <input required name="nume" value={formData.nume} onChange={handleChange} type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="Popescu" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Prenume</label>
-                  <input required name="prenume" onChange={handleChange} type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="Andrei" />
+                  <input required name="prenume" value={formData.prenume} onChange={handleChange} type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="Andrei" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                  <input required name="email" onChange={handleChange} type="email" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="contact@email.ro" />
+                  <input required name="email" value={formData.email} onChange={handleChange} type="email" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="contact@email.ro" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
-                  <input required name="telefon" onChange={handleChange} type="tel" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="07xx xxx xxx" />
+                  <input required name="telefon" value={formData.telefon} onChange={handleChange} type="tel" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="07xx xxx xxx" />
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Numele Firmei (Opțional)</label>
-                  <input name="firma" onChange={handleChange} type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="Firma Ta SRL" />
+                  <input name="firma" value={formData.firma} onChange={handleChange} type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="Firma Ta SRL" />
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Mesaj / Detalii</label>
-                  <textarea name="mesaj" onChange={handleChange} rows="4" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="Salut! Sunt interesat de o colaborare..."></textarea>
+                  <textarea name="mesaj" value={formData.mesaj} onChange={handleChange} rows="4" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" placeholder="Salut! Sunt interesat de o colaborare..."></textarea>
                 </div>
               </div>
             </div>
@@ -182,19 +202,27 @@ function CheckoutContent() {
                     </div>
                   </div>
               ) : (
-                  // Mesaj când nu e selectat nimic (General Inquiry)
                   <div className="bg-blue-50 text-blue-800 text-xs p-3 rounded-lg mb-6 border border-blue-100 flex gap-2 items-start">
                       <MessageSquare size={16} className="shrink-0 mt-0.5"/>
                       <span>Nu ai selectat un pachet specific. Vei trimite un <b>mesaj general</b>.</span>
                   </div>
               )}
 
-              {/* Butonul nu mai are DISABLED */}
+              {/* Buton Submit cu Loading */}
               <button 
                 type="submit" 
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-xl font-bold shadow-lg shadow-emerald-200 transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
+                disabled={isSubmitting}
+                className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 disabled:cursor-not-allowed text-white py-4 rounded-xl font-bold shadow-lg shadow-emerald-200 transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
               >
-                Trimite Mesajul <ArrowRight size={20}/>
+                {isSubmitting ? (
+                    <>
+                        <Loader2 className="animate-spin" size={20}/> Se trimite...
+                    </>
+                ) : (
+                    <>
+                        Trimite Mesajul <ArrowRight size={20}/>
+                    </>
+                )}
               </button>
               
             </div>
