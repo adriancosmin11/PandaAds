@@ -2,6 +2,8 @@
 
 import { PrismaClient } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers'; 
+import { redirect } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
@@ -69,8 +71,6 @@ export async function getSiteContent(sectionKey) {
     const data = await prisma.siteContent.findUnique({
       where: { sectionKey: sectionKey }
     });
-    
-    // Returnăm conținutul JSON sau null
     return data ? data.content : null;
   } catch (error) {
     console.error('Eroare la citire content:', error);
@@ -90,12 +90,62 @@ export async function updateSiteContent(sectionKey, newContent) {
       }
     });
 
-    // Revalidăm pagina principală pentru a vedea modificările instant
     revalidatePath('/'); 
-    
     return { success: true, message: 'Conținut actualizat cu succes!' };
   } catch (error) {
     console.error('Eroare la actualizare content:', error);
     return { success: false, message: 'Eroare la salvare.' };
+  }
+}
+
+// --- 5. LOGIN ADMIN (Cu AWAIT cookies) ---
+export async function loginAdmin(email, password, rememberMe) {
+  if (email === 'admin@pandaads.ro' && password === 'admin') {
+    
+    const expires = rememberMe 
+      ? Date.now() + 30 * 24 * 60 * 60 * 1000 
+      : Date.now() + 24 * 60 * 60 * 1000;
+
+    // --- MODIFICAREA ESTE AICI: await cookies() ---
+    const cookieStore = await cookies();
+
+    cookieStore.set('admin_session', 'true', {
+      expires: expires,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+    });
+
+    return { success: true };
+  } else {
+    return { success: false, message: 'Email sau parolă greșită' };
+  }
+}
+
+// --- 6. LOGOUT ADMIN (Cu AWAIT cookies) ---
+export async function logoutAdmin() {
+  // --- ȘI AICI: await cookies() ---
+  const cookieStore = await cookies();
+  cookieStore.delete('admin_session');
+  
+  redirect('/admin/login');
+}
+
+// --- 7. SAVE COOKIE CONSENT ---
+export async function saveCookieConsent(accepted) {
+  try {
+    const visitorId = 'vis_' + Date.now().toString(36);
+
+    await prisma.cookieLog.create({
+      data: {
+        visitorId: visitorId,
+        accepted: accepted
+      }
+    });
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Eroare salvare cookie:', error);
+    return { success: false };
   }
 }

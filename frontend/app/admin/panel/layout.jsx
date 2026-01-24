@@ -2,73 +2,73 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation'; // Importăm useRouter
-import { LayoutDashboard, FileText, LogOut, Settings } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { LayoutDashboard, Edit, LogOut, FileText } from 'lucide-react';
+import { logoutAdmin } from '../../actions'; // <--- 1. Importăm acțiunea de logout
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
-  const router = useRouter(); // Hook pentru redirect
 
-  // --- ACTUALIZARE CĂI (PATHS) ---
-  const menuItems = [
-    { name: 'Insights & Leads', icon: <LayoutDashboard size={20} />, path: '/admin/panel' },
-    { name: 'Editor Website', icon: <FileText size={20} />, path: '/admin/panel/editor' },
-    { name: 'Setări Cont', icon: <Settings size={20} />, path: '/admin/panel/settings' },
-  ];
+  // --- 2. Funcția care te deloghează ---
+  const handleLogout = async () => {
+    await logoutAdmin(); 
+    // Nu mai e nevoie de router.push, serverul face redirect automat la /admin/login
+  };
 
-  const handleLogout = () => {
-      // Ștergem sesiunea (simulat) și trimitem la login
-      router.push('/admin/login');
-  }
+  // Helper pentru a evidenția butonul activ
+  const isActive = (path) => pathname === path ? 'bg-emerald-50 text-emerald-600' : 'text-gray-600 hover:bg-gray-50';
 
   return (
-    <div className="flex h-screen bg-gray-100 font-sans text-gray-800">
+    <div className="flex min-h-screen bg-gray-50 font-sans">
       
-      {/* SIDEBAR STÂNGA */}
-      <aside className="w-64 bg-gray-900 text-white flex flex-col shadow-xl z-20">
-        <div className="h-20 flex items-center justify-center border-b border-gray-800">
-            <span className="text-xl font-bold tracking-wider">
-                PANDA<span className="text-emerald-500">ADMIN</span>
-            </span>
+      {/* --- SIDEBAR (Meniul din Stânga) --- */}
+      <aside className="w-64 bg-white border-r border-gray-200 fixed h-full flex flex-col z-20">
+        
+        {/* Logo */}
+        <div className="p-6 border-b border-gray-100">
+          <h2 className="text-2xl font-extrabold text-gray-900 flex items-center gap-2">
+            Panda<span className="text-emerald-600">Admin</span>
+          </h2>
         </div>
 
-        <nav className="flex-grow p-4 space-y-2">
-            {menuItems.map((item) => {
-                const isActive = pathname === item.path;
-                return (
-                    <Link 
-                        key={item.path} 
-                        href={item.path}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                            isActive 
-                            ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/20' 
-                            : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                        }`}
-                    >
-                        {item.icon}
-                        <span className="font-medium">{item.name}</span>
-                    </Link>
-                );
-            })}
+        {/* Meniu Navigare */}
+        <nav className="flex-1 p-4 space-y-2">
+          
+          <Link href="/admin/panel" className={`flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${isActive('/admin/panel')}`}>
+            <LayoutDashboard size={20} />
+            Dashboard
+          </Link>
+
+          <Link href="/admin/panel/editor" className={`flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${isActive('/admin/panel/editor')}`}>
+            <Edit size={20} />
+            Editor Website
+          </Link>
+
+          {/* Poți adăuga linkuri extra aici dacă vrei */}
+          {/* <Link href="/admin/panel/ebooks" className={`flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${isActive('/admin/panel/ebooks')}`}>
+            <FileText size={20} />
+            Ebooks
+          </Link> 
+          */}
         </nav>
 
-        <div className="p-4 border-t border-gray-800">
-            {/* Buton Logout cu funcție */}
-            <button 
-                onClick={handleLogout}
-                className="flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-900/20 hover:text-red-300 w-full rounded-xl transition-all"
-            >
-                <LogOut size={20} />
-                <span>Deconectare</span>
-            </button>
+        {/* Buton Logout (Jos) */}
+        <div className="p-4 border-t border-gray-100">
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-red-600 hover:bg-red-50 transition-all text-left"
+          >
+            <LogOut size={20} />
+            Deconectare
+          </button>
         </div>
       </aside>
 
-      {/* ZONA DE CONȚINUT */}
-      <main className="flex-grow overflow-y-auto p-8 relative">
+      {/* --- CONȚINUTUL PRINCIPAL (Dreapta) --- */}
+      <main className="flex-1 ml-64 p-8">
         {children}
       </main>
-
+      
     </div>
   );
 }

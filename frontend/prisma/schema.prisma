@@ -60,3 +60,11 @@ model Admin {
   email    String @unique
   password String // Aici vom salva parola (ideal criptată, momentan o punem simplă)
 }
+
+// 6. Logăm deciziile utilizatorilor legate de Cookies
+model CookieLog {
+  id        Int      @id @default(autoincrement())
+  visitorId String   // Un ID unic generat pentru vizitator
+  accepted  Boolean  // true = a acceptat, false = a refuzat
+  createdAt DateTime @default(now())
+}
