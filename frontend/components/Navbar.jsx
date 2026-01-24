@@ -29,10 +29,12 @@ const Navbar = () => {
 
           {/* Desktop Menu - Păstrat text-lg conform cerinței */}
           <div className="hidden md:flex items-center space-x-8 text-lg font-medium text-gray-600">
+            
             <Link href="/" className="hover:text-emerald-600 transition-colors">Acasă</Link>
             <Link href="#servicii" className="hover:text-emerald-600 transition-colors">Servicii</Link>
             <Link href="#studii" className="hover:text-emerald-600 transition-colors">Studii de caz</Link>
             <Link href="#preturi" className="hover:text-emerald-600 transition-colors">Prețuri</Link>
+            <Link href="/blog" className="hover:text-emerald-600 transition-colors">Blog</Link>
           </div>
 
           {/* --- CTA BUTTONS AREA (DESKTOP) --- */}
@@ -70,6 +72,7 @@ const Navbar = () => {
             <Link href="#servicii" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-md">Servicii</Link>
             <Link href="#studii" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-md">Studii de caz</Link>
             <Link href="#preturi" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-md">Prețuri</Link>
+            <Link href="/blog" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-md">Blog</Link>
             
             <div className="pt-4 space-y-3">
               {/* Mobile Ebook */}

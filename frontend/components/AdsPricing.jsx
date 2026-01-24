@@ -145,4 +145,4 @@ const AdsPricing = () => {
   );
 };
 
-export default AdsPricing;
+export default AdsPricing; 

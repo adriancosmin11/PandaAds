@@ -56,7 +56,7 @@ const WebPricing = () => {
           src="/assets/background-waves-fat.png" 
           alt="Background Pattern" 
           fill
-          className="object-cover opacity-15"
+          className="object-cover opacity-100"
         />
          <div className="absolute inset-0 bg-gradient-to-b from-white via-white/50 to-gray-50"></div>
       </div>
