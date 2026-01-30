@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import CookieBanner from "../components/CookieBanner";
+import FacebookPixel from "../components/FacebookPixel";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ro">
       <body className={inter.className}>
+        <FacebookPixel />
         {children}
         <CookieBanner />
       </body>
