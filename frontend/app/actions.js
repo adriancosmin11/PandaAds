@@ -89,8 +89,13 @@ export async function updateSiteContent(sectionKey, newContent) {
         content: newContent
       }
     });
-
-    revalidatePath('/'); 
+    revalidatePath('/');
+    // Ensure the blog listing is revalidated when blog_posts change
+    try {
+      revalidatePath('/blog');
+    } catch (e) {
+      // ignore if revalidation not necessary or fails in some environments
+    }
     return { success: true, message: 'Conținut actualizat cu succes!' };
   } catch (error) {
     console.error('Eroare la actualizare content:', error);
@@ -108,6 +113,12 @@ export async function loginAdmin(email, password, rememberMe) {
 
     // --- MODIFICAREA ESTE AICI: await cookies() ---
     const cookieStore = await cookies();
+
+    // Debug log: indicate we're setting the cookie
+    try {
+      // eslint-disable-next-line no-console
+      console.log('[loginAdmin] setting admin_session cookie, expires=', new Date(expires).toISOString());
+    } catch (e) {}
 
     cookieStore.set('admin_session', 'true', {
       expires: expires,

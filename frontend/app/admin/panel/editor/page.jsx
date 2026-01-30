@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Save, Layout, Loader2, AlignLeft, DollarSign, Mail, BookOpen } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Save, Layout, Loader2, AlignLeft, DollarSign, Mail, BookOpen, Upload, X } from 'lucide-react';
 import { getSiteContent, updateSiteContent } from '../../../actions';
 
 // Lista secțiunilor pe care le putem edita
@@ -11,20 +11,30 @@ const SECTIONS = [
   { id: 'ads_pricing', label: 'Home: Prețuri Ads', icon: DollarSign },
   { id: 'contact_page', label: 'Pagina: Contact', icon: Mail },
   { id: 'ebook_page', label: 'Pagina: Ebook', icon: BookOpen },
+  { id: 'blog_posts', label: 'Blog: Posts', icon: BookOpen },
 ];
 
 export default function EditorPage() {
   const [currentSection, setCurrentSection] = useState('hero_section');
   const [formData, setFormData] = useState({});
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [editingPost, setEditingPost] = useState(null);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const fileInputRef = useRef(null);
+  const [uploading, setUploading] = useState(false);
 
   // Încărcăm datele de fiecare dată când schimbăm secțiunea din dropdown
   useEffect(() => {
     setLoading(true);
     async function load() {
       const data = await getSiteContent(currentSection);
-      setFormData(data || {}); // Dacă nu există date, folosim un obiect gol
+      if (currentSection === 'blog_posts') {
+        setBlogPosts(Array.isArray(data) ? data : []);
+        setFormData({});
+      } else {
+        setFormData(data || {}); // Dacă nu există date, folosim un obiect gol
+      }
       setLoading(false);
     }
     load();
@@ -32,7 +42,12 @@ export default function EditorPage() {
 
   const handleSave = async () => {
     setSaving(true);
-    const result = await updateSiteContent(currentSection, formData);
+    let result;
+    if (currentSection === 'blog_posts') {
+      result = await updateSiteContent(currentSection, blogPosts);
+    } else {
+      result = await updateSiteContent(currentSection, formData);
+    }
     setSaving(false);
     if (result.success) alert('✅ Salvat cu succes!');
     else alert('❌ Eroare: ' + result.message);
@@ -40,6 +55,103 @@ export default function EditorPage() {
 
   const handleChange = (key, value) => {
     setFormData(prev => ({ ...prev, [key]: value }));
+  };
+
+  // Upload imagine pentru blog
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setEditingPost(prev => ({ ...prev, image: data.imagePath }));
+        alert('✅ Imagine încărcată cu succes!');
+      } else {
+        alert('❌ Eroare: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('❌ Eroare la încărcarea imaginii.');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  // Blog posts helpers (client-side state, saved via updateSiteContent)
+  const addOrUpdatePost = async (post) => {
+    // Basic validation
+    if (!post.title || !post.slug) {
+      alert('Titlu și slug sunt obligatorii.');
+      return;
+    }
+
+    const newPosts = (() => {
+      // compute new posts array locally first
+      const prev = blogPosts || [];
+      const duplicate = prev.some((p) => p.slug === post.slug && p.id !== post.id);
+      if (duplicate) {
+        alert('Slug-ul trebuie să fie unic. Există deja un articol cu acest slug.');
+        return prev;
+      }
+
+      if (!post.id) {
+        post.id = Date.now();
+        return [post, ...prev];
+      }
+      return prev.map(p => (p.id === post.id ? post : p));
+    })();
+
+    // update UI immediately
+    setBlogPosts(newPosts);
+    setEditingPost(null);
+
+    // persist to DB via server action
+    try {
+      setSaving(true);
+      const res = await updateSiteContent('blog_posts', newPosts);
+      setSaving(false);
+      if (!res.success) {
+        alert('Eroare la salvarea articolului: ' + res.message);
+      } else {
+        alert('Articol salvat.');
+      }
+    } catch (e) {
+      setSaving(false);
+      console.error(e);
+      alert('Eroare la salvare. Verifică consola.');
+    }
+  };
+
+  const editPost = (post) => {
+    setEditingPost(post);
+  };
+
+  const deletePost = async (id) => {
+    if (!confirm('Ștergi acest articol?')) return;
+    const newPosts = (blogPosts || []).filter(p => p.id !== id);
+    setBlogPosts(newPosts);
+
+    try {
+      setSaving(true);
+      const res = await updateSiteContent('blog_posts', newPosts);
+      setSaving(false);
+      if (!res.success) alert('Eroare la ștergere: ' + res.message);
+    } catch (e) {
+      setSaving(false);
+      console.error(e);
+      alert('Eroare la ștergere. Verifică consola.');
+    }
   };
 
   // Randarea condițională a câmpurilor în funcție de secțiune
@@ -132,6 +244,101 @@ export default function EditorPage() {
                 </div>
             );
     
+      case 'blog_posts':
+        return (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold">Articole Blog</h3>
+              <button onClick={() => setEditingPost({})} className="px-3 py-2 bg-emerald-600 text-white rounded-lg">Adaugă articol</button>
+            </div>
+
+            {/* List */}
+            <div className="grid gap-4">
+              {blogPosts.length === 0 && (
+                <div className="p-6 bg-gray-50 rounded-lg text-gray-500">Nu există articole.</div>
+              )}
+
+              {blogPosts.map((post) => (
+                <div key={post.id} className="p-4 bg-white rounded-lg border border-gray-100 flex items-center justify-between">
+                  <div>
+                    <div className="font-bold text-gray-900">{post.title}</div>
+                    <div className="text-sm text-gray-500">/{post.slug} • {post.category || '-'} • {post.author || '-'}</div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={() => editPost(post)} className="px-3 py-1 bg-blue-50 text-blue-700 rounded">Edit</button>
+                    <button onClick={() => deletePost(post.id)} className="px-3 py-1 bg-red-50 text-red-700 rounded">Delete</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Editor modal-ish area */}
+            {editingPost !== null && (
+              <div className="p-4 bg-white rounded-lg border border-gray-100">
+                <h4 className="font-bold mb-3">{editingPost.id ? 'Editează articol' : 'Adaugă articol'}</h4>
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <Input label="Titlu" name="title" val={editingPost.title} onChange={(k, v) => setEditingPost(prev => ({ ...prev, title: v }))} />
+                  <Input label="Slug" name="slug" val={editingPost.slug} onChange={(k, v) => setEditingPost(prev => ({ ...prev, slug: v }))} />
+                </div>
+                <div className="grid grid-cols-3 gap-4 mb-4">
+                  <Input label="Categorie" name="category" val={editingPost.category} onChange={(k, v) => setEditingPost(prev => ({ ...prev, category: v }))} />
+                  <Input label="Autor" name="author" val={editingPost.author} onChange={(k, v) => setEditingPost(prev => ({ ...prev, author: v }))} />
+                  <Input label="Data" name="date" val={editingPost.date} onChange={(k, v) => setEditingPost(prev => ({ ...prev, date: v }))} />
+                </div>
+                
+                {/* Image Upload Section */}
+                <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Imagine Articol</label>
+                  <div className="flex gap-2 items-end">
+                    <div className="flex-1">
+                      <input 
+                        ref={fileInputRef}
+                        type="file" 
+                        accept="image/*" 
+                        onChange={handleImageUpload}
+                        disabled={uploading}
+                        className="hidden"
+                      />
+                      <button 
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploading}
+                        className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                      >
+                        {uploading ? <Loader2 className="animate-spin" size={18} /> : <Upload size={18} />}
+                        {uploading ? 'Se încarcă...' : 'Alege imagine din computer'}
+                      </button>
+                    </div>
+                    {editingPost.image && (
+                      <button 
+                        type="button"
+                        onClick={() => setEditingPost(prev => ({ ...prev, image: '' }))}
+                        className="px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100"
+                      >
+                        <X size={18} />
+                      </button>
+                    )}
+                  </div>
+                  {editingPost.image && (
+                    <div className="mt-2">
+                      <p className="text-xs text-gray-600 mb-1">Path: <span className="font-mono text-xs text-emerald-600">{editingPost.image}</span></p>
+                      <div className="relative w-40 h-24 bg-gray-200 rounded-lg overflow-hidden">
+                        <img src={editingPost.image} alt="preview" className="w-full h-full object-cover" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <TextArea label="Excerpt (Text scurt)" name="excerpt" val={editingPost.excerpt} onChange={(k, v) => setEditingPost(prev => ({ ...prev, excerpt: v }))} />
+                <TextAreaLarge label="Conținut Articol (Text complet cu HTML)" name="body" val={editingPost.body} onChange={(k, v) => setEditingPost(prev => ({ ...prev, body: v }))} />
+                <div className="flex gap-2 mt-3">
+                  <button onClick={() => addOrUpdatePost({ ...editingPost, date: editingPost.date || new Date().toLocaleDateString('en-US') })} className="px-4 py-2 bg-emerald-600 text-white rounded">Salvează articol</button>
+                  <button onClick={() => setEditingPost(null)} className="px-4 py-2 bg-gray-50 rounded">Anulează</button>
+                </div>
+              </div>
+            )}
+          </div>
+        );
       default:
         return <div>Selectează o secțiune validă.</div>;
     }
@@ -204,6 +411,19 @@ const TextArea = ({ label, name, val, onChange }) => (
             className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all font-medium text-gray-800"
             value={val || ''}
             onChange={(e) => onChange(name, e.target.value)}
+        />
+    </div>
+);
+
+const TextAreaLarge = ({ label, name, val, onChange }) => (
+    <div>
+        <label className="block text-xs font-bold uppercase text-gray-500 mb-1 ml-1">{label}</label>
+        <textarea 
+            rows="10"
+            className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all font-medium text-gray-800 font-mono text-sm"
+            value={val || ''}
+            onChange={(e) => onChange(name, e.target.value)}
+            placeholder="Poți folosi HTML pentru formatare: <h2>Titlu</h2>, <p>Paragraf</p>, <strong>Bold</strong>, etc."
         />
     </div>
 );

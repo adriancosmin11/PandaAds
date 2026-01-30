@@ -1,14 +1,26 @@
-'use client';
-
 import React from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { User, ArrowRight } from 'lucide-react';
-import BLOG_POSTS from '../../lib/posts';
+import { PrismaClient } from '@prisma/client';
 
-export default function BlogPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function BlogPage() {
+  const prisma = new PrismaClient();
+  let posts = [];
+
+  try {
+    const record = await prisma.siteContent.findUnique({ where: { sectionKey: 'blog_posts' } });
+    if (record && Array.isArray(record.content)) {
+      posts = record.content;
+    }
+  } catch (e) {
+    console.error('Failed to load blog posts from DB', e);
+  }
+
   return (
     <div className="min-h-screen bg-white font-sans text-gray-800 flex flex-col">
       <Navbar />
@@ -40,13 +52,13 @@ export default function BlogPage() {
 
           {/* GRID LAYOUT (Structura cerută) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
-              {BLOG_POSTS.map((post) => (
+              {posts.map((post) => (
                   <article key={post.id} className="group cursor-pointer flex flex-col h-full bg-transparent">
                       
                       {/* 1. Imagine Mare Sus (Aspect Ratio fix) */}
                       <Link href={`/blog/${post.slug}`} className="block overflow-hidden rounded-2xl mb-6 relative aspect-[16/10] w-full shadow-sm border border-gray-100 group-hover:shadow-md transition-all">
                           <Image 
-                              src={post.image} 
+                              src={post.image || '/assets/hero-bg.png'} 
                               alt={post.title}
                               fill
                               className="object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
@@ -82,7 +94,7 @@ export default function BlogPage() {
                                   <div className="flex items-center gap-2 text-xs text-gray-500">
                                       <span>{post.date}</span>
                                       <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                      <span>{post.readTime} read</span>
+                                      <span>{post.readTime || ''} read</span>
                                   </div>
                               </div>
                           </div>

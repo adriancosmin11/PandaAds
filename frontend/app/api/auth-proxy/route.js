@@ -6,6 +6,14 @@ export async function GET(request) {
   const hasSession = cookieStore.has('admin_session');
   const path = new URL(request.url).searchParams.get('path') || '/admin';
 
+  // Debug logging to help trace redirect behavior during development
+  try {
+    // eslint-disable-next-line no-console
+    console.log('[auth-proxy] path=', path, 'hasSession=', hasSession);
+  } catch (e) {
+    // ignore logging failures
+  }
+
   // SCENARIUL A: E logat și încearcă să intre la Login -> Îl trimitem la Panel
   if (hasSession && path.startsWith('/admin/login')) {
     return NextResponse.redirect(new URL('/admin/panel', request.url));

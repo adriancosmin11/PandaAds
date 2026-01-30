@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import BLOG_POSTS from "../../lib/posts";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 // Resolve SITE_URL from multiple env vars. Support NEXT_PUBLIC_BASE_URL,
 // NEXT_SITEMAP_URL (full sitemap URL) and the accidental NEXT_PSITEMAP_URL typo.
@@ -23,8 +25,15 @@ function buildUrlEntry(url) {
 export async function GET() {
   const staticXml = staticRoutes.map((p) => buildUrlEntry(`${SITE_URL}${p}`)).join("\n");
 
-  // Add dynamic blog posts
-  const blogXml = BLOG_POSTS.map((post) => buildUrlEntry(`${SITE_URL}/blog/${post.slug}`)).join("\n");
+  // Load blog posts from DB only (no hardcoded fallback)
+  let posts = [];
+  try {
+    const record = await prisma.siteContent.findUnique({ where: { sectionKey: 'blog_posts' } });
+    if (record && Array.isArray(record.content)) posts = record.content;
+  } catch (e) {
+    console.error('Sitemap: failed to load blog posts from DB', e);
+  }
+  const blogXml = posts.map((post) => buildUrlEntry(`${SITE_URL}/blog/${post.slug}`)).join("\n");
 
   const pagesXml = [staticXml, blogXml].filter(Boolean).join("\n");
 
