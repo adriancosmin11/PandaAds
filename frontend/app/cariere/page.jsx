@@ -17,15 +17,18 @@ export default function CareersPage() {
       <Navbar />
 
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-gray-50">
+      
+      <section className="relative pt-12 pb-16 lg:pt-40 lg:pb-28 overflow-hidden bg-gray-50">
          {/* Background Waves */}
          <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-            <Image
-                src="/assets/background-waves-fat.png" 
-                alt="Waves Pattern"
-                fill
-                className="object-cover"
-            />
+            <div className="relative w-full h-full">
+                <Image
+                    src="/assets/background-waves-fat.png" 
+                    alt="Waves Pattern"
+                    fill
+                    className="object-cover"
+                />
+            </div>
          </div>
 
          <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
@@ -45,7 +48,7 @@ export default function CareersPage() {
       <section className="py-16 bg-white">
         <div className="max-w-5xl mx-auto px-6">
             
-            {/* JOB CARD - Inspirat din afișul tău */}
+            {/* JOB CARD */}
             <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex flex-col lg:flex-row hover:shadow-2xl transition-shadow duration-300">
                 
                 {/* Partea Stângă (Vizual + Titlu) */}
