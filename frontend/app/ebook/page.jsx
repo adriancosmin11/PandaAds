@@ -4,39 +4,65 @@ import React, { useState } from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Image from 'next/image';
-import { BookOpen, Check, Download, Star } from 'lucide-react';
+import { BookOpen, Check, Download, Star, Loader2, CheckCircle } from 'lucide-react';
+import { submitEbookForm } from '../actions'; // Importăm funcția de backend
 
 export default function EbookPage() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const [formData, setFormData] = useState({
     nume: '',
     email: ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Download Ebook:', formData);
-    // Aici ai putea face redirect către PDF sau să afișezi un link
-    alert(`Felicitări, ${formData.nume}! Ebook-ul a fost trimis pe emailul ${formData.email}.`);
+    setIsLoading(true);
+
+    try {
+      // Apelăm funcția din actions.js
+      const result = await submitEbookForm({
+        nume: formData.nume,
+        email: formData.email,
+        prenume: '', // Trimitem gol dacă nu avem câmp separat
+        telefon: ''  // Trimitem gol dacă nu avem câmp
+      });
+
+      if (result.success) {
+        setIsSuccess(true);
+        setFormData({ nume: '', email: '' });
+      } else {
+        alert('Eroare: ' + result.message);
+      }
+    } catch (error) {
+      alert('A apărut o eroare de conexiune. Te rugăm să încerci din nou.');
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-white font-sans text-gray-800 flex flex-col">
       <Navbar />
 
-      <main className="flex-grow relative py-8 lg:py-12 overflow-hidden">
+      <main className="flex-grow relative py-8 lg:py-12 overflow-hidden flex items-center">
         
         {/* --- BACKGROUND WAVES --- */}
         <div className="absolute inset-0 z-0 pointer-events-none">
-            <Image 
-                src="/assets/background-waves.png" 
-                alt="Background Pattern" 
-                fill
-                className="object-cover opacity-20"
-            />
+            <div className="relative w-full h-full">
+                <Image 
+                    src="/assets/background-waves-fat.png" // Asigură-te că numele fișierului e corect
+                    alt="Background Pattern" 
+                    fill
+                    className="object-cover opacity-20"
+                />
+            </div>
             <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-emerald-50/50"></div>
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
           
           {/* --- LEFT SIDE: COPY & MOCKUP --- */}
           <div className="space-y-8 order-2 lg:order-1">
@@ -81,41 +107,72 @@ export default function EbookPage() {
              </div>
 
              {/* Formular Card */}
-             <div className="w-full max-w-md bg-white p-8 rounded-3xl shadow-2xl border border-gray-100 relative">
-                 <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-yellow-400 text-yellow-900 px-4 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1">
-                    <Star size={12} fill="currentColor"/> 100% GRATUIT
-                 </div>
+             <div className="w-full max-w-md bg-white p-8 rounded-3xl shadow-2xl border border-gray-100 relative min-h-[300px] flex flex-col justify-center">
+                 
+                 {!isSuccess && (
+                     <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-yellow-400 text-yellow-900 px-4 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1 z-20">
+                        <Star size={12} fill="currentColor"/> 100% GRATUIT
+                     </div>
+                 )}
 
-                 <form onSubmit={handleSubmit} className="space-y-4 pt-2">
-                    <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1">Prenume</label>
-                        <input 
-                            type="text" required placeholder="Ex: Alex"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all bg-gray-50"
-                            value={formData.nume}
-                            onChange={(e) => setFormData({...formData, nume: e.target.value})}
-                        />
+                 {isSuccess ? (
+                    // --- STARE DE SUCCES ---
+                    <div className="text-center animate-in fade-in zoom-in duration-300">
+                        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <CheckCircle className="text-emerald-600" size={32} />
+                        </div>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">Verifică Emailul!</h3>
+                        <p className="text-gray-600 mb-6 text-sm">
+                            Ți-am trimis ghidul PDF pe adresa introdusă. <br/>
+                            (Verifică și în Spam dacă nu apare în Inbox).
+                        </p>
+                        <button 
+                            onClick={() => setIsSuccess(false)}
+                            className="text-emerald-600 font-bold text-sm hover:underline"
+                        >
+                            Trimite la o altă adresă
+                        </button>
                     </div>
-                    <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1">Email</label>
-                        <input 
-                            type="email" required placeholder="alex@gmail.com"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all bg-gray-50"
-                            value={formData.email}
-                            onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        />
-                    </div>
-                    
-                    <button 
-                        type="submit" 
-                        className="w-full bg-gray-900 hover:bg-black text-white py-4 rounded-xl font-bold shadow-lg transition-all hover:-translate-y-1 flex items-center justify-center gap-2 mt-2"
-                    >
-                        <Download size={20} /> Descarcă Ghidul PDF
-                    </button>
-                    <p className="text-[10px] text-center text-gray-400">
-                        Datele tale sunt în siguranță. Nu trimitem spam.
-                    </p>
-                 </form>
+                 ) : (
+                    // --- FORMULARUL NORMAL ---
+                    <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-1">Nume</label>
+                            <input 
+                                type="text" required placeholder="Ex: Alex"
+                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all bg-gray-50"
+                                value={formData.nume}
+                                onChange={(e) => setFormData({...formData, nume: e.target.value})}
+                                disabled={isLoading}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+                            <input 
+                                type="email" required placeholder="alex@gmail.com"
+                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all bg-gray-50"
+                                value={formData.email}
+                                onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                disabled={isLoading}
+                            />
+                        </div>
+                        
+                        <button 
+                            type="submit" 
+                            disabled={isLoading}
+                            className="w-full bg-gray-900 hover:bg-black text-white py-4 rounded-xl font-bold shadow-lg transition-all hover:-translate-y-1 flex items-center justify-center gap-2 mt-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                            {isLoading ? (
+                                <><Loader2 size={20} className="animate-spin" /> Se trimite...</>
+                            ) : (
+                                <><Download size={20} /> Descarcă Ghidul PDF</>
+                            )}
+                        </button>
+                        <p className="text-[10px] text-center text-gray-400">
+                            Datele tale sunt în siguranță. Nu trimitem spam.
+                        </p>
+                     </form>
+                 )}
              </div>
           </div>
 
