@@ -44,7 +44,7 @@ export default function AdsPricing({ data }) {
               "Administrare și monitorizare de bază",
               "Optimizări simple (bugete & audiență)",
               "1-2 campanii active",
-              "Raport lunar de performanță"
+              "Raport lunar de performanță",
             ]}
           />
 
@@ -60,7 +60,7 @@ export default function AdsPricing({ data }) {
               "Testare audiență & creativ",
               "Ajustare bugete pentru rezultate mai bune",
               "Retargeting și strategii avansate",
-              "Raport detaliat lunar de performanță"
+              "Raport detaliat lunar de performanță",
             ]}
           />
 
@@ -76,109 +76,9 @@ export default function AdsPricing({ data }) {
               "Retargeting & lookalike audiences intensiv",
               "Optimizare conversii & ROAS",
               "Analiță detaliată și raportare avansată",
-              "Support prioritizat și consultanță personală"
+              "Support prioritizat și consultanță personală",
             ]}
           />
-
-        </div>
-
-        {/* DETAILS SECTION - Avantajele fiecărui pachet */}
-        <div className="mt-20 pt-16 border-t border-gray-200">
-          <h3 className="text-2xl font-bold text-gray-900 mb-12 text-center">Detalii despre fiecare pachet</h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* SILVER Details */}
-            <div className="space-y-6">
-              <h4 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                <span className="w-4 h-4 bg-gray-400 rounded-full"></span>
-                SILVER
-              </h4>
-              
-              <div>
-                <h5 className="text-sm font-bold text-gray-700 uppercase mb-3">Ce trebuie să știi:</h5>
-                <ul className="space-y-2">
-                  {[
-                    "Reclamele sunt menținute funcționale, dar fără testare avansată",
-                    "Optimizări sunt limitate, focus pe stabilitate",
-                    "Ideal pentru validare inițială, nu pentru scalare"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-gray-600">
-                      <AlertCircle size={16} className="text-blue-500 flex-shrink-0 mt-0.5" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-3">
-                <div className="flex gap-2">
-                  <Lightbulb size={16} className="text-yellow-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-gray-700">
-                    <strong>Silver este un bun punct de plecare</strong>, însă pentru rezultate vizibile și creștere constantă, majoritatea clienților aleg să treacă rapid la Gold, unde strategia și optimizarea fac diferența reală.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* GOLD Details */}
-            <div className="space-y-6">
-              <h4 className="text-xl font-bold text-amber-900 flex items-center gap-2">
-                <span className="w-4 h-4 bg-amber-500 rounded-full"></span>
-                GOLD
-              </h4>
-              
-              <div>
-                <h5 className="text-sm font-bold text-amber-900 uppercase mb-3">De ce să alegi Gold:</h5>
-                <ul className="space-y-2">
-                  {[
-                    "Cel mai popular pachet, ales de majoritatea clienților noștri",
-                    "Strategie activă pe 2 canale (FB + TikTok), nu doar menținere",
-                    "Raportare detaliată pentru decizii informate"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-amber-800">
-                      <div className="w-1.5 h-1.5 bg-amber-600 rounded-full flex-shrink-0 mt-1.5"></div>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="bg-amber-100/50 border border-amber-300 rounded-lg p-3">
-                <p className="text-sm text-amber-900">
-                  <strong>Cel mai bun raport calitate-preț</strong> pentru magazine online. Ideal pentru cei care doresc să investească inteligent în reclamă și să crească profitul real.
-                </p>
-              </div>
-            </div>
-
-            {/* PLATINUM Details */}
-            <div className="space-y-6">
-              <h4 className="text-xl font-bold text-slate-200 flex items-center gap-2">
-                <span className="w-4 h-4 bg-slate-600 rounded-full"></span>
-                <span className="text-gray-900">PLATINIUM</span>
-              </h4>
-              
-              <div>
-                <h5 className="text-sm font-bold text-gray-700 uppercase mb-3">Pentru cine este Platinium:</h5>
-                <ul className="space-y-2">
-                  {[
-                    "Business-uri de succes care vor să-și ducă afacerea la un alt nivel",
-                    "Pentru cei care au nevoie de maximă expertiză și performanță în reclamă"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-gray-600">
-                      <div className="w-2 h-2 bg-slate-600 rounded-full flex-shrink-0 mt-1.5"></div>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="bg-slate-100 border border-slate-300 rounded-lg p-3">
-                <p className="text-sm text-gray-800">
-                  <strong>Platinium este pentru afaceri care vor cu adevărat să scaleze.</strong> Dacă vrei tot ce e mai bun în reclamă și un focus total pe creștere accelerată, Platinium este alegerea potrivită pentru tine.
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -194,7 +94,10 @@ function SilverCard({ name, price, desc, mainDesc, includes }) {
       {/* Header Banner */}
       <div className="relative bg-gradient-to-r from-gray-400 to-gray-500 px-6 py-4 text-center">
         <div className="absolute inset-0 opacity-20 bg-pattern"></div>
-        <h3 className="text-2xl font-black text-white tracking-wider relative z-10" style={{textShadow: "2px 2px 4px rgba(0,0,0,0.3)"}}>
+        <h3
+          className="text-2xl font-black text-white tracking-wider relative z-10"
+          style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.3)" }}
+        >
           {name}
         </h3>
       </div>
@@ -212,11 +115,19 @@ function SilverCard({ name, price, desc, mainDesc, includes }) {
         </p>
 
         <div className="mb-8 flex-1">
-          <h5 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Ce includem:</h5>
+          <h5 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">
+            Ce includem:
+          </h5>
           <ul className="space-y-2">
             {includes.map((item, i) => (
-              <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
-                <Check size={18} className="text-green-500 flex-shrink-0 mt-0.5" />
+              <li
+                key={i}
+                className="flex items-start gap-3 text-sm text-gray-700"
+              >
+                <Check
+                  size={18}
+                  className="text-green-500 flex-shrink-0 mt-0.5"
+                />
                 <span>{item}</span>
               </li>
             ))}
@@ -242,7 +153,10 @@ function GoldCard({ name, price, desc, mainDesc, includes }) {
       {/* Header Banner with Ribbon */}
       <div className="relative bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 px-6 py-6 text-center">
         <div className="absolute inset-0 opacity-30 bg-pattern"></div>
-        <h3 className="text-3xl font-black text-white tracking-wider relative z-10" style={{textShadow: "3px 3px 6px rgba(0,0,0,0.4)"}}>
+        <h3
+          className="text-3xl font-black text-white tracking-wider relative z-10"
+          style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.4)" }}
+        >
           {name}
         </h3>
       </div>
@@ -260,11 +174,19 @@ function GoldCard({ name, price, desc, mainDesc, includes }) {
         </p>
 
         <div className="mb-8 flex-1">
-          <h5 className="text-sm font-bold text-amber-900 mb-3 uppercase tracking-wider">Ce includem:</h5>
+          <h5 className="text-sm font-bold text-amber-900 mb-3 uppercase tracking-wider">
+            Ce includem:
+          </h5>
           <ul className="space-y-2">
             {includes.map((item, i) => (
-              <li key={i} className="flex items-start gap-3 text-sm text-amber-900">
-                <Check size={18} className="text-green-600 flex-shrink-0 mt-0.5 font-bold" />
+              <li
+                key={i}
+                className="flex items-start gap-3 text-sm text-amber-900"
+              >
+                <Check
+                  size={18}
+                  className="text-green-600 flex-shrink-0 mt-0.5 font-bold"
+                />
                 <span>{item}</span>
               </li>
             ))}
@@ -290,7 +212,10 @@ function PlatiniumCard({ name, price, desc, mainDesc, includes }) {
       {/* Header Banner */}
       <div className="relative bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 px-6 py-6 text-center border-b-2 border-slate-600">
         <div className="absolute inset-0 opacity-20 bg-pattern"></div>
-        <h3 className="text-3xl font-black text-slate-200 tracking-wider relative z-10" style={{textShadow: "3px 3px 6px rgba(0,0,0,0.6)"}}>
+        <h3
+          className="text-3xl font-black text-slate-200 tracking-wider relative z-10"
+          style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.6)" }}
+        >
           {name}
         </h3>
       </div>
@@ -308,11 +233,19 @@ function PlatiniumCard({ name, price, desc, mainDesc, includes }) {
         </p>
 
         <div className="mb-8 flex-1">
-          <h5 className="text-sm font-bold text-slate-200 mb-3 uppercase tracking-wider">Ce includem:</h5>
+          <h5 className="text-sm font-bold text-slate-200 mb-3 uppercase tracking-wider">
+            Ce includem:
+          </h5>
           <ul className="space-y-2">
             {includes.map((item, i) => (
-              <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
-                <Check size={18} className="text-emerald-400 flex-shrink-0 mt-0.5 font-bold" />
+              <li
+                key={i}
+                className="flex items-start gap-3 text-sm text-slate-300"
+              >
+                <Check
+                  size={18}
+                  className="text-emerald-400 flex-shrink-0 mt-0.5 font-bold"
+                />
                 <span>{item}</span>
               </li>
             ))}
