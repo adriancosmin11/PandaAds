@@ -2,10 +2,10 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import CookieBanner from "../components/CookieBanner";
 import FacebookPixel from "../components/FacebookPixel";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// --- AICI TREBUIE MODIFICAT ---
 export const metadata = {
   title: "PandaAds - Agenție de Marketing Digital & Web Design",
   description:
@@ -19,7 +19,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ro">
       <body className={inter.className}>
-        <FacebookPixel />
+        <Suspense fallback={null}>
+          <FacebookPixel />
+        </Suspense>
         {children}
         <CookieBanner />
       </body>
