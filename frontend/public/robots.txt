@@ -1,0 +1,11 @@
+
+# Robots.txt for PandaAds
+# Update the host and sitemap URL below to your real domain or set NEXT_PUBLIC_BASE_URL / NEXT_SITEMAP_URL
+
+User-agent: *
+Allow: /
+Disallow: /admin
+
+# Sitemap and host (set NEXT_PUBLIC_BASE_URL or NEXT_SITEMAP_URL in .env to override)
+Sitemap: https://pandaads.ro/sitemap.xml
+Host: https://pandaads.ro
