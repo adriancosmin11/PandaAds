@@ -23,7 +23,7 @@ export default function EbookPage() {
     <div className="min-h-screen bg-white font-sans text-gray-800 flex flex-col">
       <Navbar />
 
-      <main className="flex-grow relative py-16 lg:py-24 overflow-hidden">
+      <main className="flex-grow relative py-8 lg:py-12 overflow-hidden">
         
         {/* --- BACKGROUND WAVES --- */}
         <div className="absolute inset-0 z-0 pointer-events-none">

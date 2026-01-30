@@ -19,7 +19,7 @@ const HeroSection = ({ data }) => {
   } = data || {};
 
   return (
-    <section className="relative pt-12 pb-24 lg:pt-28 lg:pb-32 overflow-hidden">
+    <section className="relative pt-5 pb-2 lg:pt-28 lg:pb-32 overflow-hidden">
       
       {/* BACKGROUND IMAGE */}
       <div className="absolute inset-0 z-0">
