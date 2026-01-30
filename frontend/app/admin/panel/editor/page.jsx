@@ -280,10 +280,9 @@ export default function EditorPage() {
                   <Input label="Titlu" name="title" val={editingPost.title} onChange={(k, v) => setEditingPost(prev => ({ ...prev, title: v }))} />
                   <Input label="Slug" name="slug" val={editingPost.slug} onChange={(k, v) => setEditingPost(prev => ({ ...prev, slug: v }))} />
                 </div>
-                <div className="grid grid-cols-3 gap-4 mb-4">
+                <div className="grid grid-cols-2 gap-4 mb-4">
                   <Input label="Categorie" name="category" val={editingPost.category} onChange={(k, v) => setEditingPost(prev => ({ ...prev, category: v }))} />
                   <Input label="Autor" name="author" val={editingPost.author} onChange={(k, v) => setEditingPost(prev => ({ ...prev, author: v }))} />
-                  <Input label="Data" name="date" val={editingPost.date} onChange={(k, v) => setEditingPost(prev => ({ ...prev, date: v }))} />
                 </div>
                 
                 {/* Image Upload Section */}
@@ -331,8 +330,22 @@ export default function EditorPage() {
 
                 <TextArea label="Excerpt (Text scurt)" name="excerpt" val={editingPost.excerpt} onChange={(k, v) => setEditingPost(prev => ({ ...prev, excerpt: v }))} />
                 <TextAreaLarge label="Conținut Articol (Text complet cu HTML)" name="body" val={editingPost.body} onChange={(k, v) => setEditingPost(prev => ({ ...prev, body: v }))} />
+                
+                {/* Data informare */}
+                <div className="p-3 bg-blue-50 rounded-lg border border-blue-200 mb-4 text-sm text-blue-800">
+                  <strong>Data publicării:</strong> {editingPost.date ? new Date(editingPost.date).toLocaleDateString('ro-RO') : 'Setată automat la salvare'}
+                </div>
+
                 <div className="flex gap-2 mt-3">
-                  <button onClick={() => addOrUpdatePost({ ...editingPost, date: editingPost.date || new Date().toLocaleDateString('en-US') })} className="px-4 py-2 bg-emerald-600 text-white rounded">Salvează articol</button>
+                  <button onClick={() => {
+                    const postToSave = { ...editingPost };
+                    // Dacă e articol nou, setează data curentă
+                    if (!postToSave.id) {
+                      postToSave.date = new Date().toISOString();
+                    }
+                    // Dacă e edit, păstrează data originală
+                    addOrUpdatePost(postToSave);
+                  }} className="px-4 py-2 bg-emerald-600 text-white rounded">Salvează articol</button>
                   <button onClick={() => setEditingPost(null)} className="px-4 py-2 bg-gray-50 rounded">Anulează</button>
                 </div>
               </div>

@@ -1,17 +1,20 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { MousePointer2, Smartphone, Monitor, X } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Monitor, X } from "lucide-react";
 import Image from "next/image";
+
+// Importuri pentru logouri
+import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa"; 
+import { FcGoogle } from "react-icons/fc"; 
 
 export default function Services({ data }) {
   const [expandedCard, setExpandedCard] = useState(null);
   const contentRefs = useRef({});
 
-  // Force recalculation when card expands
-  React.useEffect(() => {
+  // Recalculare înălțime la expandare
+  useEffect(() => {
     if (expandedCard) {
-      // Small delay to ensure DOM is painted
       setTimeout(() => {
         Object.keys(contentRefs.current).forEach(key => {
           const el = contentRefs.current[key];
@@ -33,31 +36,38 @@ export default function Services({ data }) {
     card2_desc = "Creatives UGC, Spark Ads și strategii virale.",
     card3_title = "Web Development",
     card3_desc = "Magazine online Shopify/WooCommerce și Landing Pages.",
+    card4_title = "Google Ads",
+    card4_desc = "Campanii de căutare, display și retargeting pe Google Network.",
   } = data || {};
 
   const services = [
     {
       id: 1,
-      icon: MousePointer2,
       bgColor: "bg-blue-50",
       iconColor: "text-blue-600",
       title: card1_title,
       desc: card1_desc,
+      logos: [
+        <FaFacebook key="fb" size={32} className="text-[#1877F2]" />, 
+        <FaInstagram key="insta" size={32} className="text-[#E4405F]" />
+      ],
       details: [
-        "Strategie completa de retargeting pe Facebook și Instagram",
+        "Strategie completă de retargeting pe Facebook și Instagram",
         "Campaign optimization pentru maximizarea ROI",
         "A/B testing avansat de audiențe și creative",
-        "Raportare detalista și consulturi bi-săptămânale",
+        "Raportare detaliată și consulturi bi-săptămânale",
         "Scalare inteligentă fără Drop în conversii"
       ]
     },
     {
       id: 2,
-      icon: Smartphone,
-      bgColor: "bg-black",
-      iconColor: "text-white",
+      bgColor: "bg-gray-100", 
+      iconColor: "text-gray-900",
       title: card2_title,
       desc: card2_desc,
+      logos: [
+        <FaTiktok key="tiktok" size={28} className="text-black" />
+      ],
       details: [
         "UGC content creation și testing rapid",
         "Spark Ads și organic TikTok growth strategies",
@@ -68,11 +78,13 @@ export default function Services({ data }) {
     },
     {
       id: 3,
-      icon: Monitor,
       bgColor: "bg-emerald-50",
       iconColor: "text-emerald-600",
       title: card3_title,
       desc: card3_desc,
+      logos: [
+        <Monitor key="monitor" size={32} className="text-emerald-600" />
+      ],
       details: [
         "Custom Shopify și WooCommerce store setup",
         "High-converting landing pages design",
@@ -80,24 +92,47 @@ export default function Services({ data }) {
         "SEO optimization și page speed boost",
         "Ongoing maintenance și improvement support"
       ]
+    },
+    {
+      id: 4,
+      bgColor: "bg-red-50",
+      iconColor: "text-red-600",
+      title: card4_title,
+      desc: card4_desc,
+      logos: [
+        <FcGoogle key="google" size={32} />
+      ],
+      details: [
+        "Google Search campaigns cu keyword research avansat",
+        "Display network campaigns cu retargeting inteligent",
+        "Remarketing lists și audience building",
+        "Conversion tracking și attribution modeling",
+        "Monthly performance reviews și optimization recommendations"
+      ]
     }
   ];
 
   return (
     <section className="relative py-24 bg-gray-50 overflow-hidden">
       
-      {/* --- BACKGROUND WAVES-FAT --- */}
-      <div className="absolute left-0 -top-[150px] w-full h-[140%] z-0 opacity-100 pointer-events-none">
+      {/* --- BACKGROUND WAVES --- */}
+      <div 
+        className="absolute left-0 w-full z-0 opacity-100 pointer-events-none"
+        style={{
+          height: '130vh', 
+          top: '-250px' 
+        }}
+      >
         <Image
             src="/assets/background-waves-fat.png"
             alt="Waves Pattern"
             fill
-            /* 'object-cover' va umple spațiul, 'object-top' aliniază partea de sus a imaginii */
-            className="object-cover object-center"
+            className="object-cover object-top"
+            priority
         />
-      </div>
+      </div> 
 
-      {/* --- CONTENT CONTAINER (z-10 ca să fie peste background) --- */}
+      {/* --- CONTENT CONTAINER --- */}
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -112,14 +147,13 @@ export default function Services({ data }) {
 
         {/* Grid Container */}
         <div className="relative">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {services.map((service) => {
-              const Icon = service.icon;
               const isExpanded = expandedCard === service.id;
 
               return (
                 <div key={service.id}>
-                  {/* Mobile/Tablet - Expandable on height only */}
+                  {/* Mobile/Tablet */}
                   <div className="md:hidden">
                     <div
                       onClick={() => setExpandedCard(isExpanded ? null : service.id)}
@@ -137,8 +171,16 @@ export default function Services({ data }) {
                       }}
                     >
                       <div className="p-8">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform" style={{ backgroundColor: service.bgColor === "bg-black" ? "black" : service.bgColor }}>
-                          <Icon className={service.iconColor} size={28} />
+                        <div 
+                           className="h-20 w-auto min-w-[5rem] px-3 rounded-2xl flex items-center justify-center mb-6 transition-transform gap-3 relative overflow-hidden" 
+                        >
+                           <div className={`absolute inset-0 opacity-100 ${service.bgColor}`} style={{ zIndex: -1 }}></div>
+
+                          {service.logos.map((LogoComponent, idx) => (
+                              <div key={idx} className="flex items-center justify-center w-12 h-12 shrink-0 bg-white rounded-full shadow-sm p-2">
+                                {LogoComponent}
+                              </div>
+                          ))}
                         </div>
                         <h3 className="text-xl font-bold text-gray-900 mb-3">
                           {service.title}
@@ -150,7 +192,8 @@ export default function Services({ data }) {
                         {isExpanded && (
                           <div className="mt-6 pt-6 border-t border-gray-200 opacity-100 transition-opacity duration-500">
                             <h4 className="font-bold text-gray-900 mb-3">Ce includem:</h4>
-                            <ul className="space-y-2">
+                            {/* LISTA MOBIL: O SINGURĂ COLOANĂ */}
+                            <ul className="space-y-3">
                               {service.details.map((detail, i) => (
                                 <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
                                   <span className="text-emerald-600 font-bold mt-0.5">✓</span>
@@ -161,17 +204,14 @@ export default function Services({ data }) {
                           </div>
                         )}
 
-                        <button className="mt-4 w-full py-2 rounded-lg font-semibold text-sm transition-colors" style={{ 
-                          backgroundColor: service.bgColor === "bg-black" ? "#000" : service.bgColor, 
-                          color: service.iconColor === "text-white" ? "white" : "inherit"
-                        }}>
+                        <button className={`mt-4 w-full py-2 rounded-lg font-semibold text-sm transition-colors ${service.bgColor} ${service.iconColor}`}>
                           {isExpanded ? "Show less" : "Learn More"}
                         </button>
                       </div>
                     </div>
                   </div>
 
-                  {/* Desktop - Expandable on width and height */}
+                  {/* Desktop */}
                   <div className="hidden md:block">
                     <div
                       onClick={() => setExpandedCard(isExpanded ? null : service.id)}
@@ -193,8 +233,15 @@ export default function Services({ data }) {
                       <div className="p-8">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform" style={{ backgroundColor: service.bgColor === "bg-black" ? "black" : service.bgColor }}>
-                              <Icon className={service.iconColor} size={28} />
+                            {/* Icon Container */}
+                            <div 
+                                className={`h-14 w-auto min-w-[3.5rem] px-2 rounded-2xl flex items-center justify-center mb-6 transition-transform gap-3 ${service.bgColor}`}
+                            >
+                              {service.logos.map((LogoComponent, idx) => (
+                                  <div key={idx} className="flex items-center justify-center w-10 h-10 shrink-0 bg-white rounded-full shadow-sm p-1.5">
+                                    {LogoComponent}
+                                  </div>
+                              ))}
                             </div>
                             <h3 className="text-xl font-bold text-gray-900 mb-3">
                               {service.title}
@@ -220,7 +267,10 @@ export default function Services({ data }) {
                         {isExpanded && (
                           <div className="mt-8 pt-8 border-t border-gray-200 opacity-100 transition-opacity duration-500">
                             <h4 className="font-bold text-gray-900 mb-4 text-lg">Ce includem:</h4>
-                            <ul className="space-y-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
+                            {/* --- MODIFICARE DESKTOP: AM SCOS GRID-COLS-2 --- */}
+                            {/* Acum afișează elementele unul sub altul într-o singură coloană */}
+                            <ul className="space-y-3">
                               {service.details.map((detail, i) => (
                                 <li key={i} className="text-gray-600 flex items-start gap-2">
                                   <span className="text-emerald-600 font-bold mt-0.5 text-lg">✓</span>
