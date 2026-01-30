@@ -5,6 +5,7 @@ import CaseStudy from '../components/CaseStudy';
 import AdsPricing from '../components/AdsPricing'; // Verifică să fie calea corectă, fără .jsx explicit uneori
 import WebPricing from '../components/WebPricing';
 import Footer from '../components/Footer';
+import StatsCounter from '../components/StatsCounter';
 import { PrismaClient } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
@@ -41,6 +42,10 @@ export default async function Home() {
       
       <div id="studii">
         <CaseStudy />
+      </div>
+
+      <div id="statistici">
+        <StatsCounter />
       </div>
       
       <div id="preturi">
