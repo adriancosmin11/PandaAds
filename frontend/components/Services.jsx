@@ -76,28 +76,12 @@ export default function Services({ data }) {
         "Performance tracking și monthly strategy sessions"
       ]
     },
+    // --- AM MUTAT GOOGLE ADS AICI (POZIȚIA 3) ---
     {
       id: 3,
-      bgColor: "bg-emerald-50",
-      iconColor: "text-emerald-600",
-      title: card3_title,
-      desc: card3_desc,
-      logos: [
-        <Monitor key="monitor" size={32} className="text-emerald-600" />
-      ],
-      details: [
-        "Custom Shopify și WooCommerce store setup",
-        "High-converting landing pages design",
-        "Mobile-first responsive design",
-        "SEO optimization și page speed boost",
-        "Ongoing maintenance și improvement support"
-      ]
-    },
-    {
-      id: 4,
       bgColor: "bg-red-50",
       iconColor: "text-red-600",
-      title: card4_title,
+      title: card4_title, // Folosim datele de la card4 (Google)
       desc: card4_desc,
       logos: [
         <FcGoogle key="google" size={32} />
@@ -108,6 +92,24 @@ export default function Services({ data }) {
         "Remarketing lists și audience building",
         "Conversion tracking și attribution modeling",
         "Monthly performance reviews și optimization recommendations"
+      ]
+    },
+    // --- AM MUTAT WEB DEVELOPMENT AICI (POZIȚIA 4) ---
+    {
+      id: 4,
+      bgColor: "bg-emerald-50",
+      iconColor: "text-emerald-600",
+      title: card3_title, // Folosim datele de la card3 (Web Dev)
+      desc: card3_desc,
+      logos: [
+        <Monitor key="monitor" size={32} className="text-emerald-600" />
+      ],
+      details: [
+        "Custom Shopify și WooCommerce store setup",
+        "High-converting landing pages design",
+        "Mobile-first responsive design",
+        "SEO optimization și page speed boost",
+        "Ongoing maintenance și improvement support"
       ]
     }
   ];
@@ -192,7 +194,6 @@ export default function Services({ data }) {
                         {isExpanded && (
                           <div className="mt-6 pt-6 border-t border-gray-200 opacity-100 transition-opacity duration-500">
                             <h4 className="font-bold text-gray-900 mb-3">Ce includem:</h4>
-                            {/* LISTA MOBIL: O SINGURĂ COLOANĂ */}
                             <ul className="space-y-3">
                               {service.details.map((detail, i) => (
                                 <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
@@ -268,8 +269,6 @@ export default function Services({ data }) {
                           <div className="mt-8 pt-8 border-t border-gray-200 opacity-100 transition-opacity duration-500">
                             <h4 className="font-bold text-gray-900 mb-4 text-lg">Ce includem:</h4>
                             
-                            {/* --- MODIFICARE DESKTOP: AM SCOS GRID-COLS-2 --- */}
-                            {/* Acum afișează elementele unul sub altul într-o singură coloană */}
                             <ul className="space-y-3">
                               {service.details.map((detail, i) => (
                                 <li key={i} className="text-gray-600 flex items-start gap-2">
