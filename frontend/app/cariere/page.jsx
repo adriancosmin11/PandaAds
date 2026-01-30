@@ -18,7 +18,7 @@ export default function CareersPage() {
 
       {/* --- HERO SECTION --- */}
       
-      <section className="relative pt-12 pb-16 lg:pt-40 lg:pb-28 overflow-hidden bg-gray-50">
+      <section className="relative pt-4 pb-16 lg:pt-8 lg:pb-28 overflow-hidden bg-gray-50">
          {/* Background Waves */}
          <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
             <div className="relative w-full h-full">
@@ -45,7 +45,7 @@ export default function CareersPage() {
       </section>
 
       {/* --- JOB LISTING --- */}
-      <section className="py-16 bg-white">
+      <section className="py-0 bg-white">
         <div className="max-w-5xl mx-auto px-6">
             
             {/* JOB CARD */}
