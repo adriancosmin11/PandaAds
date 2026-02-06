@@ -6,6 +6,7 @@ import AdsPricing from '../components/AdsPricing'; // Verifică să fie calea co
 import WebPricing from '../components/WebPricing';
 import Footer from '../components/Footer';
 import StatsCounter from '../components/StatsCounter';
+import PressCarousel from '../components/PressCarousel';
 import { PrismaClient } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
@@ -35,6 +36,10 @@ export default async function Home() {
       <Navbar />
       
       <HeroSection data={heroData} />
+
+      <div id="presa">
+        <PressCarousel />
+      </div>
       
       <div id="servicii">
         <Services data={servicesData} />
