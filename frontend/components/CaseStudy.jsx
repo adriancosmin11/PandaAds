@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import React, { useState } from "react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
@@ -10,63 +10,68 @@ const CaseStudy = () => {
   const caseStudies = [
     {
       id: 1,
-      type: "E-commerce Client",
+      type: "Retail & Pharma",
       roi: "+360%",
-      description: "Creștere medie lunară în primele 3 luni",
-      testimonial: "Nu credeam că putem scala așa rapid. PandaAds a preluat totul, de la creație la optimizare, iar noi ne-am ocupat doar de livrarea comenzilor. Recomand!",
-      author: "Alex Popescu",
-      company: "CEO, FashionStore",
-      avatar: "👨‍💼",
+      description: "Scalare campanii pentru catalog cu 50k+ produse",
+      testimonial: "Volumul de produse la Bebe Tei este imens. Echipa PandaAds a reușit să segmenteze audiențele perfect și să automatizeze reclamele dinamice. ROAS-ul a crescut constant.",
+      author: "Alina Diaconu",
+      company: "Bebe Tei",
+      role: "E-commerce Manager",
+      logo: "/assets/bebeteilogo.png", 
       chart: [30, 45, 60, 75, 85, 100],
-      metric: "ROI"
+      metric: "ROAS"
     },
     {
       id: 2,
-      type: "SaaS Startup",
+      type: "Fashion & Premium",
       roi: "+285%",
-      description: "Creștere exponențială în user acquisition",
-      testimonial: "Am încercat alte agenții, dar PandaAds a înțeles business-ul nostru la nivel mai profund. Campania lor a fost meticulos planificată și executată.",
-      author: "Maria Ionescu",
-      company: "Founder, CloudSync",
-      avatar: "👩‍💼",
+      description: "Promovare colecții noi și awareness local",
+      testimonial: "Aveam nevoie de o abordare premium, aliniată cu standardele globale Massimo Dutti. Au înțeles rapid estetica brandului și au livrat campanii de awareness care au adus trafic relevant.",
+      author: "Horia Munteanu",
+      company: "Massimo Dutti",
+      role: "Regional Marketing Lead",
+      logo: "/assets/Logo-MassimoDuti.png",
       chart: [20, 40, 55, 70, 88, 95],
-      metric: "Conversii"
+      metric: "Footfall"
     },
     {
       id: 3,
-      type: "Local Service Business",
+      type: "Multi-brand Fashion",
       roi: "+420%",
-      description: "Agenție de reparații care a triplat clientela",
-      testimonial: "Rezultatele au depășit orice așteptare. Echipa PandaAds a fost atentă la detalii și mereu disponibilă pentru ajusturi. Investment-ul s-a recuperat în 2 luni!",
-      author: "Mihai Dumitrescu",
-      company: "Owner, RepairPro",
-      avatar: "👨‍🔧",
+      description: "Boost vânzări pe segmentul Gen Z & Millennials",
+      testimonial: "Colaborarea cu PandaAds a revitalizat prezența noastră pe TikTok. Au creat conținut care rezonează cu publicul Collective, transformând vizualizările în achiziții reale.",
+      author: "Sabina Radu",
+      company: "Collective",
+      role: "Brand Specialist",
+      logo: "/assets/Logo-Collective.png",
       chart: [25, 50, 65, 80, 95, 105],
-      metric: "Leads"
+      metric: "Sales"
     },
     {
       id: 4,
-      type: "Dropshipping Store",
+      type: "Food Delivery",
       roi: "+540%",
-      description: "Transform magazin stagnant în multi-canalnic",
-      testimonial: "Am fost pe cale să renunț la e-commerce. PandaAds mi-a relansat afacerea prin TikTok Ads și Meta Ads cu strategie UGC. Acum fac 50k€/lună!",
-      author: "Cristian Badescu",
-      company: "Entrepreneur, DropHub",
-      avatar: "📈",
+      description: "Optimizare cost per comandă în orele de vârf",
+      testimonial: "În delivery, viteza și timing-ul sunt totul. PandaAds ne-a optimizat campaniile pe intervale orare și zone de livrare. Am redus costul de achiziție per client nou.",
+      author: "Victor Stanciu",
+      company: "Presto Pizza",
+      role: "Administrator",
+      logo: "/assets/logo.jpeg",
       chart: [15, 35, 55, 75, 95, 120],
-      metric: "Revenue"
+      metric: "Orders"
     },
     {
       id: 5,
-      type: "Digital Agency",
+      type: "Home & Deco",
       roi: "+195%",
-      description: "Agenție care și-a optimizat propriile campanii",
-      testimonial: "Lucram cu agenții pentru clienții noștri, dar pentru noi înșine nu aveam timp. PandaAds a venit cu o strategie inteligentă și acum suportul nostru e full booked.",
-      author: "Elena Georgescu",
-      company: "Director, DigitalWorks",
-      avatar: "💼",
+      description: "Lansare colecție sezonieră",
+      testimonial: "Am lucrat cu ei pentru o campanie punctuală de Black Friday și am rămas parteneri. Au o structură de raportare foarte clară, nu ne pierdem în detalii tehnice inutile.",
+      author: "Diana Cojocaru",
+      company: "Mobexpert",
+      role: "Digital Marketing Coordinator",
+      logo: "/assets/Logo-Mobexpert.png",
       chart: [30, 42, 58, 72, 88, 100],
-      metric: "Clienți Noi"
+      metric: "Revenue"
     }
   ];
 
@@ -82,7 +87,7 @@ const CaseStudy = () => {
 
   return (
     <section className="relative py-20 overflow-hidden bg-white">
-      {/* --- BACKGROUND WAVES (FAT) --- */}
+      {/* --- BACKGROUND WAVES --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <Image
           src="/assets/background-waves-fat.png"
@@ -93,7 +98,6 @@ const CaseStudy = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-white via-white/50 to-gray-50"></div>
       </div>
 
-      {/* Content Wrapper cu z-10 */}
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         <h2 className="text-3xl font-bold mb-12 text-gray-900 text-center md:text-left">
           Rezultate care vorbesc
@@ -101,9 +105,9 @@ const CaseStudy = () => {
 
         {/* Carousel Container */}
         <div className="relative">
-          {/* Case Study Card */}
-          <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-gray-100 grid grid-cols-1 md:grid-cols-2 overflow-hidden">
-            {/* Partea Stângă: Graficul */}
+          <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-gray-100 grid grid-cols-1 md:grid-cols-2 overflow-hidden relative z-10">
+            
+            {/* Partea Stângă: Grafic */}
             <div className="p-8 md:p-12 bg-emerald-50/50 flex flex-col justify-center relative border-r border-gray-100">
               <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-1">
                 {study.type}
@@ -118,7 +122,7 @@ const CaseStudy = () => {
                 {study.description}
               </p>
 
-              {/* Grafic CSS Pur */}
+              {/* Grafic */}
               <div className="bg-white p-6 rounded-xl shadow-inner border border-gray-200 h-56 flex items-end justify-between gap-3 px-6 pb-0 relative z-10">
                 {study.chart.map((height, idx) => (
                   <div
@@ -141,17 +145,28 @@ const CaseStudy = () => {
                   <Star key={i} fill="currentColor" size={20} />
                 ))}
               </div>
-              <blockquote className="text-xl md:text-2xl font-medium text-gray-800 mb-8 leading-relaxed">
+              <blockquote className="text-lg md:text-xl font-medium text-gray-800 mb-8 leading-relaxed italic">
                 "{study.testimonial}"
               </blockquote>
 
               <div className="flex items-center gap-4 border-t pt-6 border-gray-100">
-                <div className="w-12 h-12 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center text-2xl">
-                  {study.avatar}
+                
+                {/* LOGO CONTAINER */}
+                <div className="relative w-16 h-16 bg-white rounded-full border border-gray-200 shadow-sm overflow-hidden p-2 flex items-center justify-center shrink-0">
+                   <Image 
+                      src={study.logo} 
+                      alt={`Logo ${study.company}`}
+                      fill
+                      className="object-contain p-2"
+                   />
                 </div>
+                
                 <div>
                   <div className="font-bold text-gray-900">{study.author}</div>
-                  <div className="text-sm text-emerald-600 font-semibold">
+                  <div className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                     {study.role}
+                  </div>
+                  <div className="text-sm text-emerald-600 font-bold">
                     {study.company}
                   </div>
                 </div>
@@ -159,21 +174,22 @@ const CaseStudy = () => {
             </div>
           </div>
 
-          {/* Navigation Buttons */}
+          {/* Navigation Buttons (Corectat: Clase pe un singur rând) */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 md:-translate-x-20 bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-full transition-all shadow-lg"
+            className="absolute z-20 top-1/2 -translate-y-1/2 left-2 p-2 md:left-0 md:-translate-x-20 md:p-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-all shadow-lg active:scale-95"
           >
             <ChevronLeft size={24} />
           </button>
+
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 md:translate-x-20 bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-full transition-all shadow-lg"
+            className="absolute z-20 top-1/2 -translate-y-1/2 right-2 p-2 md:right-0 md:translate-x-20 md:p-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-all shadow-lg active:scale-95"
           >
             <ChevronRight size={24} />
           </button>
 
-          {/* Dots Indicator */}
+          {/* Buline */}
           <div className="flex justify-center gap-2 mt-8">
             {caseStudies.map((_, idx) => (
               <button
