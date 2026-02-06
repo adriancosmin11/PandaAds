@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import CookieBanner from "../components/CookieBanner";
 import FacebookPixel from "../components/FacebookPixel";
 import { Suspense } from "react";
+import FloatingButtons from "../components/FloatingButtons";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
         </Suspense>
         {children}
         <CookieBanner />
+        <FloatingButtons />
       </body>
     </html>
   );

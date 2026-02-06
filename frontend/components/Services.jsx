@@ -66,7 +66,7 @@ export default function Services({ data }) {
   ];
 
   return (
-    <section className="relative py-24 bg-gray-50 overflow-hidden">
+    <section className="relative py-12 bg-gray-50 overflow-hidden">
       
       {/* --- BACKGROUND WAVES --- */}
       <div 
