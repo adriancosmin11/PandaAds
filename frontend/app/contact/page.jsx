@@ -4,10 +4,10 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import { ArrowRight, Megaphone, Globe, Loader2, CheckCircle, Mail, AlertCircle, Lightbulb } from 'lucide-react';
+import { ArrowRight, Megaphone, Globe, Loader2, CheckCircle, Mail, Lightbulb, Zap, Layout, ShoppingCart } from 'lucide-react';
 import { submitContactForm, getSiteContent } from '../actions';
 
-// --- DATA: Detaliile Pachetelor (Extrase din imagine) ---
+// --- DATA: Detaliile Pachetelor ADS ---
 const ADS_PACKAGES_DETAILS = {
   SILVER: {
     title: "CE TREBUIE SĂ ȘTII DESPRE SILVER:",
@@ -47,17 +47,57 @@ const ADS_PACKAGES_DETAILS = {
   }
 };
 
+// --- DATA: Detaliile Pachetelor WEB (NOU) ---
+const WEB_PACKAGES_DETAILS = {
+  START: {
+    title: "DESPRE PACHETUL START:",
+    accentColor: "text-emerald-600",
+    bgColor: "bg-emerald-50",
+    borderColor: "border-emerald-100",
+    points: [
+      "Landing Page ultra-rapid (Next.js)",
+      "Ideal pentru campanii Google/Meta Ads",
+      "Design custom, optimizat pentru conversie"
+    ],
+    tip: "Perfect pentru a lansa rapid un serviciu sau produs nou în piață."
+  },
+  BUSINESS: {
+    title: "PACHETUL BUSINESS INCLUDE:",
+    accentColor: "text-blue-600",
+    bgColor: "bg-blue-50",
+    borderColor: "border-blue-100",
+    points: [
+      "Website complet (5-8 pagini)",
+      "Panou de administrare (CMS) inclus",
+      "Blog și pagini dinamice pentru SEO"
+    ],
+    tip: "Alegerea standard pentru companii de servicii care vor o prezență digitală solidă."
+  },
+  "E-COMMERCE": {
+    title: "MAGAZIN HEADLESS E-COMMERCE:",
+    accentColor: "text-purple-600",
+    bgColor: "bg-purple-50",
+    borderColor: "border-purple-100",
+    points: [
+      "Arhitectură modernă, viteză instantanee",
+      "Filtrare avansată și număr nelimitat de produse",
+      "Integrări plăți, curieri și facturare"
+    ],
+    tip: "Soluția supremă pentru magazinele care vor să scaleze fără limitări tehnice."
+  }
+};
+
 const ADS_PACKAGES = [
-  { id: 'SILVER', name: 'SILVER Ads', price: '300 – 500 €' },
-  { id: 'GOLD', name: 'GOLD Ads', price: '600 – 1.000 €' },
-  { id: 'PLATINIUM', name: 'PLATINIUM Ads', price: '1.200 – 2.000 €' },
+  { id: 'SILVER', name: 'SILVER Ads (300-500€)' },
+  { id: 'GOLD', name: 'GOLD Ads (600-1000€)' },
+  { id: 'PLATINIUM', name: 'PLATINIUM Ads (1200€+)' },
 ];
 
+// --- ACTUALIZAT: Numele planurilor corespund acum cu WebPricing ---
 const WEB_PACKAGES = [
-  { id: 'Site de Prezentare', name: 'Site de Prezentare', price: '499 €' },
-  { id: 'Magazin Online Mic', name: 'Magazin Online Mic', price: '999 €' },
-  { id: 'Magazin Online Mediu', name: 'Magazin Online Mediu', price: '1.499 €' },
-  { id: 'Magazin Premium', name: 'Magazin Premium', price: '1.999 €' },
+  { id: 'START', name: 'START (Landing Page - 990€)' },
+  { id: 'BUSINESS', name: 'BUSINESS (Site Prezentare - 1990€)' },
+  { id: 'E-COMMERCE', name: 'E-COMMERCE (Magazin Online - 3990€)' },
 ];
 
 function CheckoutContent() {
@@ -96,16 +136,25 @@ function CheckoutContent() {
   useEffect(() => {
     const service = searchParams.get('service');
     const plan = searchParams.get('plan');
+    const details = searchParams.get('details'); // Preluăm și detalii extra din WebAdvantages
+
+    if (details) {
+       setFormData(prev => ({...prev, mesaj: `Salut! Sunt interesat de: ${decodeURIComponent(details)}...`}));
+    }
 
     if (plan) {
       const decodedPlan = decodeURIComponent(plan);
+      
       if (service === 'ads') {
+        // Căutare flexibilă (exact match sau includes)
         const exists = ADS_PACKAGES.find(p => p.id === decodedPlan || p.id === plan);
         if (exists) setSelectedAds(exists.id);
       } 
       else if (service === 'web') {
         const exists = WEB_PACKAGES.find(p => p.id === decodedPlan || p.id === plan);
-        if (exists) setSelectedWeb(exists.id);
+        if (exists) {
+            setSelectedWeb(exists.id);
+        }
       }
     }
   }, [searchParams]);
@@ -116,8 +165,8 @@ function CheckoutContent() {
     
     const finalData = {
       client: formData,
-      pachetAds: selectedAds || 'Niciunul (Discuție Generală)',
-      pachetWeb: selectedWeb || 'Niciunul (Discuție Generală)'
+      pachetAds: selectedAds || 'Niciunul',
+      pachetWeb: selectedWeb || 'Niciunul'
     };
 
     try {
@@ -139,14 +188,17 @@ function CheckoutContent() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Helper pentru a lua detaliile pachetului selectat
-  const currentPackageDetails = ADS_PACKAGES_DETAILS[selectedAds];
+  // --- LOGICĂ NOUĂ PENTRU DETALII ---
+  // Afișăm detaliile pentru pachetul selectat (prioritate ADS, apoi WEB)
+  const currentPackageDetails = 
+    (selectedAds && ADS_PACKAGES_DETAILS[selectedAds]) || 
+    (selectedWeb && WEB_PACKAGES_DETAILS[selectedWeb]);
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
       <Navbar />
 
-      <div className="max-w-6xl mx-auto px-6 py-12 lg:py-32">
+      <div className="max-w-6xl mx-auto px-6 py-24 lg:py-32">
         
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-gray-900 mb-4">{pageData.title}</h1>
@@ -224,7 +276,11 @@ function CheckoutContent() {
                         <Megaphone size={18} className="text-blue-600"/> Pachet Ads
                     </label>
                     <div className="relative">
-                        <select value={selectedAds} onChange={(e) => setSelectedAds(e.target.value)} className="w-full p-4 rounded-xl border appearance-none outline-none cursor-pointer bg-gray-50 border-gray-200 focus:border-emerald-500 transition-colors font-medium">
+                        <select 
+                            value={selectedAds} 
+                            onChange={(e) => { setSelectedAds(e.target.value); setSelectedWeb(''); }} // Reset Web cand alegi Ads (opțional)
+                            className="w-full p-4 rounded-xl border appearance-none outline-none cursor-pointer bg-gray-50 border-gray-200 focus:border-emerald-500 transition-colors font-medium"
+                        >
                             <option value="">-- Alege Pachetul --</option>
                             {ADS_PACKAGES.map(pkg => (<option key={pkg.id} value={pkg.id}>{pkg.name}</option>))}
                         </select>
@@ -236,14 +292,18 @@ function CheckoutContent() {
                         <Globe size={18} className="text-emerald-600"/> Pachet Web
                     </label>
                     <div className="relative">
-                        <select value={selectedWeb} onChange={(e) => setSelectedWeb(e.target.value)} className="w-full p-4 rounded-xl border appearance-none outline-none cursor-pointer bg-gray-50 border-gray-200 focus:border-emerald-500 transition-colors font-medium">
+                        <select 
+                            value={selectedWeb} 
+                            onChange={(e) => { setSelectedWeb(e.target.value); setSelectedAds(''); }} // Reset Ads cand alegi Web (opțional)
+                            className="w-full p-4 rounded-xl border appearance-none outline-none cursor-pointer bg-gray-50 border-gray-200 focus:border-emerald-500 transition-colors font-medium"
+                        >
                             <option value="">-- Neselectat --</option>
                             {WEB_PACKAGES.map(pkg => (<option key={pkg.id} value={pkg.id}>{pkg.name}</option>))}
                         </select>
                     </div>
                 </div>
 
-                {/* --- AICI INTRODUCEM ZONA DINAMICĂ DE DETALII --- */}
+                {/* --- ZONA DINAMICĂ DE DETALII (ADS SAU WEB) --- */}
                 {currentPackageDetails && (
                     <div className={`mb-8 p-5 rounded-2xl border ${currentPackageDetails.bgColor} ${currentPackageDetails.borderColor} animate-in fade-in slide-in-from-top-4 duration-500`}>
                         <h4 className={`text-xs font-black uppercase tracking-widest mb-3 ${currentPackageDetails.accentColor}`}>
@@ -267,7 +327,6 @@ function CheckoutContent() {
                         </div>
                     </div>
                 )}
-                {/* ----------------------------------------------- */}
 
                 <button 
                     onClick={handleSubmit} 

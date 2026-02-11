@@ -37,9 +37,9 @@ export default async function Home() {
       
       <HeroSection data={heroData} />
 
-      {/* <div id="presa">
+      <div id="presa">
         <PressCarousel />
-      </div> */}
+      </div>
       
       <div id="servicii">
         <Services data={servicesData} />
