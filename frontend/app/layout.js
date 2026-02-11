@@ -4,6 +4,7 @@ import CookieBanner from "../components/CookieBanner";
 import FacebookPixel from "../components/FacebookPixel";
 import { Suspense } from "react";
 import FloatingButtons from "../components/FloatingButtons";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
         {children}
         <CookieBanner />
         <FloatingButtons />
+        <SpeedInsights />
       </body>
     </html>
   );
