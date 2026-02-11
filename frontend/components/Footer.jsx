@@ -14,7 +14,7 @@ const Footer = () => {
           {/* Coloana 1: Logo & Social Media */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-4">
-               <Image src="/assets/logo-footer.png" alt="PandaAds Logo" width={100} height={100} />
+               <Image src="/assets/logo-v2white.png" alt="PandaAds Logo" width={300} height={150} />
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               Partenerul tău de încredere pentru creștere organică și performanță plătită.
