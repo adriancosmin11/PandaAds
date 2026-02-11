@@ -16,7 +16,7 @@ const Navbar = () => {
           <div className="flex-shrink-0 flex items-center cursor-pointer">
             <Link href="/" className="relative h-12 w-40">
               <Image
-                src="/assets/logo.png"
+                src="/assets/logo-v2.png"
                 alt="PandaAds Logo"
                 fill
                 className="object-contain object-left"
@@ -126,21 +126,23 @@ const Navbar = () => {
               Cariere
             </Link>
 
-            <div className="pt-4 space-y-3">
+            {/* --- MOBILE BUTTONS SECTION (MODIFICAT) --- */}
+            <div className="pt-6 pb-2 flex flex-col items-center gap-4">
               {/* Mobile Ebook */}
-              <Link href="/ebook" onClick={() => setIsOpen(false)}>
+              <Link href="/ebook" onClick={() => setIsOpen(false)} className="w-[75%]">
                 <button className="w-full bg-blue-50 text-blue-700 border border-blue-200 px-4 py-3 rounded-xl font-bold flex items-center justify-center gap-2">
                   <BookOpen size={18} /> Descarcă Ebook
                 </button>
               </Link>
 
               {/* Mobile Audit */}
-              <Link href="/audit" onClick={() => setIsOpen(false)}>
+              <Link href="/audit" onClick={() => setIsOpen(false)} className="w-[75%]">
                 <button className="w-full bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg shadow-emerald-200">
                   Cere Audit Gratuit
                 </button>
               </Link>
             </div>
+            
           </div>
         </div>
       )}
