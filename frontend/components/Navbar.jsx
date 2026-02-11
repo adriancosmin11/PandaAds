@@ -16,7 +16,7 @@ const Navbar = () => {
           <div className="flex-shrink-0 flex items-center cursor-pointer">
             <Link href="/" className="relative h-12 w-40">
               <Image
-                src="/assets/logo.jpeg"
+                src="/assets/logo.png"
                 alt="PandaAds Logo"
                 fill
                 className="object-contain object-left"
