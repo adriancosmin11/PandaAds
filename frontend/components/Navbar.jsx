@@ -12,15 +12,15 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-20">
-          {/* LOGO */}
+          {/* LOGO - MODIFICAT AICI (h-16 w-48) */}
           <div className="flex-shrink-0 flex items-center cursor-pointer">
-            <Link href="/" className="relative h-12 w-40">
+            <Link href="/" className="relative h-16 w-48"> 
               <Image
                 src="/assets/logo-v2.png"
                 alt="PandaAds Logo"
                 fill
                 className="object-contain object-left"
-                sizes="(max-width: 768px) 100vw, 200px"
+                sizes="(max-width: 768px) 100vw, 350px"
                 priority
               />
             </Link>
@@ -43,7 +43,6 @@ const Navbar = () => {
             <Link href="/blog" className="hover:text-emerald-600 transition-colors">
               Blog
             </Link>
-            {/* --- LINK CARIERE (Desktop) --- */}
             <Link href="/cariere" className="text-gray-600 hover:text-emerald-600 font-medium transition-colors">
               Cariere
             </Link>
@@ -117,7 +116,6 @@ const Navbar = () => {
             >
               Blog
             </Link>
-            {/* --- LINK CARIERE (Mobile) --- */}
             <Link
               href="/cariere"
               onClick={() => setIsOpen(false)}
@@ -126,16 +124,14 @@ const Navbar = () => {
               Cariere
             </Link>
 
-            {/* --- MOBILE BUTTONS SECTION (MODIFICAT) --- */}
+            {/* --- MOBILE BUTTONS SECTION --- */}
             <div className="pt-6 pb-2 flex flex-col items-center gap-4">
-              {/* Mobile Ebook */}
               <Link href="/ebook" onClick={() => setIsOpen(false)} className="w-[75%]">
                 <button className="w-full bg-blue-50 text-blue-700 border border-blue-200 px-4 py-3 rounded-xl font-bold flex items-center justify-center gap-2">
                   <BookOpen size={18} /> Descarcă Ebook
                 </button>
               </Link>
 
-              {/* Mobile Audit */}
               <Link href="/audit" onClick={() => setIsOpen(false)} className="w-[75%]">
                 <button className="w-full bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg shadow-emerald-200">
                   Cere Audit Gratuit
