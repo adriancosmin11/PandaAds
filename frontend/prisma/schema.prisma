@@ -1,44 +1,48 @@
-// prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("PRISMA_DATABASE_URL") // Folosește URL-ul de la Vercel
-  directUrl = env("POSTGRES_URL") // Necesar pentru Vercel Postgres
+  url      = env("PRISMA_DATABASE_URL")
+  directUrl = env("POSTGRES_URL")
 }
 
-// 1. Tabel pentru formularul de CONTACT / COMANDĂ
+// 1. Tabel PRINCIPAL (Contact + Ebook + Comenzi)
 model Lead {
   id        Int      @id @default(autoincrement())
   nume      String
-  prenume   String
+  prenume   String?  // Am pus opțional (poate nu toți completează)
   email     String
-  telefon   String
-  firma     String?  // Opțional
-  mesaj     String?  // Opțional
-  pachetAds String?  // ex: GOLD
-  pachetWeb String?  // ex: Magazin Mic
-  status    String   @default("Nou") // Nou, Contactat, Finalizat
+  telefon   String?  // Opțional (Ebook-urile nu cer telefon)
+  firma     String?
+  mesaj     String?
+  pachetAds String?
+  pachetWeb String?
+  
+  status    String   @default("Nou") // Nou, Văzut, Contactat, Ebook Download
+  notes     String?  // <--- CÂMP NOU (Pentru notițe interne din Admin)
+  
   createdAt DateTime @default(now())
 }
 
-// 2. Tabel pentru formularul de AUDIT
+// 2. Tabel pentru AUDIT
 model AuditRequest {
   id        Int      @id @default(autoincrement())
   website   String
-  platforme String   // Vom salva array-ul ca string (ex: "Facebook, TikTok")
+  platforme String
   buget     String
   nume      String
   email     String
   telefon   String
+  
   status    String   @default("Nou")
+  notes     String?  // <--- Am adăugat și aici, poate vrei să notezi ceva despre audit
+  
   createdAt DateTime @default(now())
 }
 
-// 3. Tabel pentru descărcări EBOOK
+// 3. Tabel EBOOK (Opțional - momentan actions.js salvează în Lead, deci îl poți ignora sau șterge)
 model EbookLead {
   id        Int      @id @default(autoincrement())
   nume      String
@@ -46,25 +50,25 @@ model EbookLead {
   createdAt DateTime @default(now())
 }
 
-// 4. Tabel pentru TEXTE WEBSITE (Editor)
+// 4. Tabel EDITOR WEBSITE
 model SiteContent {
-  id          Int    @id @default(autoincrement())
-  sectionKey  String @unique // ex: "home_hero"
-  content     Json   // Salvăm tot conținutul secțiunii ca un obiect JSON
-  updatedAt   DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  sectionKey String   @unique
+  content    Json
+  updatedAt  DateTime @updatedAt
 }
 
-// 5. Tabel pentru ADMIN (Login)
+// 5. ADMIN
 model Admin {
   id       Int    @id @default(autoincrement())
   email    String @unique
-  password String // Aici vom salva parola (ideal criptată, momentan o punem simplă)
+  password String
 }
 
-// 6. Logăm deciziile utilizatorilor legate de Cookies
+// 6. COOKIES
 model CookieLog {
   id        Int      @id @default(autoincrement())
-  visitorId String   // Un ID unic generat pentru vizitator
-  accepted  Boolean  // true = a acceptat, false = a refuzat
+  visitorId String
+  accepted  Boolean
   createdAt DateTime @default(now())
 }

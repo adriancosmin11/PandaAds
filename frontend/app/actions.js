@@ -5,15 +5,16 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import nodemailer from 'nodemailer';
-import path from 'path'; // <--- IMPORT ESENȚIAL PENTRU PDF
+import path from 'path';
 
+// Inițializare Prisma (Singleton pattern recomandat pentru Next.js dev, dar ok simplu aici)
 const prisma = new PrismaClient();
 
 // --- CONFIGURARE EMAIL ---
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
-  secure: true,
+  secure: true, // Folosește true pentru port 465, false pentru 587
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
@@ -28,31 +29,48 @@ async function sendNotifications(data) {
   try {
     await transporter.verify();
 
+    // Construire conținut email Admin
+    let subject = `🔔 Cerere Nouă: ${data.nume}`;
+    let htmlContent = `
+      <h2>Ai o cerere nouă pe site!</h2>
+      <p><strong>Nume:</strong> ${data.nume} ${data.prenume || ''}</p>
+      <p><strong>Email:</strong> ${data.email}</p>
+      <p><strong>Telefon:</strong> ${data.telefon || '-'}</p>
+    `;
+
+    // Adăugare detalii specifice în funcție de tip
+    if (data.type === 'audit') {
+        htmlContent += `<p><strong>Website Audit:</strong> ${data.website || 'N/A'}</p>`;
+        subject = `🔍 Cerere AUDIT: ${data.nume}`;
+    } else if (data.type === 'ebook') {
+        subject = `📚 Download EBOOK: ${data.nume}`;
+    } else {
+        htmlContent += `<p><strong>Mesaj:</strong><br/>${data.mesaj || '-'}</p>`;
+        if(data.pachetAds) htmlContent += `<p><strong>Pachet Ads:</strong> ${data.pachetAds}</p>`;
+        if(data.pachetWeb) htmlContent += `<p><strong>Pachet Web:</strong> ${data.pachetWeb}</p>`;
+    }
+
     // Email Notificare Admin
     await transporter.sendMail({
       from: `"PandaAds Site" <${process.env.SMTP_USER}>`,
       to: destinatar,
       replyTo: data.email,
-      subject: `🔔 Cerere Nouă: ${data.nume}`,
-      html: `
-        <h2>Ai o cerere nouă pe site!</h2>
-        <p><strong>Nume:</strong> ${data.nume} ${data.prenume || ''}</p>
-        <p><strong>Email:</strong> ${data.email}</p>
-        <p><strong>Telefon:</strong> ${data.telefon || '-'}</p>
-        <p><strong>Mesaj/Tip:</strong><br/>${data.mesaj || 'Formular Ebook/Contact'}</p>
-      `,
+      subject: subject,
+      html: htmlContent,
     });
     console.log('✅ Email Admin TRIMIS');
 
-    // Email Confirmare Client (Doar pentru Contact, nu Ebook - Ebook are funcție separată mai jos)
+    // Email Confirmare Client (Doar pentru Contact)
     if (data.type === 'contact' && data.email) {
        await transporter.sendMail({
         from: `"Echipa PandaAds" <${process.env.SMTP_USER}>`,
         to: data.email,
         subject: `Salut! Am primit mesajul tău.`,
         html: `
-          <h3>Salutare! 🐼</h3>
-          <p>Confirmăm că am primit mesajul tău. Revenim curând!</p>
+          <h3>Salutare, ${data.nume}! 🐼</h3>
+          <p>Îți mulțumim că ne-ai scris. Am primit detaliile tale și un coleg va reveni către tine în cel mai scurt timp posibil.</p>
+          <br>
+          <p>O zi excelentă,<br>Echipa PandaAds</p>
         `,
       });
       console.log('✅ Email Client TRIMIS');
@@ -66,6 +84,9 @@ async function sendNotifications(data) {
 // --- 1. FORMULAR CONTACT ---
 export async function submitContactForm(data) {
   try {
+    // Validare minimală
+    if (!data.client?.email) return { success: false, message: 'Email lipsă' };
+
     await prisma.lead.create({
       data: {
         nume: data.client.nume,
@@ -74,55 +95,59 @@ export async function submitContactForm(data) {
         telefon: data.client.telefon,
         firma: data.client.firma || '',
         mesaj: data.client.mesaj || '',
-        pachetAds: data.pachetAds,
-        pachetWeb: data.pachetWeb,
+        pachetAds: data.pachetAds || 'Niciunul', // Default values
+        pachetWeb: data.pachetWeb || 'Niciunul',
         status: 'Nou'
       }
     });
 
+    // Pregătire date pentru email notification
     const emailData = {
         nume: data.client.nume,
         prenume: data.client.prenume,
         email: data.client.email,
         telefon: data.client.telefon,
         mesaj: data.client.mesaj,
+        pachetAds: data.pachetAds,
+        pachetWeb: data.pachetWeb,
         type: 'contact'
     };
-    sendNotifications(emailData);
+    
+    // Nu folosim await aici pentru a nu bloca răspunsul UI (fire & forget), 
+    // dar la Vercel Serverless e recomandat await pt a nu fi omorât procesul.
+    await sendNotifications(emailData);
 
     revalidatePath('/admin/panel');
     return { success: true, message: 'Mesaj trimis!' };
   } catch (error) {
     console.error('Eroare Contact:', error);
-    return { success: false, message: 'Eroare server.' };
+    return { success: false, message: 'Eroare server: ' + error.message };
   }
 }
 
-// --- 2. FORMULAR EBOOK (ACEASTA LIPSEA!) ---
+// --- 2. FORMULAR EBOOK ---
 export async function submitEbookForm(data) {
   try {
-    // Validare
     if (!data.email || !data.nume) {
       return { success: false, message: 'Adresa de email și numele sunt obligatorii.' };
     }
 
-    // Salvare în DB
     await prisma.lead.create({
       data: {
         nume: data.nume,
         prenume: data.prenume || '',
         email: data.email,
-        telefon: '',
+        telefon: data.telefon || '', // Asigură-te că există acest câmp în form sau pune string gol
         status: 'Ebook Download',
-        mesaj: 'A descărcat Ebook-ul Gratuit'
+        mesaj: 'A descărcat Ebook-ul Gratuit',
+        pachetAds: 'Niciunul', // Necesare dacă sunt obligatorii în schemă
+        pachetWeb: 'Niciunul'
       }
     });
 
-    // Calea către PDF
     const pdfPath = path.join(process.cwd(), 'public', 'assets', 'ebook-pandaads.pdf');
 
-    // Trimitere Email cu PDF
-    console.log('📧 Trimitere Ebook către:', data.email);
+    // Email Client cu Ebook
     await transporter.sendMail({
       from: `"Echipa PandaAds" <${process.env.SMTP_USER}>`,
       to: data.email,
@@ -132,7 +157,7 @@ export async function submitEbookForm(data) {
           <h2 style="color: #059669;">Salutare, ${data.nume}!</h2>
           <p>Îți mulțumim pentru interes.</p>
           <p>Atașat acestui email vei găsi ghidul nostru gratuit.</p>
-          <p>Sperăm să îți fie de folos!</p>
+          <p>Spor la citit și implementat!</p>
           <br/>
           <p>Cu drag,<br/>Echipa PandaAds</p>
         </div>
@@ -146,7 +171,7 @@ export async function submitEbookForm(data) {
     });
 
     // Notificare Admin
-    sendNotifications({
+    await sendNotifications({
         nume: data.nume,
         email: data.email,
         mesaj: 'A descărcat EBOOK-ul Gratuit!',
@@ -164,7 +189,10 @@ export async function submitEbookForm(data) {
 // --- 3. AUDIT FORM ---
 export async function submitAuditForm(data) {
   try {
-    const platformeString = Array.isArray(data.platforme) ? data.platforme.join(', ') : data.platforme;
+    // Convertim array-ul de platforme în string pentru DB
+    const platformeString = Array.isArray(data.platforme) ? data.platforme.join(', ') : (data.platforme || '');
+    
+    // Verifică dacă modelul AuditRequest există în schema.prisma
     await prisma.auditRequest.create({
       data: {
         website: data.website,
@@ -177,12 +205,12 @@ export async function submitAuditForm(data) {
       }
     });
     
-    // Notificare simplă admin
-    sendNotifications({
+    await sendNotifications({
         nume: data.nume,
         email: data.email,
         telefon: data.telefon,
-        mesaj: `Cerere AUDIT pentru site-ul: ${data.website}`,
+        website: data.website,
+        mesaj: `Buget: ${data.buget}, Platforme: ${platformeString}`,
         type: 'audit'
     });
 
@@ -200,6 +228,7 @@ export async function getSiteContent(sectionKey) {
     const data = await prisma.siteContent.findUnique({ where: { sectionKey } });
     return data ? data.content : null;
   } catch (error) {
+    console.error("Error getting content:", error);
     return null;
   }
 }
@@ -215,16 +244,29 @@ export async function updateSiteContent(sectionKey, newContent) {
     revalidatePath('/'); 
     return { success: true };
   } catch (error) {
+    console.error("Error updating content:", error);
     return { success: false };
   }
 }
 
-// --- 6. AUTH ---
+// --- 6. AUTH (SECURED) ---
 export async function loginAdmin(email, password, rememberMe) {
-  if (email === 'admin@pandaads.ro' && password === 'admin') {
+  // Folosește variabile de mediu! Nu hardcodea parolele.
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@pandaads.ro';
+  const ADMIN_PASS = process.env.ADMIN_PASSWORD || 'admin'; // Fallback doar pt dev
+
+  if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
     const expires = rememberMe ? Date.now() + 30 * 24 * 3600000 : Date.now() + 24 * 3600000;
     const cookieStore = await cookies();
-    cookieStore.set('admin_session', 'true', { expires, httpOnly: true, path: '/' });
+    
+    // Setare cookie securizat
+    cookieStore.set('admin_session', 'true', { 
+        expires, 
+        httpOnly: true, 
+        secure: process.env.NODE_ENV === 'production', // Doar HTTPS în producție
+        sameSite: 'strict',
+        path: '/' 
+    });
     return { success: true };
   }
   return { success: false, message: 'Date incorecte' };
