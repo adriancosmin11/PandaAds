@@ -47,7 +47,7 @@ const ADS_PACKAGES_DETAILS = {
   }
 };
 
-// --- DATA: Detaliile Pachetelor WEB (NOU) ---
+// --- DATA: Detaliile Pachetelor WEB ---
 const WEB_PACKAGES_DETAILS = {
   START: {
     title: "DESPRE PACHETUL START:",
@@ -93,7 +93,6 @@ const ADS_PACKAGES = [
   { id: 'PLATINIUM', name: 'PLATINIUM Ads (1200€+)' },
 ];
 
-// --- ACTUALIZAT: Numele planurilor corespund acum cu WebPricing ---
 const WEB_PACKAGES = [
   { id: 'START', name: 'START (Landing Page - 990€)' },
   { id: 'BUSINESS', name: 'BUSINESS (Site Prezentare - 1990€)' },
@@ -136,7 +135,7 @@ function CheckoutContent() {
   useEffect(() => {
     const service = searchParams.get('service');
     const plan = searchParams.get('plan');
-    const details = searchParams.get('details'); // Preluăm și detalii extra din WebAdvantages
+    const details = searchParams.get('details');
 
     if (details) {
        setFormData(prev => ({...prev, mesaj: `Salut! Sunt interesat de: ${decodeURIComponent(details)}...`}));
@@ -146,15 +145,12 @@ function CheckoutContent() {
       const decodedPlan = decodeURIComponent(plan);
       
       if (service === 'ads') {
-        // Căutare flexibilă (exact match sau includes)
         const exists = ADS_PACKAGES.find(p => p.id === decodedPlan || p.id === plan);
         if (exists) setSelectedAds(exists.id);
       } 
       else if (service === 'web') {
         const exists = WEB_PACKAGES.find(p => p.id === decodedPlan || p.id === plan);
-        if (exists) {
-            setSelectedWeb(exists.id);
-        }
+        if (exists) setSelectedWeb(exists.id);
       }
     }
   }, [searchParams]);
@@ -188,11 +184,9 @@ function CheckoutContent() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // --- LOGICĂ NOUĂ PENTRU DETALII ---
-  // Afișăm detaliile pentru pachetul selectat (prioritate ADS, apoi WEB)
-  const currentPackageDetails = 
-    (selectedAds && ADS_PACKAGES_DETAILS[selectedAds]) || 
-    (selectedWeb && WEB_PACKAGES_DETAILS[selectedWeb]);
+  // --- LOGICĂ ACTUALIZATĂ: Permite afișarea detaliilor pentru AMBELE pachete dacă sunt selectate ---
+  const adsDetails = selectedAds && ADS_PACKAGES_DETAILS[selectedAds];
+  const webDetails = selectedWeb && WEB_PACKAGES_DETAILS[selectedWeb];
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
@@ -252,8 +246,8 @@ function CheckoutContent() {
                         <input required name="telefon" value={formData.telefon} onChange={handleChange} type="tel" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 outline-none bg-gray-50" placeholder={pageData.contact_phone} />
                     </div>
                     <div className="md:col-span-2">
-                         <label className="block text-sm font-medium text-gray-700 mb-2">Nume Firmă (Opțional)</label>
-                         <input name="firma" value={formData.firma} onChange={handleChange} type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 outline-none bg-gray-50" placeholder="Firma Ta SRL" />
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Nume Firmă (Opțional)</label>
+                          <input name="firma" value={formData.firma} onChange={handleChange} type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 outline-none bg-gray-50" placeholder="Firma Ta SRL" />
                     </div>
                     <div className="md:col-span-2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Mesaj / Detalii</label>
@@ -278,10 +272,10 @@ function CheckoutContent() {
                     <div className="relative">
                         <select 
                             value={selectedAds} 
-                            onChange={(e) => { setSelectedAds(e.target.value); setSelectedWeb(''); }} // Reset Web cand alegi Ads (opțional)
+                            onChange={(e) => setSelectedAds(e.target.value)} // --- MODIFICAT: Nu mai resetează Web
                             className="w-full p-4 rounded-xl border appearance-none outline-none cursor-pointer bg-gray-50 border-gray-200 focus:border-emerald-500 transition-colors font-medium"
                         >
-                            <option value="">-- Alege Pachetul --</option>
+                            <option value="">-- Neselectat --</option>
                             {ADS_PACKAGES.map(pkg => (<option key={pkg.id} value={pkg.id}>{pkg.name}</option>))}
                         </select>
                     </div>
@@ -294,7 +288,7 @@ function CheckoutContent() {
                     <div className="relative">
                         <select 
                             value={selectedWeb} 
-                            onChange={(e) => { setSelectedWeb(e.target.value); setSelectedAds(''); }} // Reset Ads cand alegi Web (opțional)
+                            onChange={(e) => setSelectedWeb(e.target.value)} // --- MODIFICAT: Nu mai resetează Ads
                             className="w-full p-4 rounded-xl border appearance-none outline-none cursor-pointer bg-gray-50 border-gray-200 focus:border-emerald-500 transition-colors font-medium"
                         >
                             <option value="">-- Neselectat --</option>
@@ -303,26 +297,51 @@ function CheckoutContent() {
                     </div>
                 </div>
 
-                {/* --- ZONA DINAMICĂ DE DETALII (ADS SAU WEB) --- */}
-                {currentPackageDetails && (
-                    <div className={`mb-8 p-5 rounded-2xl border ${currentPackageDetails.bgColor} ${currentPackageDetails.borderColor} animate-in fade-in slide-in-from-top-4 duration-500`}>
-                        <h4 className={`text-xs font-black uppercase tracking-widest mb-3 ${currentPackageDetails.accentColor}`}>
-                           {currentPackageDetails.title}
+                {/* --- ZONA DINAMICĂ DE DETALII (ADS) --- */}
+                {adsDetails && (
+                    <div className={`mb-4 p-5 rounded-2xl border ${adsDetails.bgColor} ${adsDetails.borderColor} animate-in fade-in slide-in-from-top-4 duration-500`}>
+                        <h4 className={`text-xs font-black uppercase tracking-widest mb-3 ${adsDetails.accentColor}`}>
+                           {adsDetails.title}
                         </h4>
                         
                         <ul className="space-y-2 mb-4">
-                           {currentPackageDetails.points.map((point, i) => (
+                           {adsDetails.points.map((point, i) => (
                                <li key={i} className="flex items-start gap-2 text-sm text-gray-700 leading-snug">
-                                   <div className={`mt-1 min-w-[6px] h-1.5 rounded-full ${currentPackageDetails.accentColor.replace('text-', 'bg-')}`}></div>
+                                   <div className={`mt-1 min-w-[6px] h-1.5 rounded-full ${adsDetails.accentColor.replace('text-', 'bg-')}`}></div>
                                    {point}
                                </li>
                            ))}
                         </ul>
 
                         <div className="flex gap-2 items-start bg-white/60 p-2.5 rounded-lg border border-white/50">
-                            <Lightbulb size={16} className={`${currentPackageDetails.accentColor} shrink-0 mt-0.5`} />
+                            <Lightbulb size={16} className={`${adsDetails.accentColor} shrink-0 mt-0.5`} />
                             <p className="text-xs text-gray-600 leading-snug italic">
-                                {currentPackageDetails.tip}
+                                {adsDetails.tip}
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+                {/* --- ZONA DINAMICĂ DE DETALII (WEB) --- */}
+                {webDetails && (
+                    <div className={`mb-8 p-5 rounded-2xl border ${webDetails.bgColor} ${webDetails.borderColor} animate-in fade-in slide-in-from-top-4 duration-500`}>
+                        <h4 className={`text-xs font-black uppercase tracking-widest mb-3 ${webDetails.accentColor}`}>
+                           {webDetails.title}
+                        </h4>
+                        
+                        <ul className="space-y-2 mb-4">
+                           {webDetails.points.map((point, i) => (
+                               <li key={i} className="flex items-start gap-2 text-sm text-gray-700 leading-snug">
+                                   <div className={`mt-1 min-w-[6px] h-1.5 rounded-full ${webDetails.accentColor.replace('text-', 'bg-')}`}></div>
+                                   {point}
+                               </li>
+                           ))}
+                        </ul>
+
+                        <div className="flex gap-2 items-start bg-white/60 p-2.5 rounded-lg border border-white/50">
+                            <Lightbulb size={16} className={`${webDetails.accentColor} shrink-0 mt-0.5`} />
+                            <p className="text-xs text-gray-600 leading-snug italic">
+                                {webDetails.tip}
                             </p>
                         </div>
                     </div>

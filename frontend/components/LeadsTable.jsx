@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Trash2, Eye, CheckCircle, Clock, AlertCircle, MessageSquare, Save, X } from "lucide-react";
-// You'll need to create server actions for these, or API endpoints.
-// For now, I'll simulate the actions.
-import { deleteLead, updateLeadStatus, updateLeadNotes } from "../app/adminActions"; 
+import { Trash2, MessageSquare, Save, X, FileText } from "lucide-react";
+// Asigură-te că calea către actions este corectă (verifică folderul app/actions)
+import { deleteLead, updateLeadStatus, updateLeadNotes } from "../app/adminActions";
+import OfferModal from "./OfferModal"; // <--- Importăm Modalul creat anterior
 
 const STATUS_OPTIONS = {
   NEW: { label: "Nou", color: "bg-emerald-100 text-emerald-700" },
@@ -15,6 +15,11 @@ const STATUS_OPTIONS = {
 
 export default function LeadsTable({ initialLeads }) {
   const [leads, setLeads] = useState(initialLeads);
+  
+  // State pentru Modal Ofertă
+  const [selectedLeadForOffer, setSelectedLeadForOffer] = useState(null);
+
+  // State pentru Notițe
   const [editingNoteId, setEditingNoteId] = useState(null);
   const [noteText, setNoteText] = useState("");
 
@@ -22,7 +27,6 @@ export default function LeadsTable({ initialLeads }) {
   const handleDelete = async (id) => {
     if (!confirm("Sigur vrei să ștergi acest lead? Această acțiune este ireversibilă.")) return;
 
-    // Optimistic Update
     const previousLeads = [...leads];
     setLeads((prev) => prev.filter((l) => l.id !== id));
 
@@ -31,13 +35,12 @@ export default function LeadsTable({ initialLeads }) {
       if (!result.success) throw new Error(result.message);
     } catch (error) {
       alert("Eroare la ștergere: " + error.message);
-      setLeads(previousLeads); // Rollback
+      setLeads(previousLeads);
     }
   };
 
   // --- UPDATE STATUS ---
   const handleStatusChange = async (id, newStatus) => {
-    // Optimistic Update
     setLeads((prev) =>
       prev.map((l) => (l.id === id ? { ...l, status: newStatus } : l))
     );
@@ -52,11 +55,10 @@ export default function LeadsTable({ initialLeads }) {
   // --- NOTES SYSTEM ---
   const openNoteEditor = (lead) => {
     setEditingNoteId(lead.id);
-    setNoteText(lead.notes || ""); // Presupunem că există câmpul 'notes' în DB
+    setNoteText(lead.notes || "");
   };
 
   const saveNote = async (id) => {
-    // Optimistic Update
     setLeads((prev) =>
       prev.map((l) => (l.id === id ? { ...l, notes: noteText } : l))
     );
@@ -71,6 +73,8 @@ export default function LeadsTable({ initialLeads }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+      
+      {/* --- HEADER TABEL --- */}
       <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
         <h2 className="text-lg font-bold text-gray-900">Cererile Recente</h2>
         <span className="text-xs font-medium text-gray-500 bg-white border border-gray-200 px-3 py-1 rounded-full">
@@ -78,6 +82,7 @@ export default function LeadsTable({ initialLeads }) {
         </span>
       </div>
 
+      {/* --- BODY TABEL --- */}
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm text-gray-600">
           <thead className="bg-gray-50 text-xs uppercase font-bold text-gray-500">
@@ -94,45 +99,47 @@ export default function LeadsTable({ initialLeads }) {
             {leads.map((lead) => (
               <tr key={lead.id} className="hover:bg-gray-50 transition-colors group">
                 
-                {/* NUME */}
+                {/* 1. NUME */}
                 <td className="px-6 py-4 align-top">
                   <div className="font-bold text-gray-900">{lead.nume} {lead.prenume}</div>
                   <div className="text-xs text-gray-400 mt-0.5">{lead.firma || '-'}</div>
                   <div className="text-xs text-gray-300 mt-2">{new Date(lead.createdAt).toLocaleDateString('ro-RO')}</div>
                 </td>
 
-                {/* PACHETE */}
+                {/* 2. PACHETE */}
                 <td className="px-6 py-4 align-top">
                   <div className="flex flex-col gap-1.5">
-                    {lead.pachetAds !== 'Niciunul' && (
+                    {lead.pachetAds && lead.pachetAds !== 'Niciunul' && (
                       <span className="bg-blue-50 text-blue-700 border border-blue-100 px-2 py-1 rounded text-xs font-semibold w-fit">
                         Ads: {lead.pachetAds}
                       </span>
                     )}
-                    {lead.pachetWeb !== 'Niciunul' && (
+                    {lead.pachetWeb && lead.pachetWeb !== 'Niciunul' && (
                       <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-1 rounded text-xs font-semibold w-fit">
                         Web: {lead.pachetWeb}
                       </span>
                     )}
-                    {lead.pachetAds === 'Niciunul' && lead.pachetWeb === 'Niciunul' && (
-                       <span className="text-gray-400 text-xs italic">Niciun pachet selectat</span>
+                    {(!lead.pachetAds || lead.pachetAds === 'Niciunul') && (!lead.pachetWeb || lead.pachetWeb === 'Niciunul') && (
+                       <span className="text-gray-400 text-xs italic">Niciun pachet</span>
                     )}
                   </div>
                 </td>
 
-                {/* CONTACT (Quick Actions) */}
+                {/* 3. CONTACT */}
                 <td className="px-6 py-4 align-top">
                   <div className="flex flex-col gap-1">
                     <a href={`mailto:${lead.email}`} className="text-gray-600 hover:text-blue-600 hover:underline transition-colors truncate max-w-[180px]" title="Trimite Email">
                       {lead.email}
                     </a>
-                    <a href={`https://wa.me/${lead.telefon?.replace(/[^0-9]/g, '')}`} target="_blank" className="text-xs text-gray-400 hover:text-green-600 hover:font-bold transition-colors flex items-center gap-1" title="Deschide WhatsApp">
-                       {lead.telefon}
-                    </a>
+                    {lead.telefon && (
+                      <a href={`https://wa.me/${lead.telefon.replace(/[^0-9]/g, '')}`} target="_blank" className="text-xs text-gray-400 hover:text-green-600 hover:font-bold transition-colors flex items-center gap-1">
+                        {lead.telefon}
+                      </a>
+                    )}
                   </div>
                 </td>
 
-                {/* STATUS SELECTOR */}
+                {/* 4. STATUS */}
                 <td className="px-6 py-4 align-top">
                   <select
                     value={lead.status || "NEW"}
@@ -149,7 +156,7 @@ export default function LeadsTable({ initialLeads }) {
                   </select>
                 </td>
 
-                {/* INTERNAL NOTES */}
+                {/* 5. NOTIȚE */}
                 <td className="px-6 py-4 align-top">
                   {editingNoteId === lead.id ? (
                     <div className="space-y-2 animate-in fade-in zoom-in duration-200">
@@ -158,7 +165,7 @@ export default function LeadsTable({ initialLeads }) {
                         rows={3}
                         value={noteText}
                         onChange={(e) => setNoteText(e.target.value)}
-                        placeholder="Ex: Discutat azi, revine cu banii luni..."
+                        placeholder="Ex: Discutat azi, revine luni..."
                         autoFocus
                       />
                       <div className="flex justify-end gap-2">
@@ -179,15 +186,28 @@ export default function LeadsTable({ initialLeads }) {
                   )}
                 </td>
 
-                {/* DELETE ACTION */}
+                {/* 6. ACȚIUNI (OFERTĂ + DELETE) */}
                 <td className="px-6 py-4 text-right align-top">
-                  <button
-                    onClick={() => handleDelete(lead.id)}
-                    className="p-2 text-gray-300 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
-                    title="Șterge definitiv"
-                  >
-                    <Trash2 size={16} />
-                  </button>
+                   <div className="flex justify-end gap-2">
+                      
+                      {/* BUTON GENERARE PDF */}
+                      <button 
+                        onClick={() => setSelectedLeadForOffer(lead)}
+                        className="p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                        title="Generează Ofertă PDF"
+                      >
+                        <FileText size={18} />
+                      </button>
+
+                      {/* BUTON ȘTERGERE */}
+                      <button
+                        onClick={() => handleDelete(lead.id)}
+                        className="p-2 text-gray-300 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                        title="Șterge definitiv"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                   </div>
                 </td>
 
               </tr>
@@ -198,6 +218,15 @@ export default function LeadsTable({ initialLeads }) {
           </tbody>
         </table>
       </div>
+
+      {/* --- INTEGRAT MODAL OFERTĂ --- */}
+      <OfferModal 
+        isOpen={!!selectedLeadForOffer} 
+        onClose={() => setSelectedLeadForOffer(null)} 
+        lead={selectedLeadForOffer}
+        logoUrl="/assets/logo-v2.jpg" 
+      />
+      
     </div>
   );
 }
