@@ -87,22 +87,9 @@ const CaseStudy = () => {
       author: "Victor Stanciu",
       company: "Presto Pizza",
       role: "Administrator",
-      logo: "/assets/logo.jpeg",
+      logo: "/assets/logo-presto.png",
       chart: [15, 35, 55, 75, 95, 120],
       metric: "Orders"
-    },
-    {
-      id: 5,
-      type: "Home & Deco",
-      roi: "+195%",
-      description: "Lansare colecție sezonieră",
-      testimonial: "Am lucrat cu ei pentru o campanie punctuală de Black Friday și am rămas parteneri. Au o structură de raportare foarte clară, nu ne pierdem în detalii tehnice inutile.",
-      author: "Diana Cojocaru",
-      company: "Mobexpert",
-      role: "Digital Marketing Coordinator",
-      logo: "/assets/Logo-Mobexpert.png",
-      chart: [30, 42, 58, 72, 88, 100],
-      metric: "Revenue"
     }
   ];
 
@@ -214,8 +201,10 @@ const CaseStudy = () => {
                     </div>
 
                     {/* Partea Dreaptă: Testimonial */}
-                    <div className="p-8 md:p-12 flex flex-col justify-center bg-white/60 min-h-[250px] md:min-h-auto">
-                        <div className="flex gap-1 text-yellow-400 mb-6">
+                    <div className="p-8 md:p-12 flex flex-col justify-center bg-white/60 min-h-[250px] md:min-h-auto relative">
+                      {/* Company logo will be rendered inline with author/role below */}
+
+                      <div className="flex gap-1 text-yellow-400 mb-6">
                             {[1, 2, 3, 4, 5].map((i) => (
                             <Star key={i} fill="currentColor" size={20} />
                             ))}
@@ -224,27 +213,28 @@ const CaseStudy = () => {
                             "{study.testimonial}"
                         </blockquote>
 
-                        <div className="flex items-center gap-4 border-t pt-6 border-gray-100">
-                            
-                            {/* LOGO CONTAINER */}
-                            <div className="relative w-16 h-16 bg-white rounded-full border border-gray-200 shadow-sm overflow-hidden p-2 flex items-center justify-center shrink-0">
-                                <Image 
-                                    src={study.logo} 
-                                    alt={`Logo ${study.company}`}
-                                    fill
-                                    className="object-contain p-2"
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-t pt-6 border-gray-100">
+                          <div>
+                            <div className="font-bold text-gray-900">{study.author}</div>
+                            <div className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                              {study.role}
+                            </div>
+                            <div className="text-sm text-emerald-600 font-bold">
+                              {study.company}
+                            </div>
+                          </div>
+
+                          <div className="flex-shrink-0">
+                            <div className="w-20 h-20 md:w-24 md:h-24 bg-white rounded-lg border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden p-2">
+                                <Image
+                                  src={study.logo}
+                                  alt={`Logo ${study.company}`}
+                                  width={80}
+                                  height={80}
+                                  className="object-contain"
                                 />
-                            </div>
-                            
-                            <div>
-                                <div className="font-bold text-gray-900">{study.author}</div>
-                                <div className="text-xs text-gray-500 font-medium uppercase tracking-wide">
-                                    {study.role}
-                                </div>
-                                <div className="text-sm text-emerald-600 font-bold">
-                                    {study.company}
-                                </div>
-                            </div>
+                              </div>
+                          </div>
                         </div>
                     </div>
                 </motion.div>

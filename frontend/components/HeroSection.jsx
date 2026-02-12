@@ -37,7 +37,7 @@ const HeroSection = ({ data }) => {
           alt="Background Pattern"
           fill
           className="object-cover opacity-60"
-          priority
+          priority={true}
         />
         <div className="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-white via-white/90 to-transparent"></div>
       </div>
@@ -137,7 +137,8 @@ const HeroSection = ({ data }) => {
               alt="Panda Marketing Mascota"
               fill
               className="object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
-              priority
+              priority = {true}
+              fetchPriority="high"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
