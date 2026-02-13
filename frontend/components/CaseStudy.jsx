@@ -127,7 +127,7 @@ const CaseStudy = () => {
   };
 
   return (
-    <section className="relative py-20 pb-60 overflow-hidden bg-white">
+    <section className="relative py-20 pb-80 overflow-hidden bg-white">
       {/* --- BACKGROUND WAVES --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <Image

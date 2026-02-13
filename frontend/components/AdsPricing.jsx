@@ -106,7 +106,7 @@ export default function AdsPricing({ data }) {
               className={`relative flex flex-col p-8 rounded-3xl transition-all duration-300 ${
                 plan.popular
                   ? "bg-white border-2 border-emerald-500 shadow-2xl scale-105 z-10"
-                  : "bg-white/80 backdrop-blur-sm border border-gray-200 hover:border-emerald-300 hover:shadow-xl"
+                  : "bg-white/80 backdrop-blur-sm border border-gray-600 hover:border-emerald-300 hover:shadow-xl"
               }`}
             >
               {/* Badge pentru Popular */}
