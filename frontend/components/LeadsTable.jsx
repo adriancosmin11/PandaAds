@@ -72,20 +72,20 @@ export default function LeadsTable({ initialLeads }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
       
       {/* --- HEADER TABEL --- */}
-      <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-        <h2 className="text-lg font-bold text-gray-900">Cererile Recente</h2>
-        <span className="text-xs font-medium text-gray-500 bg-white border border-gray-200 px-3 py-1 rounded-full">
+      <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white">Cererile Recente</h2>
+        <span className="text-xs font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-3 py-1 rounded-full">
           {leads.length} rezultate
         </span>
       </div>
 
       {/* --- BODY TABEL --- */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-gray-600">
-          <thead className="bg-gray-50 text-xs uppercase font-bold text-gray-500">
+        <table className="w-full text-left text-sm text-gray-600 dark:text-gray-300">
+          <thead className="bg-gray-50 dark:bg-gray-800/50 text-xs uppercase font-bold text-gray-500 dark:text-gray-400">
             <tr>
               <th className="px-6 py-4">Nume / Firmă</th>
               <th className="px-6 py-4">Pachete</th>
@@ -95,27 +95,27 @@ export default function LeadsTable({ initialLeads }) {
               <th className="px-6 py-4 text-right">Acțiuni</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
             {leads.map((lead) => (
-              <tr key={lead.id} className="hover:bg-gray-50 transition-colors group">
+              <tr key={lead.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group">
                 
                 {/* 1. NUME */}
                 <td className="px-6 py-4 align-top">
-                  <div className="font-bold text-gray-900">{lead.nume} {lead.prenume}</div>
+                  <div className="font-bold text-gray-900 dark:text-white">{lead.nume} {lead.prenume}</div>
                   <div className="text-xs text-gray-400 mt-0.5">{lead.firma || '-'}</div>
-                  <div className="text-xs text-gray-300 mt-2">{new Date(lead.createdAt).toLocaleDateString('ro-RO')}</div>
+                  <div className="text-xs text-gray-300 dark:text-gray-500 mt-2">{new Date(lead.createdAt).toLocaleDateString('ro-RO')}</div>
                 </td>
 
                 {/* 2. PACHETE */}
                 <td className="px-6 py-4 align-top">
                   <div className="flex flex-col gap-1.5">
                     {lead.pachetAds && lead.pachetAds !== 'Niciunul' && (
-                      <span className="bg-blue-50 text-blue-700 border border-blue-100 px-2 py-1 rounded text-xs font-semibold w-fit">
+                      <span className="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800 px-2 py-1 rounded text-xs font-semibold w-fit">
                         Ads: {lead.pachetAds}
                       </span>
                     )}
                     {lead.pachetWeb && lead.pachetWeb !== 'Niciunul' && (
-                      <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-1 rounded text-xs font-semibold w-fit">
+                      <span className="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800 px-2 py-1 rounded text-xs font-semibold w-fit">
                         Web: {lead.pachetWeb}
                       </span>
                     )}
@@ -128,7 +128,7 @@ export default function LeadsTable({ initialLeads }) {
                 {/* 3. CONTACT */}
                 <td className="px-6 py-4 align-top">
                   <div className="flex flex-col gap-1">
-                    <a href={`mailto:${lead.email}`} className="text-gray-600 hover:text-blue-600 hover:underline transition-colors truncate max-w-[180px]" title="Trimite Email">
+                    <a href={`mailto:${lead.email}`} className="text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:underline transition-colors truncate max-w-[180px]" title="Trimite Email">
                       {lead.email}
                     </a>
                     {lead.telefon && (
@@ -145,14 +145,15 @@ export default function LeadsTable({ initialLeads }) {
                     value={lead.status || "NEW"}
                     onChange={(e) => handleStatusChange(lead.id, e.target.value)}
                     className={`
-                      cursor-pointer text-xs font-bold py-1.5 px-3 rounded-lg border-0 ring-1 ring-inset ring-gray-200 outline-none focus:ring-2 focus:ring-emerald-500 w-full appearance-none
-                      ${STATUS_OPTIONS[lead.status || "NEW"]?.color || "bg-gray-100 text-gray-700"}
+                      cursor-pointer text-xs font-bold py-1.5 px-3 rounded-lg border-0 ring-1 ring-inset outline-none focus:ring-2 focus:ring-emerald-500 w-full appearance-none
+                      ${STATUS_OPTIONS[lead.status || "NEW"]?.color || "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"}
+                      ring-gray-200 dark:ring-gray-700
                     `}
                   >
-                    <option value="NEW">✨ Nou</option>
-                    <option value="SEEN">👀 Văzut</option>
-                    <option value="FOLLOW_UP">📞 Follow-up</option>
-                    <option value="CLOSED">✅ Închis</option>
+                    <option value="NEW" className="dark:bg-gray-900">✨ Nou</option>
+                    <option value="SEEN" className="dark:bg-gray-900">👀 Văzut</option>
+                    <option value="FOLLOW_UP" className="dark:bg-gray-900">📞 Follow-up</option>
+                    <option value="CLOSED" className="dark:bg-gray-900">✅ Închis</option>
                   </select>
                 </td>
 
@@ -161,7 +162,7 @@ export default function LeadsTable({ initialLeads }) {
                   {editingNoteId === lead.id ? (
                     <div className="space-y-2 animate-in fade-in zoom-in duration-200">
                       <textarea 
-                        className="w-full text-xs p-2 border rounded-md focus:ring-2 focus:ring-emerald-500 outline-none"
+                        className="w-full text-xs p-2 border border-gray-200 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-emerald-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
                         rows={3}
                         value={noteText}
                         onChange={(e) => setNoteText(e.target.value)}
@@ -169,17 +170,17 @@ export default function LeadsTable({ initialLeads }) {
                         autoFocus
                       />
                       <div className="flex justify-end gap-2">
-                         <button onClick={() => setEditingNoteId(null)} className="p-1 text-gray-400 hover:text-gray-600"><X size={14}/></button>
-                         <button onClick={() => saveNote(lead.id)} className="p-1 text-emerald-600 hover:text-emerald-700 bg-emerald-50 rounded"><Save size={14}/></button>
+                         <button onClick={() => setEditingNoteId(null)} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><X size={14}/></button>
+                         <button onClick={() => saveNote(lead.id)} className="p-1 text-emerald-600 hover:text-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 rounded"><Save size={14}/></button>
                       </div>
                     </div>
                   ) : (
                     <div 
                       onClick={() => openNoteEditor(lead)}
-                      className="group/note cursor-pointer min-h-[40px] p-2 rounded-md border border-transparent hover:border-gray-200 hover:bg-gray-50 transition-all relative"
+                      className="group/note cursor-pointer min-h-[40px] p-2 rounded-md border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all relative"
                     >
-                      <p className="text-xs text-gray-500 line-clamp-2">
-                        {lead.notes ? lead.notes : <span className="text-gray-300 italic">Adaugă notiță...</span>}
+                      <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+                        {lead.notes ? lead.notes : <span className="text-gray-300 dark:text-gray-600 italic">Adaugă notiță...</span>}
                       </p>
                       <MessageSquare size={12} className="absolute top-2 right-2 text-gray-300 opacity-0 group-hover/note:opacity-100" />
                     </div>
@@ -193,7 +194,7 @@ export default function LeadsTable({ initialLeads }) {
                       {/* BUTON GENERARE PDF */}
                       <button 
                         onClick={() => setSelectedLeadForOffer(lead)}
-                        className="p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                        className="p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all opacity-0 group-hover:opacity-100"
                         title="Generează Ofertă PDF"
                       >
                         <FileText size={18} />
@@ -202,7 +203,7 @@ export default function LeadsTable({ initialLeads }) {
                       {/* BUTON ȘTERGERE */}
                       <button
                         onClick={() => handleDelete(lead.id)}
-                        className="p-2 text-gray-300 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                        className="p-2 text-gray-300 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all opacity-0 group-hover:opacity-100"
                         title="Șterge definitiv"
                       >
                         <Trash2 size={16} />
