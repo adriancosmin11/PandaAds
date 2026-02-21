@@ -336,17 +336,15 @@ export default function EditorPage() {
                   <strong>Data publicării:</strong> {editingPost.date ? new Date(editingPost.date).toLocaleDateString('ro-RO') : 'Setată automat la salvare'}
                 </div>
 
-                <div className="flex gap-2 mt-3">
+                <div className="flex gap-3 mt-4">
                   <button onClick={() => {
                     const postToSave = { ...editingPost };
-                    // Dacă e articol nou, setează data curentă
                     if (!postToSave.id) {
                       postToSave.date = new Date().toISOString();
                     }
-                    // Dacă e edit, păstrează data originală
                     addOrUpdatePost(postToSave);
-                  }} className="px-4 py-2 bg-emerald-600 text-white rounded">Salvează articol</button>
-                  <button onClick={() => setEditingPost(null)} className="px-4 py-2 bg-gray-50 rounded">Anulează</button>
+                  }} className="px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold shadow">Salvează articol</button>
+                  <button onClick={() => setEditingPost(null)} className="px-6 py-3 bg-gray-50 dark:bg-gray-700 dark:text-gray-100 rounded-lg">Anulează</button>
                 </div>
               </div>
             )}
@@ -358,20 +356,20 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto pb-20">
+    <div className="max-w-7xl mx-auto pb-24 px-4 lg:px-0">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
         <div>
-            <h1 className="text-3xl font-bold text-gray-900">Editor Conținut</h1>
-            <p className="text-gray-500">Alege ce parte a site-ului vrei să modifici.</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Editor Conținut</h1>
+            <p className="text-gray-500 dark:text-gray-400">Alege ce parte a site-ului vrei să modifici.</p>
         </div>
         
         <div className="flex gap-3 items-center">
             <div className="relative">
-                <select 
-                    value={currentSection}
-                    onChange={(e) => setCurrentSection(e.target.value)}
-                    className="appearance-none bg-white border border-gray-300 text-gray-900 text-lg rounded-xl focus:ring-emerald-500 focus:border-emerald-500 block w-64 p-3 pr-8 font-bold cursor-pointer shadow-sm"
-                >
+              <select 
+                value={currentSection}
+                onChange={(e) => setCurrentSection(e.target.value)}
+                className="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-lg rounded-xl focus:ring-emerald-500 focus:border-emerald-500 block w-80 lg:w-96 p-3.5 pr-10 font-semibold cursor-pointer shadow-sm"
+              >
                     {SECTIONS.map((sec) => (
                         <option key={sec.id} value={sec.id}>{sec.label}</option>
                     ))}
@@ -390,11 +388,11 @@ export default function EditorPage() {
         </div>
       </div>
 
-      <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-200 min-h-[400px]">
+        <div className="bg-white dark:bg-gray-800 p-6 md:p-10 lg:p-12 rounded-3xl shadow-sm dark:shadow-none border border-gray-200 dark:border-gray-700 min-h-[420px]">
         {loading ? (
-            <div className="flex justify-center items-center h-40 text-gray-400">
-                <Loader2 className="animate-spin mr-2" /> Se încarcă datele...
-            </div>
+          <div className="flex justify-center items-center h-40 text-gray-400 dark:text-gray-400">
+            <Loader2 className="animate-spin mr-2" /> Se încarcă datele...
+          </div>
         ) : (
             renderForm()
         )}
@@ -409,7 +407,7 @@ const Input = ({ label, name, val, onChange }) => (
         <label className="block text-xs font-bold uppercase text-gray-500 mb-1 ml-1">{label}</label>
         <input 
             type="text" 
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all font-medium text-gray-800"
+      className="w-full px-5 py-3.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 dark:focus:ring-emerald-900 outline-none transition-all text-base font-medium text-gray-800 dark:text-gray-100"
             value={val || ''}
             onChange={(e) => onChange(name, e.target.value)}
         />
@@ -421,7 +419,7 @@ const TextArea = ({ label, name, val, onChange }) => (
         <label className="block text-xs font-bold uppercase text-gray-500 mb-1 ml-1">{label}</label>
         <textarea 
             rows="3"
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all font-medium text-gray-800"
+      className="w-full px-5 py-3.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 dark:focus:ring-emerald-900 outline-none transition-all text-base font-medium text-gray-800 dark:text-gray-100"
             value={val || ''}
             onChange={(e) => onChange(name, e.target.value)}
         />
@@ -433,7 +431,7 @@ const TextAreaLarge = ({ label, name, val, onChange }) => (
         <label className="block text-xs font-bold uppercase text-gray-500 mb-1 ml-1">{label}</label>
         <textarea 
             rows="10"
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all font-medium text-gray-800 font-mono text-sm"
+      className="w-full px-5 py-3.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 dark:focus:ring-emerald-900 outline-none transition-all text-base font-medium text-gray-800 dark:text-gray-100 font-mono text-sm"
             value={val || ''}
             onChange={(e) => onChange(name, e.target.value)}
             placeholder="Poți folosi HTML pentru formatare: <h2>Titlu</h2>, <p>Paragraf</p>, <strong>Bold</strong>, etc."

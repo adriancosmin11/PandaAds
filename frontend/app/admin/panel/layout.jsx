@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LayoutDashboard, Edit, LogOut, FileText } from 'lucide-react';
@@ -10,6 +10,7 @@ import ThemeToggle from '../../../components/ThemeToggle';
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   // --- 2. Funcția care te deloghează ---
   const handleLogout = async () => {
@@ -27,7 +28,7 @@ export default function AdminLayout({ children }) {
       <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950 font-sans transition-colors duration-300">
         
         {/* --- SIDEBAR (Meniul din Stânga) --- */}
-        <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 fixed h-full flex flex-col z-20 transition-colors duration-300">
+        <aside className={`fixed inset-y-0 top-0 left-0 bottom-0 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 min-h-screen flex flex-col z-40 transform transition-transform duration-200 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:static md:w-64`}>
           
           {/* Logo */}
           <div className="p-6 border-b border-gray-100 dark:border-gray-800">
@@ -69,8 +70,24 @@ export default function AdminLayout({ children }) {
           </div>
         </aside>
 
+        {/* overlay for mobile when sidebar open */}
+        {mobileOpen && (
+          <div onClick={() => setMobileOpen(false)} className="fixed inset-0 bg-black/40 z-30 md:hidden"></div>
+        )}
+
         {/* --- CONȚINUTUL PRINCIPAL (Dreapta) --- */}
-        <main className="flex-1 ml-64 p-8 dark:text-gray-100">
+        <main className="flex-1 md:ml-64 px-6 md:px-12 lg:px-20 py-6 md:py-10 dark:text-gray-100 min-h-screen">
+          {/* Mobile top bar */}
+          <div className="md:hidden flex items-center justify-between mb-4">
+            <button onClick={() => setMobileOpen(prev => !prev)} className="p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <div className="text-sm font-medium text-gray-700 dark:text-gray-200">Panel</div>
+            <div />
+          </div>
+
           {children}
         </main>
         
