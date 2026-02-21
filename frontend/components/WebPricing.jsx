@@ -18,7 +18,7 @@ const WebPricing = () => {
     {
       id: "start",
       name: "START",
-      price: "990 €",
+      price: "",
       badge: "Landing Page",
       description: "Ideal pentru campanii Ads și validare rapidă a ideilor.",
       icon: <Zap size={28} className="text-emerald-600" />,
@@ -40,7 +40,7 @@ const WebPricing = () => {
     {
       id: "business",
       name: "BUSINESS",
-      price: "1.990 €",
+      price: "",
       badge: "Best Value",
       description:
         "Site complet pentru companii care vor să domine piața locală.",
@@ -60,7 +60,7 @@ const WebPricing = () => {
     {
       id: "ecommerce",
       name: "E-COMMERCE",
-      price: "3.990 €",
+      price: "",
       badge: "Headless Shop",
       description:
         "Magazin online ultra-rapid. Experiență de cumpărare instantanee.",
