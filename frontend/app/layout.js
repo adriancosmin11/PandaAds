@@ -2,6 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import CookieBanner from "../components/CookieBanner";
 import FacebookPixel from "../components/FacebookPixel";
+import TikTokPixel from "../components/TikTokPixel";
 import { Suspense } from "react";
 import FloatingButtons from "../components/FloatingButtons";
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <Suspense fallback={null}>
           <FacebookPixel />
+          <TikTokPixel />
         </Suspense>
         {children}
         <CookieBanner />
