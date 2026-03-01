@@ -2,6 +2,7 @@ import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import Services from '../components/Services';
 import CaseStudy from '../components/CaseStudy';
+import LogoCarousel from '../components/LogoCarousel';
 import AdsPricing from '../components/AdsPricing'; // Verifică să fie calea corectă, fără .jsx explicit uneori
 import WebPricing from '../components/WebPricing';
 import Footer from '../components/Footer';
@@ -47,6 +48,7 @@ export default async function Home() {
       
       <div id="studii">
         <CaseStudy />
+        <LogoCarousel />
       </div>
 
       <div id="statistici">
