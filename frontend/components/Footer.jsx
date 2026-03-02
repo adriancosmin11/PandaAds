@@ -96,8 +96,8 @@ const Footer = () => {
         <div className="border-t border-gray-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
           <p>&copy; {new Date().getFullYear()} PandaAds Agency. Toate drepturile rezervate.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-gray-300">Termeni și Condiții</a>
-            <a href="#" className="hover:text-gray-300">Politica de Confidențialitate</a>
+            <Link href="/termeni-si-conditii" className="hover:text-gray-300">Termeni și Condiții</Link>
+            <Link href="/politica-de-confidentialitate" className="hover:text-gray-300">Politica de Confidențialitate</Link>
           </div>
         </div>
       </div>
