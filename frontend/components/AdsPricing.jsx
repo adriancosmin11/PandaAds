@@ -204,6 +204,13 @@ export default function AdsPricing({ data }) {
             </div>
             <Link
               href="/contact?details=Vreau Audit Gratuit"
+              onClick={() => {
+                if (typeof window !== 'undefined' && window.ttq) {
+                  window.ttq.track('ClickButton', { 
+                    content_name: 'Cere audit - Pricing Section',
+                  });
+                }
+              }}
               className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all hover:-translate-y-1 whitespace-nowrap flex items-center gap-2"
             >
               Cere Audit <ArrowRight size={18} />

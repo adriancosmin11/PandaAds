@@ -31,6 +31,11 @@ export default function AuditPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Date Audit:', formData);
+    if (typeof window !== 'undefined' && window.ttq) {
+      window.ttq.track('SubmitForm', {
+        content_name: 'Formular Audit Gratuit',
+      });
+    }
     alert('Cererea de audit a fost trimisă! Un specialist PandaAds te va contacta în 24h.');
   };
 
@@ -119,9 +124,9 @@ export default function AuditPage() {
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Website-ul Tău</label>
                     <div className="relative">
                         <input 
-                            type="url" 
+                            type="text" 
                             required
-                            placeholder="https://www.siteul-tau.ro" 
+                            placeholder="ex: www.siteul-tau.ro sau site.ro" 
                             className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all bg-gray-50/50"
                             value={formData.website}
                             onChange={(e) => setFormData({...formData, website: e.target.value})}

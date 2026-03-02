@@ -58,7 +58,16 @@ const Navbar = () => {
             </Link>
 
             {/* Buton AUDIT */}
-            <Link href="/audit">
+            <Link 
+              href="/audit"
+              onClick={() => {
+                if (typeof window !== 'undefined' && window.ttq) {
+                  window.ttq.track('ClickButton', {
+                    content_name: 'Cere audit - Desktop Navbar',
+                  });
+                }
+              }}
+            >
               <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-emerald-200 hover:-translate-y-0.5">
                 Audit Gratuit
               </button>
@@ -132,7 +141,18 @@ const Navbar = () => {
                 </button>
               </Link>
 
-              <Link href="/audit" onClick={() => setIsOpen(false)} className="w-[75%]">
+              <Link 
+                href="/audit" 
+                onClick={() => {
+                  setIsOpen(false);
+                  if (typeof window !== 'undefined' && window.ttq) {
+                    window.ttq.track('ClickButton', {
+                      content_name: 'Cere audit - Mobile Navbar',
+                    });
+                  }
+                }} 
+                className="w-[75%]"
+              >
                 <button className="w-full bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg shadow-emerald-200">
                   Cere Audit Gratuit
                 </button>

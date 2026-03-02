@@ -88,15 +88,15 @@ const WEB_PACKAGES_DETAILS = {
 };
 
 const ADS_PACKAGES = [
-  { id: 'SILVER', name: 'SILVER Ads (300-500€)' },
-  { id: 'GOLD', name: 'GOLD Ads (600-1000€)' },
-  { id: 'PLATINIUM', name: 'PLATINIUM Ads (1200€+)' },
+  { id: 'SILVER', name: 'SILVER Ads' /* 'SILVER Ads (300-500€)' */ },
+  { id: 'GOLD', name: 'GOLD Ads' /* 'GOLD Ads (600-1000€)' */ },
+  { id: 'PLATINIUM', name: 'PLATINIUM Ads' /* 'PLATINIUM Ads (1200€+)' */ },
 ];
 
 const WEB_PACKAGES = [
-  { id: 'START', name: 'START (Landing Page - 990€)' },
-  { id: 'BUSINESS', name: 'BUSINESS (Site Prezentare - 1990€)' },
-  { id: 'E-COMMERCE', name: 'E-COMMERCE (Magazin Online - 3990€)' },
+  { id: 'START', name: 'START' /* 'START (Landing Page - 990€)' */ },
+  { id: 'BUSINESS', name: 'BUSINESS' /* 'BUSINESS (Site Prezentare - 1990€)' */ },
+  { id: 'E-COMMERCE', name: 'E-COMMERCE' /* 'E-COMMERCE (Magazin Online - 3990€)' */ },
 ];
 
 function CheckoutContent() {
