@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Image from 'next/image';
-import { Search, BarChart3, Zap, ArrowRight, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Search, BarChart3, Zap, ArrowRight, CheckCircle, AlertTriangle, Loader2 } from 'lucide-react';
+import { submitAuditForm } from '../actions';
 
 export default function AuditPage() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,9 @@ export default function AuditPage() {
     email: '',
     telefon: ''
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const togglePlatform = (platform) => {
     setFormData(prev => {
@@ -28,202 +32,172 @@ export default function AuditPage() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
     console.log('Date Audit:', formData);
-    if (typeof window !== 'undefined' && window.ttq) {
-      window.ttq.track('SubmitForm', {
-        content_name: 'Formular Audit Gratuit',
-      });
+
+    try {
+      const result = await submitAuditForm(formData);
+      
+      if (result.success) {
+        if (typeof window !== 'undefined' && window.ttq) {
+          window.ttq.track('SubmitForm', {
+            content_name: 'Formular Audit Gratuit',
+          });
+        }
+        setIsSuccess(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        alert('❌ Eroare: ' + result.message);
+      }
+    } catch (error) {
+       alert('A apărut o eroare neașteptată.');
+    } finally {
+       setIsSubmitting(false);
     }
-    alert('Cererea de audit a fost trimisă! Un specialist PandaAds te va contacta în 24h.');
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans text-gray-800 flex flex-col">
+    <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
       <Navbar />
 
-      <main className="flex-grow relative pt-10 pb-20">
+      <div className="max-w-6xl mx-auto px-6 py-24 lg:py-32">
         
-        {/* --- BACKGROUND WAVES --- */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-            <Image 
-                src="/assets/background-waves.png" 
-                alt="Background Pattern" 
-                fill
-                className="object-cover opacity-20"
-            />
-             {/* Gradient Overlay pentru lizibilitate */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white via-white/80 to-emerald-50/30"></div>
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-4">Audit Gratuit</h1>
+          <p className="text-gray-600 max-w-2xl mx-auto">Completează datele de mai jos și află de ce reclamele tale nu convertesc așa cum ți-ai dori.</p>
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
-          {/* --- LEFT SIDE: SALES COPY --- */}
-          <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 px-4 py-1.5 rounded-full text-sm font-bold animate-pulse">
-                <Zap size={16} fill="currentColor" /> Audit Gratuit & Fără Obligații
+        {isSuccess ? (
+            <div className="bg-white p-12 rounded-3xl shadow-xl border border-emerald-100 text-center max-w-3xl mx-auto animate-in fade-in zoom-in duration-500">
+                <div className="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle className="text-emerald-600" size={48} />
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Cerere trimisă!</h2>
+                <p className="text-gray-600 text-lg mb-8">
+                    Un specialist PandaAds îți va analiza contul și te va contacta în curând.
+                </p>
+                <div className="flex justify-center gap-4">
+                    <button onClick={() => window.location.href = '/'} className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-bold transition-all">
+                        Înapoi la Home
+                    </button>
+                    <button onClick={() => { setIsSuccess(false); setFormData({ website: '', platforme: [], buget: '', nume: '', email: '', telefon: '' }); }} className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg transition-all">
+                        Trimite altă cerere
+                    </button>
+                </div>
             </div>
+        ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight">
-              Află de ce reclamele tale <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">
-                nu convertesc
-              </span>
-            </h1>
-
-            <p className="text-lg text-gray-600 leading-relaxed">
-              Majoritatea conturilor de ads pierd 30-40% din buget din cauza setărilor greșite. Experții noștri vor analiza manual contul tău și îți vor spune exact unde greșești.
-            </p>
-
-            {/* Beneficii List */}
-            <div className="space-y-4 pt-4">
-                <BenefitItem 
-                    icon={<Search className="text-blue-500" />}
-                    title="Analiză Setup Tehnic"
-                    desc="Verificăm Pixel-ul, API-ul de conversii și structura campaniilor."
-                />
-                <BenefitItem 
-                    icon={<BarChart3 className="text-purple-500" />}
-                    title="Verificare Creatives & Copy"
-                    desc="Îți spunem dacă vizualurile tale opresc scroll-ul sau sunt ignorate."
-                />
-                <BenefitItem 
-                    icon={<AlertTriangle className="text-orange-500" />}
-                    title="Identificare Pierderi Buget"
-                    desc="Găsim audiențele și plasamentele care îți consumă banii degeaba."
-                />
-            </div>
-
-            {/* Social Proof mic */}
-            <div className="pt-6 border-t border-gray-100 flex items-center gap-4">
-                <div className="flex -space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-white"></div>
-                    <div className="w-10 h-10 rounded-full bg-gray-300 border-2 border-white"></div>
-                    <div className="w-10 h-10 rounded-full bg-gray-400 border-2 border-white"></div>
-                </div>
-                <div className="text-sm font-medium text-gray-500">
-                    Peste <span className="font-bold text-gray-900">50+ Audituri</span> realizate luna aceasta.
-                </div>
-            </div>
-          </div>
-
-          {/* --- RIGHT SIDE: FORMULARUL --- */}
-          <div className="bg-white p-8 rounded-3xl shadow-2xl border border-gray-100 relative">
-             {/* Decorative element */}
-             <div className="absolute -top-10 -right-10 w-24 h-24 bg-emerald-100 rounded-full blur-2xl opacity-50 pointer-events-none"></div>
-
-             <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                Vreau analiza gratuită
-             </h3>
-
-             <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Partea Stângă - Formular Date */}
+            <div className="lg:col-span-2 space-y-8">
+                <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-100">
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm">1</span>
+                    Datele Tale
+                </h3>
                 
-                {/* 1. Website URL */}
-                <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Website-ul Tău</label>
-                    <div className="relative">
-                        <input 
-                            type="text" 
-                            required
-                            placeholder="ex: www.siteul-tau.ro sau site.ro" 
-                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all bg-gray-50/50"
-                            value={formData.website}
-                            onChange={(e) => setFormData({...formData, website: e.target.value})}
-                        />
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Nume Complet</label>
+                        <input required name="nume" value={formData.nume} onChange={(e) => setFormData({...formData, nume: e.target.value})} type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 outline-none bg-gray-50 transition-colors" placeholder="Popescu Andrei" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
+                        <input required name="telefon" value={formData.telefon} onChange={(e) => setFormData({...formData, telefon: e.target.value})} type="tel" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 outline-none bg-gray-50 transition-colors" placeholder="07xx xxx xxx" />
+                    </div>
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Email de business</label>
+                        <input required name="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} type="email" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 outline-none bg-gray-50 transition-colors" placeholder="contact@firma-ta.ro" />
+                    </div>
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Website-ul Tău</label>
+                        <div className="relative">
+                            <input 
+                                type="text" 
+                                required
+                                placeholder="ex: www.siteul-tau.ro" 
+                                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 outline-none bg-gray-50 transition-colors"
+                                value={formData.website}
+                                onChange={(e) => setFormData({...formData, website: e.target.value})}
+                            />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        </div>
                     </div>
                 </div>
+                </div>
+            </div>
 
-                {/* 2. Platforme (Multi-select) */}
-                <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Unde rulezi reclame acum?</label>
+            {/* Partea Dreaptă - Detalii Audit & Trimitere */}
+            <div className="lg:col-span-1 space-y-6">
+                <div className="bg-white p-6 rounded-3xl shadow-xl border border-emerald-100 sticky top-24">
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm">2</span>
+                    Detalii Audit
+                </h3>
+
+                <div className="mb-6">
+                    <label className="block text-sm font-bold text-gray-900 mb-2">Unde rulezi reclame acum?</label>
                     <div className="flex flex-wrap gap-2">
                         {['Facebook / Instagram', 'TikTok', 'Google Ads', 'Nu rulez încă'].map((plat) => (
                             <button
                                 key={plat}
                                 type="button"
                                 onClick={() => togglePlatform(plat)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all
+                                className={`px-3 py-2 rounded-lg text-sm font-medium border transition-all w-full text-left
                                     ${formData.platforme.includes(plat) 
                                         ? 'bg-emerald-50 border-emerald-500 text-emerald-700' 
                                         : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-300'}`}
                             >
-                                {plat}
+                                <div className="flex items-center gap-2">
+                                    <div className={`w-4 h-4 rounded border flex items-center justify-center ${formData.platforme.includes(plat) ? 'bg-emerald-500 border-emerald-500' : 'border-gray-300'}`}>
+                                        {formData.platforme.includes(plat) && <CheckCircle size={12} className="text-white"/>}
+                                    </div>
+                                    {plat}
+                                </div>
                             </button>
                         ))}
                     </div>
                 </div>
 
-                {/* 3. Buget Lunar */}
-                <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Buget Lunar Aproximativ</label>
-                    <select 
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none bg-white cursor-pointer"
-                        value={formData.buget}
-                        onChange={(e) => setFormData({...formData, buget: e.target.value})}
-                        required
-                    >
-                        <option value="">Alege o opțiune...</option>
-                        <option value="<500">Sub 500 €</option>
-                        <option value="500-2000">500 € - 2.000 €</option>
-                        <option value="2000-5000">2.000 € - 5.000 €</option>
-                        <option value="5000+">Peste 5.000 €</option>
-                    </select>
+                <div className="mb-8">
+                    <label className="block text-sm font-bold text-gray-900 mb-2">Buget Lunar Aproximativ</label>
+                    <div className="relative">
+                        <select 
+                            className="w-full p-4 rounded-xl border appearance-none outline-none cursor-pointer bg-gray-50 border-gray-200 focus:border-emerald-500 transition-colors font-medium text-gray-700"
+                            value={formData.buget}
+                            onChange={(e) => setFormData({...formData, buget: e.target.value})}
+                            required
+                        >
+                            <option value="">-- Selectează Buget --</option>
+                            <option value="<500">Sub 500 €</option>
+                            <option value="500-2000">500 € - 2.000 €</option>
+                            <option value="2000-5000">2.000 € - 5.000 €</option>
+                            <option value="5000+">Peste 5.000 €</option>
+                        </select>
+                    </div>
                 </div>
 
-                {/* 4. Contact Info */}
-                <div className="grid grid-cols-2 gap-4">
-                    <input 
-                        type="text" required placeholder="Nume Prenume"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
-                        value={formData.nume}
-                        onChange={(e) => setFormData({...formData, nume: e.target.value})}
-                    />
-                    <input 
-                        type="tel" required placeholder="Telefon"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
-                        value={formData.telefon}
-                        onChange={(e) => setFormData({...formData, telefon: e.target.value})}
-                    />
-                </div>
-                <input 
-                    type="email" required placeholder="Email de business"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all"
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                />
-
-                {/* Submit Button */}
                 <button 
-                    type="submit" 
-                    className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white py-4 rounded-xl font-bold shadow-lg shadow-emerald-200 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 text-lg mt-4"
+                    onClick={handleSubmit} 
+                    disabled={isSubmitting} 
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-xl font-bold shadow-lg shadow-emerald-200 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                 >
-                    Solicită Auditul Gratuit <ArrowRight size={20}/>
+                    {isSubmitting ? <><Loader2 className="animate-spin" size={20}/> Se procesează...</> : <>Solicită Auditul Gratuit <ArrowRight size={20}/></>}
                 </button>
-                <p className="text-xs text-center text-gray-400 mt-2">
-                    Nu cerem acces în conturi în această etapă. Doar analiză externă.
+                <p className="text-xs text-center text-gray-400 mt-4 leading-relaxed">
+                    Prin trimiterea acestui formular ești de acord cu <a href="/termeni" className="underline hover:text-emerald-600">Termenii și Condițiile</a>.
                 </p>
-             </form>
-          </div>
 
-        </div>
-      </main>
+                </div>
+            </div>
+            </div>
+        )}
 
+      </div>
       <Footer />
     </div>
   );
 }
-
-// Sub-componentă pentru listă beneficii
-const BenefitItem = ({ icon, title, desc }) => (
-    <div className="flex gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-md transition-all">
-        <div className="mt-1 p-2 bg-white rounded-lg shadow-sm h-fit">
-            {icon}
-        </div>
-        <div>
-            <h4 className="font-bold text-gray-900">{title}</h4>
-            <p className="text-sm text-gray-600 leading-snug">{desc}</p>
-        </div>
-    </div>
-);
