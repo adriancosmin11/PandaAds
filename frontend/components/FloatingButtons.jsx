@@ -10,7 +10,7 @@ export default function FloatingButtons() {
   const pathname = usePathname();
   // Numărul de telefon pentru WhatsApp (fără + sau 00 la început, doar codul țării și numărul)
   // Ex: 407xxxxxxxx
-  const whatsappNumber = "+40723155719"; 
+  const whatsappNumber = "+40734200700"; 
   const whatsappMessage = "Salut! Sunt interesat de serviciile PandaAds.";
 
   useEffect(() => {

@@ -100,7 +100,7 @@ export default function PoliticaDeConfidentialitatePage() {
             </p>
             <ul className="list-disc pl-6 space-y-2 mt-2">
               <li>E-mail: <a href="mailto:contact@pandaads.ro" className="text-emerald-600 hover:text-emerald-700">contact@pandaads.ro</a></li>
-              <li>Telefon: +40 723 155 719</li>
+              <li>Telefon: +40 734 200 700</li>
             </ul>
           </section>
         </div>
