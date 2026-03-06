@@ -6,8 +6,8 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import nodemailer from 'nodemailer';
 import path from 'path';
+import { sendTikTokServerEvent } from '../lib/tiktok';
 
-// Inițializare Prisma (Singleton pattern recomandat pentru Next.js dev, dar ok simplu aici)
 const prisma = new PrismaClient();
 
 // --- CONFIGURARE EMAIL ---
@@ -117,6 +117,15 @@ export async function submitContactForm(data) {
     // dar la Vercel Serverless e recomandat await pt a nu fi omorât procesul.
     await sendNotifications(emailData);
 
+    // Trimitem eveniment la TikTok (Server-side)
+    await sendTikTokServerEvent({
+      eventName: 'Contact',
+      userData: {
+        email: emailData.email,
+        phone: emailData.telefon,
+      }
+    });
+
     revalidatePath('/admin/panel');
     return { success: true, message: 'Mesaj trimis!' };
   } catch (error) {
@@ -178,6 +187,15 @@ export async function submitEbookForm(data) {
         type: 'ebook'
     });
 
+    // Trimitem eveniment la TikTok (Server-side)
+    await sendTikTokServerEvent({
+      eventName: 'CompleteRegistration',
+      userData: {
+        email: data.email,
+        phone: data.telefon || '',
+      }
+    });
+
     return { success: true, message: 'Ebook trimis!' };
 
   } catch (error) {
@@ -212,6 +230,15 @@ export async function submitAuditForm(data) {
         website: data.website,
         mesaj: `Buget: ${data.buget}, Platforme: ${platformeString}`,
         type: 'audit'
+    });
+
+    // Trimitem eveniment la TikTok (Server-side)
+    await sendTikTokServerEvent({
+      eventName: 'Contact',
+      userData: {
+        email: data.email,
+        phone: data.telefon,
+      }
     });
 
     revalidatePath('/admin/panel');
