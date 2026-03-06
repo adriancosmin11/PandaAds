@@ -4,6 +4,7 @@ import CookieBanner from "../components/CookieBanner";
 import FacebookPixel from "../components/FacebookPixel";
 import TikTokPixel from "../components/TikTokPixel";
 import GooglePixel from "../components/GooglePixel";
+import GoogleTagManager from "../components/GoogleTagManager";
 import { Suspense } from "react";
 import FloatingButtons from "../components/FloatingButtons";
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ro">
       <body className={inter.className}>
+        <GoogleTagManager />
         <Suspense fallback={null}>
           <FacebookPixel />
           <TikTokPixel />
