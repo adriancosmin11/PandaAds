@@ -65,10 +65,10 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold mb-4 text-white">Servicii</h3>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li>TikTok Ads</li>
-              <li>Facebook & Instagram Ads</li>
-              <li>Web Design</li>
-              <li>Google Ads</li>
+              <li><Link href="/servicii/tiktok-ads" className="hover:text-emerald-400 transition-colors">TikTok Ads</Link></li>
+              <li><Link href="/servicii/meta-ads" className="hover:text-emerald-400 transition-colors">Facebook & Instagram Ads</Link></li>
+              <li><Link href="/servicii/web-development" className="hover:text-emerald-400 transition-colors">Web Design</Link></li>
+              <li><Link href="/servicii/google-ads" className="hover:text-emerald-400 transition-colors">Google Ads</Link></li>
             </ul>
           </div>
 

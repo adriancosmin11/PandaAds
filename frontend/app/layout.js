@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import CookieBanner from "../components/CookieBanner";
 import FacebookPixel from "../components/FacebookPixel";
 import TikTokPixel from "../components/TikTokPixel";
+import GooglePixel from "../components/GooglePixel";
 import { Suspense } from "react";
 import FloatingButtons from "../components/FloatingButtons";
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
         <Suspense fallback={null}>
           <FacebookPixel />
           <TikTokPixel />
+          <GooglePixel />
         </Suspense>
         {children}
         <CookieBanner />
