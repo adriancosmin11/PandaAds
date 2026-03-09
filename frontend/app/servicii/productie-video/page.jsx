@@ -75,7 +75,7 @@ export default function ProductieVideoPage() {
                 <span className="text-xs font-bold tracking-wider text-white uppercase">Acceptăm proiecte noi pentru 2026</span>
               </div>
               
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-8">
+              <h1 className="text-[40px] sm:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-8">
                 Tu tratezi pacienții.<br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500">
                   Noi îți construim prezența
