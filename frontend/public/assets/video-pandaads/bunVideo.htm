@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panda Ads - Landing Page Premium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #f4f4f7;
+      --surface: #ffffff;
+      --surface-2: #0f1016;
+      --surface-3: #171923;
+      --text: #111319;
+      --text-soft: #616575;
+      --text-soft-dark: #a4a8b7;
+      --line: rgba(17,19,25,0.08);
+      --line-dark: rgba(255,255,255,0.08);
+      --primary: #6c63ff;
+      --primary-2: #8b5cf6;
+      --accent: #ff5f6d;
+      --accent-2: #ffc371;
+      --shadow: 0 18px 60px rgba(16,18,27,0.08);
+      --shadow-dark: 0 24px 70px rgba(0,0,0,0.35);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --container: 1180px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height:1.55;
+      overflow-x:hidden;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .container{
+      width:min(var(--container), calc(100% - 40px));
+      margin:0 auto;
+    }
+
+    .section{
+      padding: 96px 0;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color: var(--primary);
+      margin-bottom:18px;
+    }
+
+    .eyebrow::before{
+      content:"";
+      width:34px;
+      height:2px;
+      border-radius:999px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    .section-head{
+      max-width:760px;
+      margin:0 auto 48px;
+      text-align:center;
+    }
+
+    .section-head h2{
+      font-size: clamp(32px, 5vw, 54px);
+      line-height:1.05;
+      font-weight:900;
+      letter-spacing:-0.04em;
+      margin-bottom:16px;
+    }
+
+    .section-head p{
+      color: var(--text-soft);
+      font-size:18px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:56px;
+      padding:0 28px;
+      border-radius:999px;
+      font-size:15px;
+      font-weight:800;
+      letter-spacing:-0.01em;
+      transition:.25s ease;
+      border:1px solid transparent;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      color:#fff;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      box-shadow: 0 18px 40px rgba(108,99,255,.28);
+    }
+
+    .btn-primary:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 22px 46px rgba(108,99,255,.34);
+    }
+
+    .btn-secondary{
+      background: rgba(255,255,255,0.06);
+      color:#fff;
+      border-color: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-secondary:hover{
+      background: rgba(255,255,255,0.1);
+    }
+
+    .muted-note{
+      margin-top:14px;
+      font-size:13px;
+      color: var(--text-soft);
+    }
+
+    /* HERO */
+    .hero{
+      position:relative;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(108,99,255,0.22), transparent 28%),
+        radial-gradient(circle at 80% 20%, rgba(255,95,109,0.18), transparent 26%),
+        radial-gradient(circle at 50% 100%, rgba(139,92,246,0.16), transparent 30%),
+        linear-gradient(180deg, rgba(9,10,15,.72), rgba(9,10,15,.82)),
+        url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      color:#fff;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(10,11,16,0.15) 0%, rgba(10,11,16,0.75) 72%, #0f1016 100%);
+      pointer-events:none;
+    }
+
+    .hero-inner{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap:38px;
+      align-items:center;
+      width:100%;
+      padding: 120px 0 80px;
+    }
+
+    .hero-content{
+      max-width:720px;
+    }
+
+    .hero .eyebrow{
+      color:#d6d8e2;
+    }
+
+    .hero h1{
+      font-size: clamp(42px, 6vw, 86px);
+      line-height:.97;
+      font-weight:900;
+      letter-spacing:-0.055em;
+      margin-bottom:22px;
+      text-wrap:balance;
+    }
+
+    .hero h1 .grad{
+      background: linear-gradient(90deg, #ffffff 0%, #ffb57a 40%, #ff5f6d 70%, #7b6dff 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .hero p{
+      max-width:650px;
+      font-size:18px;
+      color: rgba(255,255,255,.78);
+      margin-bottom:26px;
+    }
+
+    .hero-points{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(220px,1fr));
+      gap:14px;
+      margin: 0 0 28px;
+    }
+
+    .hero-point{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      border-radius:18px;
+      padding:16px 18px;
+      box-shadow: var(--shadow-dark);
+    }
+
+    .hero-point .icon{
+      width:30px;
+      height:30px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      flex:0 0 30px;
+      background: linear-gradient(135deg, rgba(108,99,255,.28), rgba(255,95,109,.26));
+      font-size:14px;
+    }
+
+    .hero-point span{
+      color:#fff;
+      font-size:14px;
+      font-weight:700;
+      line-height:1.35;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .hero-card{
+      position:relative;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:32px;
+      padding:22px;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-dark);
+      overflow:hidden;
+    }
+
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:auto -80px -80px auto;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background: radial-gradient(circle, rgba(108,99,255,.35), transparent 70%);
+    }
+
+    .hero-card-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .hero-brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .hero-logo{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      font-size:18px;
+      color:#fff;
+      box-shadow: 0 10px 26px rgba(108,99,255,.35);
+    }
+
+    .hero-brand h3{
+      font-size:16px;
+      font-weight:800;
+      color:#fff;
+      margin-bottom:2px;
+    }
+
+    .hero-brand p{
+      margin:0;
+      font-size:13px;
+      color: rgba(255,255,255,.6);
+    }
+
+    .hero-badge{
+      border-radius:999px;
+      padding:10px 12px;
+      font-size:12px;
+      font-weight:800;
+      color:#fff;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.1);
+    }
+
+    .hero-media{
+      position:relative;
+      border-radius:26px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.1);
+      margin-bottom:18px;
+    }
+
+    .hero-media img{
+      width:100%;
+      height:340px;
+      object-fit:cover;
+    }
+
+    .play-chip{
+      position:absolute;
+      left:18px;
+      bottom:18px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:999px;
+      background: rgba(15,16,22,.66);
+      border:1px solid rgba(255,255,255,.1);
+      color:#fff;
+      font-size:13px;
+      font-weight:800;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-stats{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:12px;
+    }
+
+    .hero-stat{
+      background: rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .hero-stat strong{
+      display:block;
+      color:#fff;
+      font-size:22px;
+      line-height:1;
+      margin-bottom:6px;
+      font-weight:900;
+    }
+
+    .hero-stat span{
+      font-size:12px;
+      color: rgba(255,255,255,.65);
+      font-weight:600;
+    }
+
+    /* LOGO STRIP */
+    .logo-strip{
+      padding:28px 0 0;
+      background: linear-gradient(180deg, #0f1016 0%, #f4f4f7 100%);
+    }
+
+    .logo-wrap{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow: var(--shadow);
+      padding:18px 24px;
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap:18px;
+      transform: translateY(-46px);
+    }
+
+    .logo-item{
+      min-height:74px;
+      border-radius:18px;
+      background: #f7f7fb;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding:14px;
+      color:#303445;
+      font-size:14px;
+      font-weight:800;
+      border:1px solid rgba(17,19,25,0.05);
+    }
+
+    /* STATS GRID */
+    .stats-grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:22px;
+    }
+
+    .stat-card{
+      background: linear-gradient(180deg, #fff, #fafafe);
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:28px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card .nr{
+      font-size:48px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:-0.05em;
+      margin-bottom:8px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .stat-card .label{
+      font-size:15px;
+      color: var(--text-soft);
+      font-weight:700;
+    }
+
+    /* PROBLEM */
+    .problem-wrap{
+      display:grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap:28px;
+      align-items:stretch;
+    }
+
+    .problem-panel,
+    .problem-visual{
+      border-radius:32px;
+      overflow:hidden;
+      background:#fff;
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .problem-panel{
+      padding:34px;
+    }
+
+    .problem-panel h3{
+      font-size:34px;
+      line-height:1.05;
+      font-weight:900;
+      letter-spacing:-0.04em;
+      margin-bottom:16px;
+    }
+
+    .problem-panel p{
+      color: var(--text-soft);
+      margin-bottom:26px;
+      font-size:17px;
+    }
+
+    .problem-list{
+      display:grid;
+      gap:16px;
+    }
+
+    .problem-item{
+      display:flex;
+      gap:16px;
+      padding:18px 0;
+      border-top:1px solid var(--line);
+    }
+
+    .problem-item:first-child{
+      border-top:0;
+      padding-top:0;
+    }
+
+    .problem-icon{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(135deg, rgba(108,99,255,.1), rgba(255,95,109,.1));
+      font-size:20px;
+      flex:0 0 46px;
+    }
+
+    .problem-item h4{
+      font-size:18px;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+
+    .problem-item p{
+      margin:0;
+      font-size:15px;
+    }
+
+    .problem-visual{
+      position:relative;
+      min-height:560px;
+      background:
+        linear-gradient(180deg, rgba(16,18,27,.1), rgba(16,18,27,.22)),
+        url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+    }
+
+    .visual-card{
+      position:absolute;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border:1px solid rgba(17,19,25,.06);
+      border-radius:22px;
+      padding:18px;
+      box-shadow: 0 18px 40px rgba(17,19,25,.12);
+    }
+
+    .visual-card strong{
+      display:block;
+      font-size:18px;
+      font-weight:900;
+      margin-bottom:4px;
+    }
+
+    .visual-card span{
+      font-size:13px;
+      color:var(--text-soft);
+      font-weight:600;
+    }
+
+    .visual-card.card-1{ top:28px; left:28px; }
+    .visual-card.card-2{ right:28px; top:120px; }
+    .visual-card.card-3{ left:40px; bottom:34px; }
+
+    /* PROCESS */
+    .process{
+      background: linear-gradient(180deg, #111319 0%, #171923 100%);
+      color:#fff;
+    }
+
+    .process .section-head p{
+      color: var(--text-soft-dark);
+    }
+
+    .timeline{
+      position:relative;
+      max-width:1040px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 1fr 70px 1fr;
+      gap:24px;
+    }
+
+    .timeline-line{
+      position:relative;
+      display:flex;
+      justify-content:center;
+    }
+
+    .timeline-line::before{
+      content:"";
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:2px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(108,99,255,.9), rgba(255,95,109,.9), rgba(255,255,255,.08));
+      border-radius:999px;
+    }
+
+    .timeline-step{
+      position:relative;
+      margin-bottom:26px;
+    }
+
+    .timeline-dot{
+      position:absolute;
+      top:36px;
+      left:50%;
+      transform:translateX(-50%);
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border:4px solid #171923;
+      box-shadow: 0 0 0 8px rgba(108,99,255,.12);
+      z-index:2;
+    }
+
+    .step-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid var(--line-dark);
+      border-radius:28px;
+      padding:20px;
+      box-shadow: var(--shadow-dark);
+    }
+
+    .step-card img{
+      width:100%;
+      height:180px;
+      object-fit:cover;
+      border-radius:20px;
+      margin-bottom:18px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .step-num{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      font-size:14px;
+      font-weight:900;
+      margin-bottom:16px;
+      color:#fff;
+    }
+
+    .step-card h3{
+      font-size:30px;
+      line-height:1.05;
+      font-weight:900;
+      letter-spacing:-0.035em;
+      margin-bottom:10px;
+    }
+
+    .step-card p{
+      color: var(--text-soft-dark);
+      font-size:15px;
+    }
+
+    /* OFFER / SYSTEM */
+    .offer-grid{
+      display:grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap:28px;
+      align-items:start;
+    }
+
+    .offer-left{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:32px;
+      box-shadow: var(--shadow);
+      padding:34px;
+    }
+
+    .offer-left h3{
+      font-size:40px;
+      line-height:1.04;
+      letter-spacing:-0.04em;
+      font-weight:900;
+      margin-bottom:14px;
+    }
+
+    .offer-left > p{
+      color: var(--text-soft);
+      font-size:17px;
+      margin-bottom:26px;
+    }
+
+    .offer-list{
+      display:grid;
+      gap:16px;
+    }
+
+    .offer-item{
+      display:flex;
+      gap:16px;
+      align-items:flex-start;
+      padding:18px;
+      border-radius:22px;
+      background:#f8f8fc;
+      border:1px solid rgba(17,19,25,.05);
+    }
+
+    .offer-item .offer-icon{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(108,99,255,.12), rgba(255,95,109,.12));
+      display:grid;
+      place-items:center;
+      font-size:18px;
+      flex:0 0 44px;
+    }
+
+    .offer-item h4{
+      font-size:17px;
+      font-weight:800;
+      margin-bottom:4px;
+    }
+
+    .offer-item p{
+      font-size:14px;
+      color: var(--text-soft);
+    }
+
+    .offer-right{
+      display:grid;
+      gap:20px;
+    }
+
+    .compare-card,
+    .guarantee-card{
+      border-radius:32px;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      border:1px solid var(--line);
+      background:#fff;
+    }
+
+    .compare-head{
+      padding:28px 28px 20px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .compare-head h3{
+      font-size:26px;
+      line-height:1.08;
+      font-weight:900;
+      letter-spacing:-0.035em;
+      margin-bottom:10px;
+    }
+
+    .compare-head p{
+      color: var(--text-soft);
+      font-size:15px;
+    }
+
+    .compare-table{
+      padding:10px 22px 22px;
+    }
+
+    .compare-row{
+      display:grid;
+      grid-template-columns: 1.2fr 1fr 1fr 1.1fr;
+      gap:12px;
+      align-items:center;
+      padding:16px 10px;
+      border-bottom:1px solid rgba(17,19,25,.05);
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .compare-row:last-child{
+      border-bottom:0;
+    }
+
+    .compare-row.head{
+      color: var(--text-soft);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-weight:800;
+    }
+
+    .compare-row.best{
+      background: linear-gradient(90deg, rgba(108,99,255,.08), rgba(255,95,109,.08));
+      border-radius:18px;
+      border-bottom:0;
+      margin-top:10px;
+      padding-inline:14px;
+    }
+
+    .good{
+      color:#1a9b57;
+    }
+
+    .bad{
+      color:#d84343;
+    }
+
+    .mid{
+      color:#d79219;
+    }
+
+    .guarantee-card{
+      padding:28px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(108,99,255,.12), transparent 40%),
+        radial-gradient(circle at 0% 100%, rgba(255,95,109,.1), transparent 40%),
+        #fff;
+    }
+
+    .guarantee-card h4{
+      font-size:24px;
+      line-height:1.08;
+      letter-spacing:-0.03em;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .guarantee-card p{
+      color: var(--text-soft);
+      font-size:15px;
+      margin-bottom:18px;
+    }
+
+    .mini-stats{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:14px;
+    }
+
+    .mini-stat{
+      background:#f8f8fc;
+      border:1px solid rgba(17,19,25,.05);
+      border-radius:18px;
+      padding:16px;
+      text-align:center;
+    }
+
+    .mini-stat strong{
+      display:block;
+      font-size:24px;
+      line-height:1;
+      font-weight:900;
+      margin-bottom:6px;
+      color: var(--text);
+    }
+
+    .mini-stat span{
+      color: var(--text-soft);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    /* NICHES */
+    .niche-grid{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:22px;
+    }
+
+    .niche-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:30px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .niche-card img{
+      width:100%;
+      height:240px;
+      object-fit:cover;
+    }
+
+    .niche-body{
+      padding:24px;
+    }
+
+    .niche-icon{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(135deg, rgba(108,99,255,.12), rgba(255,95,109,.12));
+      margin-bottom:16px;
+      font-size:22px;
+    }
+
+    .niche-body h3{
+      font-size:24px;
+      line-height:1.08;
+      letter-spacing:-0.03em;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .niche-body p{
+      color: var(--text-soft);
+      font-size:15px;
+    }
+
+    /* TESTIMONIAL / CTA */
+    .final-cta{
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(108,99,255,.22), transparent 24%),
+        radial-gradient(circle at 90% 30%, rgba(255,95,109,.18), transparent 22%),
+        linear-gradient(180deg, #111319 0%, #0d0f15 100%);
+      color:#fff;
+    }
+
+    .final-cta::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+
+    .final-wrap{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns: 1fr .9fr;
+      gap:28px;
+      align-items:center;
+    }
+
+    .final-content h2{
+      font-size: clamp(34px, 5vw, 66px);
+      line-height:.98;
+      letter-spacing:-0.05em;
+      font-weight:900;
+      margin-bottom:16px;
+    }
+
+    .final-content p{
+      max-width:640px;
+      color: rgba(255,255,255,.74);
+      font-size:18px;
+      margin-bottom:24px;
+    }
+
+    .final-list{
+      display:grid;
+      gap:14px;
+      margin-bottom:28px;
+    }
+
+    .final-list li{
+      list-style:none;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#fff;
+      font-size:15px;
+      font-weight:700;
+    }
+
+    .final-list li::before{
+      content:"";
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      box-shadow: 0 0 0 6px rgba(108,99,255,.12);
+    }
+
+    .form-card{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:32px;
+      padding:26px;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-dark);
+    }
+
+    .form-card h3{
+      font-size:28px;
+      line-height:1.04;
+      letter-spacing:-0.03em;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .form-card p{
+      color: rgba(255,255,255,.68);
+      font-size:15px;
+      margin-bottom:18px;
+    }
+
+    .form-group{
+      margin-bottom:12px;
+    }
+
+    .form-control{
+      width:100%;
+      min-height:54px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      padding:0 16px;
+      outline:none;
+      font-family:inherit;
+      font-size:15px;
+    }
+
+    .form-control::placeholder{
+      color: rgba(255,255,255,.48);
+    }
+
+    textarea.form-control{
+      min-height:120px;
+      padding:16px;
+      resize:vertical;
+    }
+
+    .form-card .btn{
+      width:100%;
+      margin-top:8px;
+    }
+
+    .form-note{
+      margin-top:12px;
+      text-align:center;
+      font-size:12px;
+      color: rgba(255,255,255,.5);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px){
+      .hero-inner,
+      .problem-wrap,
+      .offer-grid,
+      .final-wrap{
+        grid-template-columns:1fr;
+      }
+
+      .timeline{
+        grid-template-columns:1fr;
+      }
+
+      .timeline-line{
+        display:none;
+      }
+
+      .timeline-dot{
+        display:none;
+      }
+
+      .logo-wrap,
+      .stats-grid,
+      .niche-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media (max-width: 768px){
+      .section{
+        padding:72px 0;
+      }
+
+      .container{
+        width:min(calc(100% - 24px), var(--container));
+      }
+
+      .hero{
+        min-height:auto;
+      }
+
+      .hero-inner{
+        padding:100px 0 56px;
+      }
+
+      .hero-points,
+      .hero-stats,
+      .logo-wrap,
+      .stats-grid,
+      .mini-stats,
+      .niche-grid{
+        grid-template-columns:1fr;
+      }
+
+      .compare-row{
+        grid-template-columns:1.25fr .9fr .9fr .9fr;
+        font-size:12px;
+        gap:8px;
+      }
+
+      .problem-panel,
+      .offer-left,
+      .guarantee-card,
+      .form-card{
+        padding:22px;
+      }
+
+      .problem-panel h3,
+      .offer-left h3{
+        font-size:30px;
+      }
+
+      .step-card h3{
+        font-size:24px;
+      }
+
+      .hero-media img{
+        height:240px;
+      }
+
+      .problem-visual{
+        min-height:360px;
+      }
+
+      .visual-card{
+        position:absolute;
+        padding:14px;
+        border-radius:18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <div class="eyebrow">Agentie TikTok Marketing • Sistem Panda Ads</div>
+
+        <h1>
+          Transformam <span class="grad">1 ora din timpul tau</span> in 30 de videoclipuri care iti aduc vizibilitate, autoritate si clienti noi
+        </h1>
+
+        <p>
+          Venim direct la tine in locatie, filmam rapid si profesionist, apoi iti livram 30 de clipuri optimizate pentru TikTok, Reels si Shorts. Continutul tau pe o luna intreaga, fara stres, fara idei cautate noaptea, fara echipamente cumparate de tine.
+        </p>
+
+        <div class="hero-points">
+          <div class="hero-point">
+            <div class="icon">🎬</div>
+            <span>30 videoclipuri scurte, filmate intr-o singura sesiune</span>
+          </div>
+          <div class="hero-point">
+            <div class="icon">📍</div>
+            <span>Filmam direct la clinica, restaurantul sau showroom-ul tau</span>
+          </div>
+          <div class="hero-point">
+            <div class="icon">✍️</div>
+            <span>Scriem scenariile si hook-urile care opresc scroll-ul</span>
+          </div>
+          <div class="hero-point">
+            <div class="icon">🚀</div>
+            <span>Editare premium si optimizare pentru reach si conversie</span>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#formular" class="btn btn-primary">Vreau 30 de videoclipuri virale</a>
+          <a href="#proces" class="btn btn-secondary">Vezi cum lucram</a>
+        </div>
+
+        <div class="muted-note" style="color:rgba(255,255,255,.58);">
+          Analiza gratuita a afacerii tale inclusa.
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-top">
+          <div class="hero-brand">
+            <div class="hero-logo">P</div>
+            <div>
+              <h3>Panda Ads</h3>
+              <p>Content system premium</p>
+            </div>
+          </div>
+          <div class="hero-badge">Done-For-You</div>
+        </div>
+
+        <div class="hero-media">
+          <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80" alt="Filmare content social media">
+          <div class="play-chip">▶ 1 ora filmare = 1 luna continut</div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong>100M+</strong>
+            <span>vizualizari generate</span>
+          </div>
+          <div class="hero-stat">
+            <strong>2500+</strong>
+            <span>reclame create</span>
+          </div>
+          <div class="hero-stat">
+            <strong>500+</strong>
+            <span>clipuri virale</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="logo-strip">
+    <div class="container">
+      <div class="logo-wrap">
+        <div class="logo-item">Clinici Medicale</div>
+        <div class="logo-item">Beauty & Estetica</div>
+        <div class="logo-item">Restaurante & Cafenele</div>
+        <div class="logo-item">E-commerce</div>
+        <div class="logo-item">Business Local</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Rezultate reale</div>
+        <h2>Nu facem doar clipuri frumoase. Construim sisteme de crestere.</h2>
+        <p>
+          Continutul bun nu inseamna doar imagine placuta. Inseamna atentie, incredere si un brand care pare mult peste concurenta ta.
+        </p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="nr">100M+</div>
+          <div class="label">vizualizari pentru clientii nostri</div>
+        </div>
+        <div class="stat-card">
+          <div class="nr">2500+</div>
+          <div class="label">videoclipuri si reclame create</div>
+        </div>
+        <div class="stat-card">
+          <div class="nr">4+</div>
+          <div class="label">ani de experienta in content si ads</div>
+        </div>
+        <div class="stat-card">
+          <div class="nr">99%</div>
+          <div class="label">clienti multumiti de colaborare</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:20px;">
+    <div class="container">
+      <div class="problem-wrap">
+        <div class="problem-panel">
+          <div class="eyebrow">Problema reala</div>
+          <h3>Concurenta ta posteaza deja si iti fura atentia clientilor.</h3>
+          <p>
+            Nu pierzi clienti pentru ca ai servicii slabe. Ii pierzi pentru ca altii apar mai des, mai clar si mai convingator in fata publicului tau.
+          </p>
+
+          <div class="problem-list">
+            <div class="problem-item">
+              <div class="problem-icon">⏰</div>
+              <div>
+                <h4>Nu ai timp pentru content</h4>
+                <p>Ziua ta este deja plina. Social media ramane mereu pe ultimul loc, desi stii ca este importanta.</p>
+              </div>
+            </div>
+
+            <div class="problem-item">
+              <div class="problem-icon">🤳</div>
+              <div>
+                <h4>Nu stii ce sa filmezi</h4>
+                <p>Ideile bune nu apar la comanda. Fara strategie, majoritatea clipurilor sunt haotice si nu convertesc.</p>
+              </div>
+            </div>
+
+            <div class="problem-item">
+              <div class="problem-icon">🎯</div>
+              <div>
+                <h4>Nu stii ce functioneaza in nisa ta</h4>
+                <p>Trendurile se schimba rapid. Ce merge la altii nu merge automat si pentru business-ul tau.</p>
+              </div>
+            </div>
+
+            <div class="problem-item">
+              <div class="problem-icon">📉</div>
+              <div>
+                <h4>Concurenta este mai vizibila</h4>
+                <p>In social media, nu castiga neaparat cel mai bun. Castiga cel care apare constant si profesionist.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="problem-visual">
+          <div class="visual-card card-1">
+            <strong>30 clipuri / luna</strong>
+            <span>continut pregatit dintr-o singura filmare</span>
+          </div>
+          <div class="visual-card card-2">
+            <strong>Done-For-You</strong>
+            <span>strategie, scenarii, filmare, editare</span>
+          </div>
+          <div class="visual-card card-3">
+            <strong>Mai multa autoritate</strong>
+            <span>brand premium, prezent constant, imagine coerenta</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section process" id="proces">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Pasii colaborarii</div>
+        <h2>Un proces clar. Rapid pentru tine. Greu de ignorat pentru public.</h2>
+        <p>
+          Tot sistemul este construit sa iti consume cat mai putin timp si sa iti livreze maxim de continut folosibil, coerent si premium.
+        </p>
+      </div>
+
+      <div class="timeline">
+        <div>
+          <div class="timeline-step">
+            <div class="step-card">
+              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80" alt="Analiza afacerii">
+              <div class="step-num">01</div>
+              <h3>Sedinta de analiza a afacerii</h3>
+              <p>Intelegem exact ce vinzi, cui te adresezi si ce tip de continut are cele mai mari sanse sa atraga atentia in nisa ta.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="step-card">
+              <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80" alt="Idei si strategie">
+              <div class="step-num">03</div>
+              <h3>Scenarii care opresc scroll-ul</h3>
+              <p>Scriem hook-uri, structuri si texte clare, astfel incat sa nu improvizezi in fata camerei si sa livrezi un mesaj puternic.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="step-card">
+              <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80" alt="Filmare profesionala">
+              <div class="step-num">05</div>
+              <h3>Filmarea videoclipurilor</h3>
+              <p>Venim la tine cu echipament complet. Regizam, ajustam cadrele si te ghidam astfel incat sa arati natural si profesionist.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="step-card">
+              <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80" alt="Editare video">
+              <div class="step-num">07</div>
+              <h3>Editare premium</h3>
+              <p>Adaugam subtitrari, ritm, cadre secundare, muzica, efecte si finisajul care face clipul sa para facut de o agentie serioasa.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-line">
+          <div class="timeline-dot" style="top:36px;"></div>
+          <div class="timeline-dot" style="top:318px;"></div>
+          <div class="timeline-dot" style="top:600px;"></div>
+          <div class="timeline-dot" style="top:882px;"></div>
+        </div>
+
+        <div>
+          <div class="timeline-step">
+            <div class="step-card">
+              <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80" alt="Generarea ideilor">
+              <div class="step-num">02</div>
+              <h3>Generarea ideilor potrivite</h3>
+              <p>Selectam unghiurile de comunicare cele mai convingatoare: educativ, autoritate, incredere, oferta, diferentiere sau storytelling.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="step-card">
+              <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80" alt="Organizarea filmarii">
+              <div class="step-num">04</div>
+              <h3>Organizarea filmarii la locatie</h3>
+              <p>Ne ocupam de cadru, lumina, microfoane si ordinea filmarii, ca tu sa nu pierzi timp si sa iesi bine din primele duble.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="step-card">
+              <img src="https://images.unsplash.com/photo-1574717024453-354056e89f2d?auto=format&fit=crop&w=1200&q=80" alt="Revizuire">
+              <div class="step-num">06</div>
+              <h3>Revizuire si ajustari</h3>
+              <p>Verificam fiecare clip din perspectiva vizuala si comerciala, ca mesajul sa ramana clar si sa sustina pozitionarea brandului tau.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="step-card">
+              <img src="https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?auto=format&fit=crop&w=1200&q=80" alt="Livrare continut">
+              <div class="step-num">08</div>
+              <h3>Primesti continutul gata de folosit</h3>
+              <p>Tu ramai cu 30 de videoclipuri care pot acoperi o luna intreaga de prezenta online, fara sa te mai gandesti zilnic ce postezi.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="offer-grid">
+        <div class="offer-left">
+          <div class="eyebrow">Sistemul Panda Ads</div>
+          <h3>Tu nu cumperi doar filmare. Cumperi un mecanism de crestere.</h3>
+          <p>
+            Diferenta dintre un simplu videograf si un sistem bun de content este ca noi gandim totul pentru business: atentie, incredere, claritate si imagine premium.
+          </p>
+
+          <div class="offer-list">
+            <div class="offer-item">
+              <div class="offer-icon">🧠</div>
+              <div>
+                <h4>Cercetare pe nisa ta</h4>
+                <p>Nu filmam generic. Adaptam mesajele si structura clipurilor exact pe publicul pe care vrei sa il atragi.</p>
+              </div>
+            </div>
+
+            <div class="offer-item">
+              <div class="offer-icon">✍️</div>
+              <div>
+                <h4>Scenarii scrise de experti</h4>
+                <p>Tu nu trebuie sa inventezi ce spui. Venim cu idei, unghiuri si texte clare, usor de filmat si bune pentru conversie.</p>
+              </div>
+            </div>
+
+            <div class="offer-item">
+              <div class="offer-icon">🎥</div>
+              <div>
+                <h4>Filmare premium la locatia ta</h4>
+                <p>Venim noi la tine. Echipamente, ghidaj, regie si eficienta maxima, astfel incat o singura sesiune sa iti aduca continut pe o luna.</p>
+              </div>
+            </div>
+
+            <div class="offer-item">
+              <div class="offer-icon">⚡</div>
+              <div>
+                <h4>Editare optimizata pentru platforme</h4>
+                <p>Subtitrari, hook-uri, taieturi rapide, ritm bun si aspect premium pentru TikTok, Reels si Shorts.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="offer-right">
+          <div class="compare-card">
+            <div class="compare-head">
+              <h3>Poze, video singur sau sistem complet?</h3>
+              <p>Nu toate variantele de content au acelasi impact asupra imaginii si atentiei din piata.</p>
+            </div>
+
+            <div class="compare-table">
+              <div class="compare-row head">
+                <div>Varianta</div>
+                <div>Impact</div>
+                <div>Calitate</div>
+                <div>Consistenta</div>
+              </div>
+
+              <div class="compare-row">
+                <div>Postari cu poze</div>
+                <div class="bad">scazut</div>
+                <div class="mid">mediu</div>
+                <div class="mid">medie</div>
+              </div>
+
+              <div class="compare-row">
+                <div>Video filmat singur</div>
+                <div class="mid">mediu</div>
+                <div class="bad">slab</div>
+                <div class="bad">slaba</div>
+              </div>
+
+              <div class="compare-row">
+                <div>Agenzie clasice</div>
+                <div class="mid">mediu</div>
+                <div class="good">bun</div>
+                <div class="mid">medie</div>
+              </div>
+
+              <div class="compare-row best">
+                <div>Sistemul Panda Ads</div>
+                <div class="good">ridicat</div>
+                <div class="good">premium</div>
+                <div class="good">ridicata</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="guarantee-card">
+            <h4>Ce primesti concret dupa colaborare</h4>
+            <p>
+              Un brand mai prezent, o imagine mai curata si un volum mare de continut gata de folosit, fara sa iti consumi energia pe productie.
+            </p>
+
+            <div class="mini-stats">
+              <div class="mini-stat">
+                <strong>30</strong>
+                <span>videoclipuri</span>
+              </div>
+              <div class="mini-stat">
+                <strong>1h</strong>
+                <span>filmare</span>
+              </div>
+              <div class="mini-stat">
+                <strong>3</strong>
+                <span>platforme</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:24px;">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Nise potrivite</div>
+        <h2>Indiferent de domeniu, avem unghiul potrivit de comunicare.</h2>
+        <p>
+          Adaptam stilul clipurilor in functie de tipul de afacere, obiectivul tau si nivelul de incredere de care ai nevoie in piata.
+        </p>
+      </div>
+
+      <div class="niche-grid">
+        <article class="niche-card">
+          <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1200&q=80" alt="Clinici si beauty">
+          <div class="niche-body">
+            <div class="niche-icon">🩺</div>
+            <h3>Clinici medicale & beauty</h3>
+            <p>Transformam expertiza ta in continut care construieste autoritate, incredere si aduce mai multe programari.</p>
+          </div>
+        </article>
+
+        <article class="niche-card">
+          <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80" alt="Restaurante si cafenele">
+          <div class="niche-body">
+            <div class="niche-icon">🍽️</div>
+            <h3>HoReCa</h3>
+            <p>Surprindem atmosfera, preparatele si experienta locatiei tale in clipuri care deschid pofta si aduc oameni in locatie.</p>
+          </div>
+        </article>
+
+        <article class="niche-card">
+          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80" alt="Magazine online">
+          <div class="niche-body">
+            <div class="niche-icon">🛍️</div>
+            <h3>E-commerce & produse</h3>
+            <p>Filmam produsele astfel incat sa para mai dorite, mai valoroase si mai usor de cumparat de catre publicul tau.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section final-cta" id="formular">
+    <div class="container final-wrap">
+      <div class="final-content">
+        <div class="eyebrow">Urmatorul pas</div>
+        <h2>Esti pregatit sa nu mai lasi concurenta sa iti ia fata online?</h2>
+        <p>
+          Completeaza formularul si revenim rapid cu o analiza gratuita a afacerii tale. Iti spunem direct daca serviciul este potrivit pentru tine si ce directie de continut merita testata prima.
+        </p>
+
+        <ul class="final-list">
+          <li>afli ce tip de videoclipuri functioneaza in nisa ta</li>
+          <li>intelegi ce lipseste din prezenta ta actuala</li>
+          <li>primesti o propunere clara, fara batai de cap</li>
+        </ul>
+
+        <a href="#formular" class="btn btn-primary">Vreau sa colaboram</a>
+        <div class="muted-note" style="color:rgba(255,255,255,.52);">Nu facem spam. Datele tale raman in siguranta.</div>
+      </div>
+
+      <div class="form-card">
+        <h3>Solicita analiza gratuita</h3>
+        <p>Lasa-ne cateva date si revenim cat mai repede posibil.</p>
+
+        <form>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Nume">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Telefon">
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-control" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" placeholder="Spune-ne pe scurt ce business ai"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Vreau sa fiu contactat</button>
+          <div class="form-note">Prin trimitere esti de acord sa te contactam pentru analiza.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

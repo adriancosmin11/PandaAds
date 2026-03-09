@@ -249,6 +249,78 @@ export async function submitAuditForm(data) {
   }
 }
 
+// --- 3.5. VIDEO PRODUCTION FORM ---
+export async function submitVideoProductieForm(data) {
+  try {
+    if (!data.nume || !data.email || !data.telefon) {
+      return { success: false, message: 'Numele, emailul și telefonul sunt obligatorii.' };
+    }
+
+    // Save lead to Database
+    await prisma.lead.create({
+      data: {
+        nume: data.nume,
+        prenume: '',
+        email: data.email,
+        telefon: data.telefon,
+        firma: data.companie || '',
+        mesaj: data.mesaj || 'Formular: Producție Video TikTok/Reels',
+        pachetAds: 'Producție Video',
+        pachetWeb: 'Niciunul',
+        status: 'Nou'
+      }
+    });
+
+    // Prepare custom email content
+    let htmlContent = `
+      <h2>Cerere Nouă: Servicii Producție Video</h2>
+      <p><strong>Nume:</strong> ${data.nume}</p>
+      <p><strong>Companie/Clinică:</strong> ${data.companie || '-'}</p>
+      <p><strong>Email:</strong> ${data.email}</p>
+      <p><strong>Telefon:</strong> ${data.telefon}</p>
+      <p><strong>Detalii Proiect:</strong><br/>${data.mesaj || '-'}</p>
+    `;
+
+    // Send direct Email to contact@pandaads.ro
+    await transporter.sendMail({
+      from: `"PandaAds Video" <${process.env.SMTP_USER}>`,
+      to: 'contact@pandaads.ro', // Hardcoded as requested
+      replyTo: data.email,
+      subject: `🎬 Cerere Nouă Producție Video: ${data.nume}`,
+      html: htmlContent,
+    });
+    
+    // Optional: Send auto-reply to client
+    await transporter.sendMail({
+      from: `"Echipa PandaAds" <${process.env.SMTP_USER}>`,
+      to: data.email,
+      subject: `Salut! Am primit cererea ta pentru Video TikTok/Reels`,
+      html: `
+        <h3>Salutare, ${data.nume}! 🐼</h3>
+        <p>Am primit detaliile tale referitoare la serviciile noastre de producție video.</p>
+        <p>Un specialist din echipa PandaAds va analiza cererea și te va contacta în cel mai scurt timp pentru a discuta cum îți putem transforma ideile în materiale virale.</p>
+        <br>
+        <p>O zi excelentă,<br>Echipa PandaAds</p>
+      `,
+    });
+
+    // Send TikTok Server Event
+    await sendTikTokServerEvent({
+      eventName: 'Contact',
+      userData: {
+        email: data.email,
+        phone: data.telefon,
+      }
+    });
+
+    revalidatePath('/admin/panel');
+    return { success: true, message: 'Formularul a fost trimis cu succes!' };
+  } catch (error) {
+    console.error('Eroare Formular Video:', error);
+    return { success: false, message: 'Nu am putut trimite mesajul. Vă rugăm să încercați din nou.' };
+  }
+}
+
 // --- 4. GET CONTENT ---
 export async function getSiteContent(sectionKey) {
   try {
