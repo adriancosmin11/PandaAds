@@ -31,20 +31,20 @@ export async function sendTikTokServerEvent({ eventName, userData, eventProperti
   }
 
   const payload = {
-    pixel_code: PIXEL_ID,
-    event: eventName,
-    event_id: `ev_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-    timestamp: Math.floor(Date.now() / 1000),
-    context: {
-      ad: {
-        callback: '', // Add if you have ttclid from cookies
-      },
-      user: {
-        emails: userData.email ? [hashData(userData.email)] : [],
-        phones: userData.phone ? [hashData(userData.phone)] : [],
-      },
-    },
-    properties: eventProperties,
+    event_source: "web",
+    event_source_id: PIXEL_ID,
+    data: [
+      {
+        event: eventName,
+        event_time: Math.floor(Date.now() / 1000),
+        event_id: `ev_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        user: {
+          emails: userData.email ? [hashData(userData.email)] : [],
+          phones: userData.phone ? [hashData(userData.phone)] : [],
+        },
+        properties: eventProperties,
+      }
+    ]
   };
 
   if (TEST_EVENT_CODE) {

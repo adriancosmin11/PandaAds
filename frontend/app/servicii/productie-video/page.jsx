@@ -5,7 +5,7 @@ import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Play, CheckCircle2, ArrowRight, Video, Target, Sparkles, TrendingUp, Clock, Smartphone, MessageSquare, PlayCircle, Star } from 'lucide-react';
+import { Play, CheckCircle2, ArrowRight, Video, Target, Sparkles, TrendingUp, Clock, Smartphone, MessageSquare, PlayCircle, Star, X } from 'lucide-react';
 
 export default function ProductieVideoPage() {
   const [formData, setFormData] = useState({
@@ -16,6 +16,7 @@ export default function ProductieVideoPage() {
   });
   const [status, setStatus] = useState('idle');
   const [message, setMessage] = useState('');
+  const [activeModal, setActiveModal] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,7 +70,7 @@ export default function ProductieVideoPage() {
           <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
             
             <div className="flex-1 max-w-2xl">
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-8">
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-8 mt-3">
                 <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span className="text-xs font-bold tracking-wider text-white uppercase">Acceptăm proiecte noi pentru 2026</span>
               </div>
@@ -200,28 +201,56 @@ export default function ProductieVideoPage() {
                 icon: Target,
                 title: 'Strategie',
                 desc: 'Identificăm unghiurile de comunicare care funcționează în nișa ta și construim direcția corectă pentru conținut.',
-                color: 'bg-blue-50 text-blue-600 border-blue-200'
+                color: 'bg-blue-50 text-blue-600 border-blue-200',
+                details: [
+                  'Analiza competiției pe nișa ta pentru a identifica oportunități și puncte slabe',
+                  'Identificarea publicului țintă și structurarea mesajelor cheie pe interese',
+                  'Crearea unui plan editorial lunar pentru consistență',
+                  'Definirea tonului (educativ, narativ, autoritar) optimizat pentru algoritm'
+                ]
               },
               {
                 icon: MessageSquare,
                 title: 'Scenarii',
                 desc: 'Scriem hook-uri și texte clare, ușor de filmat, care opresc scroll-ul și transmit mesajul potrivit.',
-                color: 'bg-purple-50 text-purple-600 border-purple-200'
+                color: 'bg-purple-50 text-purple-600 border-purple-200',
+                details: [
+                  'Copywriting persuasiv adaptat special pentru platformele de tip short-form video',
+                  'Creația de hook-uri puternice care rețin atenția în primele 3 secunde',
+                  'Dezvoltarea de Call-To-Action (CTA) care convertesc vizualizările în programări',
+                  'Scripts livrate complet: doar le citești fluent la momentul filmării'
+                ]
               },
               {
                 icon: Video,
                 title: 'Filmarea',
                 desc: 'Venim direct la tine în locație cu echipament complet și ghidaj, astfel încât să filmăm eficient și natural.',
-                color: 'bg-rose-50 text-rose-600 border-rose-200'
+                color: 'bg-rose-50 text-rose-600 border-rose-200',
+                details: [
+                  'Echipament video premium (camere 4k, lavaliere fără fir pentru sunet clar)',
+                  'Iluminat principal și de accent pentru un look profesional',
+                  'Regie și ghidare directă pe cameră („cum să gesticulezi”, „cum să intonezi”)',
+                  'Optimizare maximă a timpului: 30 de clipuri din maxim 2 ore de filmare'
+                ]
               },
               {
                 icon: Sparkles,
                 title: 'Editarea',
                 desc: 'Livrăm clipuri scurte, curate și premium, optimizate special pentru TikTok, Reels și Shorts.',
-                color: 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                color: 'bg-emerald-50 text-emerald-600 border-emerald-200',
+                details: [
+                  'Tăierea pauzelor libere (jump-cuts) pentru un ritm super-dinamic',
+                  'Adăugarea de subtitrări animate, exact ca la influencerii de top',
+                  'Integrarea efectelor vizuale, b-rolls, muzică trending și Sound Effects (SFX)',
+                  'Color grading și export optimizat complet pentru calitatea platformelor'
+                ]
               }
             ].map((srv, idx) => (
-              <div key={idx} className="bg-white rounded-[2rem] p-10 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
+              <div 
+                key={idx} 
+                onClick={() => setActiveModal(srv)}
+                className="bg-white rounded-[2rem] p-10 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group cursor-pointer"
+              >
                 <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 border ${srv.color}`}>
                   <srv.icon className="w-8 h-8" />
                 </div>
@@ -406,43 +435,43 @@ export default function ProductieVideoPage() {
           </div>
 
           <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="overflow-x-auto">
+            <div className="w-full">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200 text-sm font-bold text-gray-500 uppercase tracking-wider">
-                    <th className="p-6 font-semibold">Varianta</th>
-                    <th className="p-6 font-semibold">Impact</th>
-                    <th className="p-6 font-semibold">Calitate</th>
-                    <th className="p-6 font-semibold">Consistență</th>
+                  <tr className="bg-gray-50 border-b border-gray-200 text-[10px] sm:text-xs md:text-sm font-bold text-gray-500 uppercase tracking-tight md:tracking-wider">
+                    <th className="p-3 md:p-6 font-semibold">Varianta</th>
+                    <th className="p-3 md:p-6 font-semibold">Impact</th>
+                    <th className="p-3 md:p-6 font-semibold">Calitate</th>
+                    <th className="p-3 md:p-6 font-semibold">Consistență</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-gray-100 text-xs sm:text-sm md:text-base">
                   <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="p-6 font-bold text-gray-900 flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-rose-500"></span>Postări cu poze</td>
-                    <td className="p-6"><span className="inline-flex px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700">Scăzut</span></td>
-                    <td className="p-6 text-gray-600 font-medium">Mediu</td>
-                    <td className="p-6 text-gray-600 font-medium">Medie</td>
+                    <td className="p-3 md:p-6 font-bold text-gray-900 flex items-center gap-1.5 md:gap-3 leading-tight"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-rose-500 shrink-0"></span>Postări cu poze</td>
+                    <td className="p-3 md:p-6"><span className="inline-flex px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold bg-rose-100 text-rose-700">Scăzut</span></td>
+                    <td className="p-3 md:p-6 text-gray-600 font-medium tracking-tight">Mediu</td>
+                    <td className="p-3 md:p-6 text-gray-600 font-medium tracking-tight">Medie</td>
                   </tr>
                   <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="p-6 font-bold text-gray-900 flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-amber-500"></span>Video filmat singur</td>
-                    <td className="p-6"><span className="inline-flex px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700">Mediu</span></td>
-                    <td className="p-6 text-gray-600 font-medium">Slab</td>
-                    <td className="p-6 text-gray-600 font-medium">Slabă</td>
+                    <td className="p-3 md:p-6 font-bold text-gray-900 flex items-center gap-1.5 md:gap-3 leading-tight"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-amber-500 shrink-0"></span>Video filmat singur</td>
+                    <td className="p-3 md:p-6"><span className="inline-flex px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold bg-amber-100 text-amber-700">Mediu</span></td>
+                    <td className="p-3 md:p-6 text-gray-600 font-medium tracking-tight">Slab</td>
+                    <td className="p-3 md:p-6 text-gray-600 font-medium tracking-tight">Slabă</td>
                   </tr>
                   <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="p-6 font-bold text-gray-900 flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-blue-500"></span>Agenții clasice</td>
-                    <td className="p-6"><span className="inline-flex px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">Mediu</span></td>
-                    <td className="p-6 text-gray-900 font-bold">Bun</td>
-                    <td className="p-6 text-gray-600 font-medium">Medie</td>
+                    <td className="p-3 md:p-6 font-bold text-gray-900 flex items-center gap-1.5 md:gap-3 leading-tight"><span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-blue-500 shrink-0"></span>Agenții clasice</td>
+                    <td className="p-3 md:p-6"><span className="inline-flex px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold bg-blue-100 text-blue-700">Mediu</span></td>
+                    <td className="p-3 md:p-6 text-gray-900 font-bold tracking-tight">Bun</td>
+                    <td className="p-3 md:p-6 text-gray-600 font-medium tracking-tight">Medie</td>
                   </tr>
                   <tr className="bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 transition-colors relative">
-                    <td className="p-6 font-black text-indigo-700 text-lg flex items-center gap-3 border-l-4 border-indigo-500">
-                       <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                    <td className="p-3 md:p-6 font-black text-indigo-700 text-sm md:text-lg flex items-center gap-1.5 md:gap-3 border-l-4 border-indigo-500 leading-tight">
+                       <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-indigo-500 animate-pulse shrink-0"></span>
                        Sistemul Panda Ads
                     </td>
-                    <td className="p-6"><span className="inline-flex px-4 py-1.5 rounded-full text-sm font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 shadow-sm">Ridicat</span></td>
-                    <td className="p-6 text-indigo-900 font-black">Premium</td>
-                    <td className="p-6 text-indigo-900 font-black">Ridicată</td>
+                    <td className="p-3 md:p-6"><span className="inline-flex px-2 md:px-4 py-1 md:py-1.5 rounded-full text-[10px] md:text-sm font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 shadow-sm leading-none whitespace-nowrap">Ridicat</span></td>
+                    <td className="p-3 md:p-6 text-indigo-900 font-black tracking-tight">Premium</td>
+                    <td className="p-3 md:p-6 text-indigo-900 font-black tracking-tight">Ridicată</td>
                   </tr>
                 </tbody>
               </table>
@@ -626,6 +655,64 @@ export default function ProductieVideoPage() {
       </section>
 
       <Footer />
+
+      {/* MODAL SERVICII */}
+      {activeModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md transition-opacity">
+          <div className="absolute inset-0" onClick={() => setActiveModal(null)}></div>
+          <div className="relative w-full max-w-2xl bg-gray-900 border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            
+            {/* Modal Header */}
+            <div className="p-6 border-b border-white/10 flex items-center justify-between bg-white/5">
+              <div className="flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-white/10 ${activeModal.color.split(' ')[1]}`}>
+                  <activeModal.icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">{activeModal.title}</h3>
+              </div>
+              <button 
+                onClick={() => setActiveModal(null)}
+                className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            {/* Modal Body */}
+            <div className="p-8 overflow-y-auto">
+              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                {activeModal.desc}
+              </p>
+              
+              <h4 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                Ce include mai exact acest pilon:
+              </h4>
+              
+              <ul className="space-y-4">
+                {activeModal.details.map((detail, idx) => (
+                  <li key={idx} className="flex items-start gap-4 bg-white/5 rounded-xl p-5 border border-white/5 hover:border-white/10 transition-colors">
+                    <div className="w-2 h-2 rounded-full bg-indigo-500 mt-2 flex-shrink-0 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+                    <span className="text-gray-300 font-medium">{detail}</span>
+                  </li>
+                ))}
+              </ul>
+              
+              <div className="mt-10 mb-2">
+                <button 
+                  onClick={() => {
+                    setActiveModal(null);
+                    document.getElementById('formular')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold hover:shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all hover:-translate-y-1"
+                >
+                  Vreau să începem
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
