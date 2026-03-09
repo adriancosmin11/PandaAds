@@ -76,14 +76,14 @@ export default function ProductieVideoPage() {
               </div>
               
               <h1 className="text-[40px] sm:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-8">
-                Tu tratezi pacienții.<br/>
+                Tu conduci afacerea.<br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500">
                   Noi îți construim prezența
-                </span> care aduce programări.
+                </span> care aduce clienți.
               </h1>
               
               <p className="text-lg sm:text-xl text-gray-300 leading-relaxed mb-10 max-w-xl">
-                Transformăm 1 oră din timpul tău în 30 de videoclipuri scurte, gândite pentru TikTok, Reels și Shorts. Ne ocupăm de strategie, scenarii, filmare și editare, ca tu să rămâi focusat pe clinică, pacienți și creșterea business-ului.
+                Transformăm 1 oră din timpul tău în 30 de videoclipuri scurte, gândite pentru TikTok, Reels și Shorts. Ne ocupăm de strategie, scenarii, filmare și editare, ca tu să rămâi focusat exclusiv pe creșterea business-ului tău.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -273,7 +273,7 @@ export default function ProductieVideoPage() {
             <div className="flex-1">
               <span className="inline-block py-1 px-3 rounded-full bg-rose-100 text-rose-700 text-sm font-bold tracking-wider uppercase mb-4">Problema reală</span>
               <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
-                Concurența ta postează deja și îți fură atenția pacienților.
+                Concurența ta postează deja și îți fură atenția clienților.
               </h2>
               <p className="text-xl text-gray-600 mb-12">
                 Nu pierzi oportunități pentru că ești mai slab. Le pierzi pentru că alții apar mai des, mai clar și mai convingător în fața publicului tău.
@@ -283,7 +283,7 @@ export default function ProductieVideoPage() {
                 {[
                   { title: 'Nu ai timp pentru content', desc: 'Programul este deja plin, iar social media rămâne mereu pe ultimul loc.' },
                   { title: 'Nu știi ce să filmezi', desc: 'Fără o strategie, cele mai multe clipuri ies haotic și nu transmit încredere.' },
-                  { title: 'Nu știi ce funcționează în nișa ta', desc: 'Ce merge la alții nu merge automat și pentru clinica sau business-ul tău.' },
+                  { title: 'Nu știi ce funcționează în nișa ta', desc: 'Ce merge la alții nu merge automat și pentru afacerea sau expertiza ta.' },
                   { title: 'Concurența este mai vizibilă', desc: 'În online, câștigă mai des cel care apare constant și profesionist.' }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-4">
