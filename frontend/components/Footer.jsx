@@ -69,7 +69,8 @@ const Footer = () => {
               <li><Link href="/servicii/meta-ads" className="hover:text-emerald-400 transition-colors">Facebook & Instagram Ads</Link></li>
               <li><Link href="/servicii/web-development" className="hover:text-emerald-400 transition-colors">Web Design</Link></li>
               <li><Link href="/servicii/google-ads" className="hover:text-emerald-400 transition-colors">Google Ads</Link></li>
-            </ul>
+              <li><Link href="/servicii/productie-video" className="hover:text-emerald-400 transition-colors">Productie Video</Link></li>
+            </ul> 
           </div>
 
           {/* Coloana 4: Contact */}
